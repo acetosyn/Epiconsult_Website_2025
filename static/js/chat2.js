@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const chatMessages = document.getElementById("chat-messages");
 
-  // Show typing indicator
   function showTypingIndicator() {
     const typingDiv = document.createElement("div");
     typingDiv.id = "typing-indicator";
@@ -18,13 +17,11 @@ document.addEventListener("DOMContentLoaded", () => {
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
-  // Remove typing indicator
   function removeTypingIndicator() {
     const typingDiv = document.getElementById("typing-indicator");
     if (typingDiv) typingDiv.remove();
   }
 
-  // Simulate bot typing
   function typeBotMessage(message) {
     removeTypingIndicator();
 
@@ -45,25 +42,23 @@ document.addEventListener("DOMContentLoaded", () => {
         textContainer.textContent += message.charAt(i);
         i++;
         chatMessages.scrollTop = chatMessages.scrollHeight;
-        setTimeout(typingStep, 30); // typing speed
+        setTimeout(typingStep, 30);
       }
     }
     typingStep();
   }
 
-  // 🔹 Hook into global addMessage for bot replies
+  // 🔹 Instead of overriding, intercept bot replies
   const originalAddMessage = window.addMessage;
-  window.addMessage = function(message, isUser = false) {
+  window.addMessage = function(message, isUser = false, save = true) {
     if (isUser) {
-      originalAddMessage(message, true);
+      originalAddMessage(message, true, save);
     } else {
       showTypingIndicator();
       setTimeout(() => {
+        removeTypingIndicator();
         typeBotMessage(message);
-      }, 1000); // delay before typing starts
+      }, 600);
     }
   };
 });
-
-
-

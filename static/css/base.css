@@ -1,137 +1,11 @@
-/* Custom Animations */
-@keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-@keyframes scroll-fast {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-.animate-scroll {
-  animation: scroll 30s linear infinite;
-}
-
-.animate-scroll-fast {
-  animation: scroll-fast 20s linear infinite;
-}
-
-/* Hero Slider Transitions */
-.hero-slide {
-  transition: opacity 1s ease-in-out;
-}
-
-.hero-slide.active {
-  opacity: 1 !important;
-}
-
-/* Feature Cards Hover Effects */
-.feature-card:hover {
-  transform: translateY(-8px);
-}
-
-/* Smooth Scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Custom Focus States */
-input:focus,
-select:focus,
-textarea:focus {
-  box-shadow: 0 0 0 3px rgba(242, 101, 34, 0.1);
-}
-
-/* Button Hover Effects */
-button:hover {
-  transform: translateY(-1px);
-}
-
-/* Navigation Dropdown */
-.group:hover .group-hover\:opacity-100 {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* Chatbot Animation */
-#chatbot-toggle {
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .hero-slide h1 {
-    font-size: 2.5rem;
-  }
-
-  .hero-slide p {
-    font-size: 1rem;
-  }
-}
-
-/* Loading States */
-.loading {
-  opacity: 0.7;
-  pointer-events: none;
-}
-
-/* Accessibility */
-@media (prefers-reduced-motion: reduce) {
-  .animate-scroll,
-  .animate-scroll-fast,
-  #chatbot-toggle {
-    animation: none;
-  }
-
-  .hero-slide {
-    transition: none;
-  }
-}
-
-/* Print Styles */
-@media print {
-  .fixed,
-  nav,
-  footer,
-  #chatbot-toggle,
-  #chatbot-panel {
-    display: none !important;
-  }
-}
-
-
-/* Hero text animation */
-.hero-text {
-  transition: all 1s ease-out;
-}
-
-/* Main nav links */
+/* === Navigation Links === */
 .nav-link {
   position: relative;
-  color: #002f5e; /* navy */
-  font-weight: 500; /* font-medium */
-  transition: color 0.3s ease;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #002f5e;
+  transition: all 0.3s ease;
 }
-
 .nav-link::after {
   content: "";
   position: absolute;
@@ -139,27 +13,97 @@ button:hover {
   bottom: -4px;
   width: 0%;
   height: 2px;
-  background-color: #dc2626; /* Tailwind red-600 */
+  background-color: #dc2626;
   transition: width 0.3s ease;
 }
-
 .nav-link:hover {
-  color: #dc2626; /* red-600 */
+  color: #dc2626;
 }
-
 .nav-link:hover::after {
   width: 100%;
 }
 
-/* Dropdown links */
+/* === Dropdown Card === */
+/* === Dropdown Card === */
+.dropdown-card {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 20rem; /* wider card */
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(12px);
+  border-radius: 1rem;
+  box-sizing: border-box;
+  padding: 0.5rem; /* tighter padding so children don’t overflow */
+  box-shadow: 0 10px 30px rgba(0, 47, 94, 0.15);
+  transform: translateY(10px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.35s ease;
+  z-index: 50;
+}
+.group:hover .dropdown-card {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
 .dropdown-link {
   display: block;
-  padding: 0.5rem 1rem; /* py-2 px-4 */
-  color: #513737; /* text-gray-700 */
+  width: 100%; /* force to fit inside card */
+  padding: 0.75rem 1rem; /* reduce padding so bg doesn’t overflow */
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #374151;
+  border-radius: 0.5rem;
   transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+.dropdown-link:hover {
+  background: #fee2e2;
+  color: #dc2626;
+  transform: translateX(5px);
 }
 
-.dropdown-link:hover {
-  background-color: #fee2e2; /* red-100 */
-  color: #dc2626; /* red-600 */
+/* === Buttons === */
+.btn-primary {
+  background: #dc2626;
+  color: #fff;
+  padding: 0.6rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+.btn-primary:hover {
+  background: #b91c1c;
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(220, 38, 38, 0.3);
+}
+
+/* === Mobile Nav === */
+.mobile-link {
+  display: block;
+  padding: 0.5rem 0;
+  font-weight: 600;
+  color: #002f5e;
+  transition: all 0.3s ease;
+}
+.mobile-link:hover {
+  color: #f59e0b;
+}
+.mobile-heading {
+  display: block;
+  padding: 0.5rem 0;
+  font-weight: 700;
+  color: #002f5e;
+}
+.mobile-sublink {
+  display: block;
+  font-size: 0.9rem;
+  padding: 0.25rem 0;
+  color: #374151;
+  transition: all 0.3s ease;
+}
+.mobile-sublink:hover {
+  color: #f59e0b;
+  padding-left: 0.25rem;
 }

@@ -18,7 +18,9 @@ def dated_url_for(endpoint, **values):
                 values['v'] = int(os.stat(file_path).st_mtime)  # use file's last modified time
     return url_for(endpoint, **values)
 
-# --- Routes ---
+# -------------------------------
+# 🏠 HOME ROUTES
+# -------------------------------
 @app.route("/")
 def root():
     return render_template("index.html")
@@ -27,21 +29,54 @@ def root():
 def home():
     return render_template("index.html")
 
-@app.route("/services")
-def services():
-    test_data = get_test_data()
-    return render_template("services.html", lab_services=test_data.get("Laboratory", {}))
+
+# -------------------------------
+# 🏥 Register/login Routes
+# -------------------------------
+
+@app.route("/login")
+def login():
+    return "<h1>Login Page Coming Soon</h1>"
+
+@app.route("/register")
+def register():
+    return "<h1>Register Page Coming Soon</h1>"
 
 
-@app.route("/book-appointment")
-def book_appointment():
-    test_data = get_test_data()
-    return render_template("appointment.html", test_data=test_data)
 
+# -------------------------------
+# 🏥 CLINIC ROUTES
+# -------------------------------
+@app.route("/clinic/general")
+def general():
+    return render_template("clinic/general.html")
+
+@app.route("/clinic/sickle-cell")
+def sickle_cell():
+    return render_template("clinic/sickle_cell.html")
+
+@app.route("/clinic/specialist")
+def specialist():
+    return render_template("clinic/specialist.html")
+
+# -------------------------------
+# 🔬 DIAGNOSTICS ROUTES
+# -------------------------------
+@app.route("/diagnostics/imaging")
+def imaging():
+    return render_template("imaging.html")
+
+@app.route("/diagnostics/laboratory")
+def laboratory():
+    test_data = get_test_data()  # optionally load lab services here
+    return render_template("laboratory.html", lab_services=test_data.get("Laboratory", {}))
+
+# -------------------------------
+# OTHER MAIN ROUTES
+# -------------------------------
 @app.route("/teleconsultation")
 def teleconsultation():
     return render_template("teleconsultation.html")
-
 
 @app.route("/contact")
 def contact():
@@ -55,15 +90,13 @@ def about():
 def blog():
     return "<h1>Blog Page Coming Soon</h1>"
 
-
-
-
 @app.route("/patient-portal")
 def patient_portal():
     return "<h1>Patient Portal Coming Soon</h1>"
 
-
-
+# -------------------------------
+# INFO / LEGAL ROUTES
+# -------------------------------
 @app.route("/privacy-policy")
 def privacy_policy():
     return "<h1>Privacy Policy Page Coming Soon</h1>"
@@ -80,5 +113,14 @@ def cookie_policy():
 def accessibility():
     return "<h1>Accessibility Page Coming Soon</h1>"
 
+@app.route("/book-appointment")
+def book_appointment():
+    test_data = get_test_data()
+    return render_template("appointment.html", test_data=test_data)
+
+
+# -------------------------------
+# MAIN ENTRY
+# -------------------------------
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)

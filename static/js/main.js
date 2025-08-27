@@ -1,15 +1,5 @@
 // Main JavaScript functionality
 document.addEventListener("DOMContentLoaded", () => {
-  // Mobile Menu Toggle
-  const mobileMenuBtn = document.getElementById("mobile-menu-btn")
-  const mobileMenu = document.getElementById("mobile-menu")
-
-  if (mobileMenuBtn && mobileMenu) {
-    mobileMenuBtn.addEventListener("click", () => {
-      mobileMenu.classList.toggle("hidden")
-    })
-  }
-
   // Hero Slider
   const heroSlides = document.querySelectorAll(".hero-slide")
   const heroDots = document.querySelectorAll(".hero-dot")
@@ -170,3 +160,19 @@ window.addEventListener("load", () => {
     element.classList.remove("loading")
   })
 })
+
+window.addEventListener("resize", () => {
+  if (window.innerWidth >= 1024) {
+    const mobileMenu = document.getElementById("mobile-menu");
+    const hamburger = document.getElementById("icon-hamburger");
+    const closeIcon = document.getElementById("icon-close");
+
+    if (mobileMenu) {
+      mobileMenu.classList.remove("max-h-screen", "opacity-100");
+      mobileMenu.classList.add("max-h-0", "opacity-0");
+    }
+    if (hamburger) hamburger.classList.remove("hidden");
+    if (closeIcon) closeIcon.classList.add("hidden");
+  }
+});
+

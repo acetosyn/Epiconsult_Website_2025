@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/clinic.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- ================= Hero Section ================= -->
+<section class="relative h-96 flex items-center justify-center text-white overflow-hidden hero-section">
+  <!-- Background image -->
+  <div class="absolute inset-0">
+    <img src="{{ url_for('static', filename='images/clinic/1.jpg') }}" 
+         alt="Clinic Hero" 
+         class="w-full h-full object-cover object-center">
+    <!-- Softer gradient overlay (no heavy blur, clearer image) -->
+    <div class="absolute inset-0 bg-gradient-to-r from-navy/60 via-navy/20 to-transparent"></div>
+  </div>
+
+  <!-- Hero text with slides -->
+  <div class="relative z-10 text-center px-6">
+    <div id="hero-text-container" class="overflow-hidden relative h-32">
+      <div class="hero-slide text-4xl md:text-5xl font-bold drop-shadow-lg">
+        🏥 Welcome to <span class="text-red-400">Our e-Clinic</span>
+      </div>
+      <div class="hero-slide text-4xl md:text-5xl font-bold drop-shadow-lg hidden">
+        🌍 Modern <span class="text-yellow-400">Healthcare</span> Anywhere
+      </div>
+      <div class="hero-slide text-4xl md:text-5xl font-bold drop-shadow-lg hidden">
+        ⚡ Fast, <span class="text-green-400">Smart</span> & Secure
+      </div>
+      <div class="hero-slide text-4xl md:text-5xl font-bold drop-shadow-lg hidden">
+        💡 Futuristic <span class="text-blue-400">Medical Experience</span>
+      </div>
+    </div>
+    <p class="mt-4 text-lg md:text-xl text-gray-200 max-w-2xl mx-auto">
+      Professional. Patient-centered. Designed just for you.
+    </p>
+  </div>
+</section>
+
+<!-- ================= Cards Section ================= -->
+<section class="py-20 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    {% block clinic_cards %}
+    <!-- Default cards (can be replaced by child templates) -->
+    <div class="grid md:grid-cols-2 gap-10 text-center">
+      <div class="glass-card">
+        <div class="text-5xl mb-6 text-red-600">👨‍⚕️</div>
+        <h2 class="text-2xl font-semibold mb-4">General Consultation</h2>
+        <p class="text-gray-600">Meet our in-house doctors for professional consultation.</p>
+      </div>
+      <div class="glass-card">
+        <div class="text-5xl mb-6 text-yellow-500">🧬</div>
+        <h2 class="text-2xl font-semibold mb-4">Specialist Services</h2>
+        <p class="text-gray-600">Book with our specialists for advanced healthcare.</p>
+      </div>
+    </div>
+    {% endblock %}
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/clinic.js') }}"></script>
+{% endblock %}
