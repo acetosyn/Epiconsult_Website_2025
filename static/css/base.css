@@ -1,0 +1,165 @@
+/* Custom Animations */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scroll-fast {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
+
+.animate-scroll-fast {
+  animation: scroll-fast 20s linear infinite;
+}
+
+/* Hero Slider Transitions */
+.hero-slide {
+  transition: opacity 1s ease-in-out;
+}
+
+.hero-slide.active {
+  opacity: 1 !important;
+}
+
+/* Feature Cards Hover Effects */
+.feature-card:hover {
+  transform: translateY(-8px);
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Focus States */
+input:focus,
+select:focus,
+textarea:focus {
+  box-shadow: 0 0 0 3px rgba(242, 101, 34, 0.1);
+}
+
+/* Button Hover Effects */
+button:hover {
+  transform: translateY(-1px);
+}
+
+/* Navigation Dropdown */
+.group:hover .group-hover\:opacity-100 {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Chatbot Animation */
+#chatbot-toggle {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .hero-slide h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero-slide p {
+    font-size: 1rem;
+  }
+}
+
+/* Loading States */
+.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .animate-scroll,
+  .animate-scroll-fast,
+  #chatbot-toggle {
+    animation: none;
+  }
+
+  .hero-slide {
+    transition: none;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .fixed,
+  nav,
+  footer,
+  #chatbot-toggle,
+  #chatbot-panel {
+    display: none !important;
+  }
+}
+
+
+/* Hero text animation */
+.hero-text {
+  transition: all 1s ease-out;
+}
+
+/* Main nav links */
+.nav-link {
+  position: relative;
+  color: #002f5e; /* navy */
+  font-weight: 500; /* font-medium */
+  transition: color 0.3s ease;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background-color: #dc2626; /* Tailwind red-600 */
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #dc2626; /* red-600 */
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Dropdown links */
+.dropdown-link {
+  display: block;
+  padding: 0.5rem 1rem; /* py-2 px-4 */
+  color: #513737; /* text-gray-700 */
+  transition: all 0.3s ease;
+}
+
+.dropdown-link:hover {
+  background-color: #fee2e2; /* red-100 */
+  color: #dc2626; /* red-600 */
+}

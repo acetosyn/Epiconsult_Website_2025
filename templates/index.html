@@ -1,0 +1,311 @@
+{% extends "base.html" %}
+
+{% block styles %}
+  {% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="relative h-screen overflow-hidden">
+  <div class="hero-slider relative h-full">
+
+    <!-- Slide 1 -->
+    <div class="hero-slide active absolute inset-0">
+      <img src="{{ url_for('static', filename='images/1.jpg') }}" alt="Healthcare diagnostics" class="absolute inset-0 w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="hero-slide absolute inset-0 opacity-0">
+      <img src="{{ url_for('static', filename='images/2.jpg') }}" alt="Medical team" class="absolute inset-0 w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="hero-slide absolute inset-0 opacity-0">
+      <img src="{{ url_for('static', filename='images/3.jpg') }}" alt="Diagnostics lab" class="absolute inset-0 w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
+    </div>
+
+    <!-- Slide 4 -->
+    <div class="hero-slide absolute inset-0 opacity-0">
+      <img src="{{ url_for('static', filename='images/4.jpg') }}" alt="MRI scan" class="absolute inset-0 w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
+    </div>
+
+    <!-- Slide 5 -->
+    <div class="hero-slide absolute inset-0 opacity-0">
+      <img src="{{ url_for('static', filename='images/5.jpg') }}" alt="Patient consultation" class="absolute inset-0 w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
+    </div>
+
+    <!-- Slide 6 -->
+    <div class="hero-slide absolute inset-0 opacity-0">
+      <img src="{{ url_for('static', filename='images/6.jpg') }}" alt="Healthcare facility" class="absolute inset-0 w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
+    </div>
+
+    <!-- Slide 7 -->
+    <div class="hero-slide absolute inset-0 opacity-0">
+      <img src="{{ url_for('static', filename='images/7.jpg') }}" alt="Doctors at work" class="absolute inset-0 w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-r from-navy/95 via-navy/70 to-transparent"></div>
+    </div>
+
+    <!-- Text Overlay -->
+    <div class="absolute inset-0 z-10 flex items-center">
+      <div class="container mx-auto px-4">
+        <div class="max-w-2xl text-white hero-text opacity-0 translate-y-10">
+          <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            Advanced Healthcare <span class="text-yellow-400">Diagnostics</span>
+          </h1>
+          <p class="text-xl mb-8 leading-relaxed">
+            Experience world-class medical diagnostics with cutting-edge technology and expert care. Your health is our priority.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="{{ url_for('book_appointment') }}" class="bg-red-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-red-700 hover:scale-105 hover:shadow-xl transition-all duration-300">
+              📅 Book Appointment
+            </a>
+            <a href="{{ url_for('teleconsultation') }}" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-navy transition-all duration-300">
+              💻 Teleconsultation
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Navigation Dots -->
+  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3">
+    <button class="hero-dot active w-3 h-3 rounded-full bg-yellow-400" data-slide="0"></button>
+    <button class="hero-dot w-3 h-3 rounded-full bg-yellow-400/50" data-slide="1"></button>
+    <button class="hero-dot w-3 h-3 rounded-full bg-yellow-400/50" data-slide="2"></button>
+    <button class="hero-dot w-3 h-3 rounded-full bg-yellow-400/50" data-slide="3"></button>
+    <button class="hero-dot w-3 h-3 rounded-full bg-yellow-400/50" data-slide="4"></button>
+    <button class="hero-dot w-3 h-3 rounded-full bg-yellow-400/50" data-slide="5"></button>
+    <button class="hero-dot w-3 h-3 rounded-full bg-yellow-400/50" data-slide="6"></button>
+  </div>
+</section>
+
+
+
+<!-- Why Choose Epiconsult Section -->
+<section class="py-20 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 text-center">
+    <h2 class="text-4xl font-bold text-navy mb-12">
+      Why Choose <span class="text-red-600">Epiconsult Diagnostics</span>?
+    </h2>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+
+      <!-- Feature 1 -->
+      <div class="bg-navy text-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+        <div class="text-red-400 text-4xl mb-4">🧬</div>
+        <h3 class="text-2xl font-semibold mb-3">Accurate Diagnostics</h3>
+        <p>We deliver precise and reliable test results with world-class technology to guide effective treatment decisions.</p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="bg-navy text-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+        <div class="text-red-400 text-4xl mb-4">👩‍⚕️</div>
+        <h3 class="text-2xl font-semibold mb-3">Expert Specialists</h3>
+        <p>Our team of experienced doctors and healthcare professionals ensure top-notch patient care at every step.</p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="bg-navy text-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+        <div class="text-red-400 text-4xl mb-4">⚡</div>
+        <h3 class="text-2xl font-semibold mb-3">Fast Results</h3>
+        <p>We prioritize efficiency, providing quick turnaround times without compromising accuracy or quality.</p>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="bg-navy text-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+        <div class="text-red-400 text-4xl mb-4">🏥</div>
+        <h3 class="text-2xl font-semibold mb-3">Modern Facilities</h3>
+        <p>Equipped with state-of-the-art diagnostic tools in a comfortable and patient-friendly environment.</p>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="bg-navy text-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+        <div class="text-red-400 text-4xl mb-4">🌍</div>
+        <h3 class="text-2xl font-semibold mb-3">Accessible Services</h3>
+        <p>Conveniently located centers with teleconsultation options to reach patients wherever they are.</p>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="bg-navy text-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+        <div class="text-red-400 text-4xl mb-4">❤️</div>
+        <h3 class="text-2xl font-semibold mb-3">Patient-Centered Care</h3>
+        <p>Compassionate and personalized healthcare services focused on your unique needs and well-being.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- Core Services Section -->
+<section class="py-20 bg-gray-50">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-bold text-navy mb-4">
+        Our Core <span class="text-red-600">Services</span>
+      </h2>
+      <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+        Comprehensive healthcare solutions designed to meet all your medical needs with excellence and care.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <!-- Feature 1 -->
+      <div class="feature-card bg-navy text-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 text-center">
+        <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
+          🧪
+        </div>
+        <h3 class="text-xl font-semibold mb-4">Diagnostic Services</h3>
+        <p>Comprehensive diagnostic testing with advanced equipment and expert analysis for accurate results.</p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feature-card bg-navy text-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 text-center">
+        <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
+          💻
+        </div>
+        <h3 class="text-xl font-semibold mb-4">Teleconsultation</h3>
+        <p>Connect with healthcare professionals remotely for convenient, quality medical consultations.</p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feature-card bg-navy text-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 text-center">
+        <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
+          📅
+        </div>
+        <h3 class="text-xl font-semibold mb-4">Book Appointment</h3>
+        <p>Easy online appointment booking system for seamless scheduling of your medical visits.</p>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="feature-card bg-navy text-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 text-center">
+        <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
+          📚
+        </div>
+        <h3 class="text-xl font-semibold mb-4">Health Education</h3>
+        <p>Access valuable health information and educational resources to make informed healthcare decisions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- Appointment Highlight Section -->
+<section class="relative py-20 bg-gradient-to-r from-navy to-navy/95 text-white overflow-hidden">
+  <div class="absolute inset-0">
+    <div class="absolute inset-0 bg-[url('static/images/medical-bg.jpg')] bg-cover bg-center opacity-10"></div>
+  </div>
+
+  <div class="relative max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      
+      <!-- Left Side: Highlights -->
+      <div data-aos="fade-right">
+        <h2 class="text-4xl md:text-5xl font-extrabold mb-6 leading-tight">
+          Ready to Take Control of <span class="text-red-500">Your Health?</span>
+        </h2>
+        <p class="text-lg md:text-xl text-gray-200 mb-8">
+          Book your appointment today and experience world-class healthcare services tailored to you.
+        </p>
+        <div class="space-y-5">
+          <div class="flex items-center space-x-3">
+            <div class="w-7 h-7 bg-red-600 rounded-full flex items-center justify-center shadow-md">
+              <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 
+                01-1.414 0l-4-4a1 1 0 011.414-1.414L8 
+                12.586l7.293-7.293a1 1 0 011.414 0z" 
+                clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <span class="text-base md:text-lg">Same-day appointments available</span>
+          </div>
+          <div class="flex items-center space-x-3">
+            <div class="w-7 h-7 bg-red-600 rounded-full flex items-center justify-center shadow-md">
+              <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 
+                1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 
+                1 0 011.414-1.414L8 
+                12.586l7.293-7.293a1 1 0 011.414 0z" 
+                clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <span class="text-base md:text-lg">Trusted professional healthcare team</span>
+          </div>
+          <div class="flex items-center space-x-3">
+            <div class="w-7 h-7 bg-red-600 rounded-full flex items-center justify-center shadow-md">
+              <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 
+                1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 
+                1 0 011.414-1.414L8 
+                12.586l7.293-7.293a1 1 0 011.414 0z" 
+                clip-rule="evenodd"></path>
+              </svg>
+            </div>
+            <span class="text-base md:text-lg">Cutting-edge diagnostic technology</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Side: Booking Form -->
+      <div class="bg-white rounded-2xl p-8 md:p-10 shadow-2xl text-navy" data-aos="fade-left">
+        <div class="text-center mb-8">
+          <h2 class="text-3xl md:text-4xl font-bold mb-3">
+            Book Your <span class="text-navy">Appointment</span> <span class="text-red-600">Now</span>
+          </h2>
+          <p class="text-gray-600 text-base md:text-lg">Quick and easy — get started below</p>
+        </div>
+
+        <form method="POST" action="{{ url_for('book_appointment') }}" class="space-y-6">
+          <div class="grid md:grid-cols-3 gap-6">
+            
+            <!-- Service -->
+            <div class="space-y-2">
+              <label class="block text-sm font-semibold">Service</label>
+              <select name="service" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                <option>General Consultation</option>
+                <option>Diagnostic Testing</option>
+                <option>Laboratory Services</option>
+                <option>Imaging Services</option>
+                <option>Teleconsultation</option>
+              </select>
+            </div>
+
+            <!-- Date -->
+            <div class="space-y-2">
+              <label class="block text-sm font-semibold">Date</label>
+              <input type="date" name="date" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+            </div>
+
+            <!-- Time -->
+            <div class="space-y-2">
+              <label class="block text-sm font-semibold">Time</label>
+              <select name="time" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                <option>Morning (9AM - 12PM)</option>
+                <option>Afternoon (12PM - 5PM)</option>
+                <option>Evening (5PM - 8PM)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Button -->
+          <div class="pt-4 text-center">
+            <button type="submit" class="bg-red-600 text-white px-10 py-4 rounded-full font-semibold text-lg shadow-md hover:bg-red-700 hover:scale-105 transition-transform duration-300">
+              Book Appointment
+            </button>
+            <p class="text-gray-500 text-sm mt-4">Or call us at <span class="font-semibold">+234-800-EPICONSULT</span></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

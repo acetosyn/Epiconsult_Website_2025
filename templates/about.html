@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="bg-navy text-white py-20 text-center">
+  <div class="container mx-auto px-6">
+    <h1 class="text-4xl md:text-5xl font-bold mb-4">About <span class="text-red-600">Epiconsult Diagnostics</span></h1>
+    <p class="text-lg text-gray-200 max-w-2xl mx-auto">
+      Your Trusted Diagnostic Partner — combining cutting-edge technology with compassionate care to deliver accurate and timely results.
+    </p>
+  </div>
+</section>
+
+
+<!-- About Us -->
+<section class="py-20 bg-gray-50">
+  <div class="container mx-auto px-6 lg:px-12 grid md:grid-cols-2 gap-12 items-center">
+    
+    <div>
+      <h2 class="text-3xl font-bold text-navy mb-6">About Us</h2>
+      <p class="text-gray-700 leading-relaxed mb-6">
+        At Epiconsult Diagnostics, our mission is simple: to empower healthcare decisions with precision and compassion. 
+        We provide patients and clinicians with the most accurate diagnostic insights for better treatment outcomes.
+      </p>
+      <ul class="space-y-3 text-gray-700">
+        <li>✔️ Accredited Laboratory Services</li>
+        <li>✔️ Advanced Diagnostic Technology</li>
+        <li>✔️ Patient-Centered Approach</li>
+      </ul>
+    </div>
+
+    <div class="rounded-2xl overflow-hidden shadow-lg">
+      <img src="{{ url_for('static', filename='images/7.jpg') }}" alt="Epiconsult Facility" class="w-full h-80 object-cover">
+    </div>
+  </div>
+</section>
+
+
+<!-- Our Team -->
+<section class="py-20 bg-white">
+  <div class="container mx-auto px-6">
+    <h2 class="text-3xl font-bold text-center text-navy mb-12">Our Dedicated <span class="text-red-600">Team</span></h2>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {% for img in [3,4,5,6] %}
+      <div class="rounded-xl overflow-hidden shadow-lg hover:scale-105 transition">
+        <img src="{{ url_for('static', filename='images/' ~ img ~ '.jpg') }}" alt="Team Member" class="w-full h-64 object-cover">
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-12">
+      <h3 class="text-2xl font-semibold text-navy">50+ Experts</h3>
+      <p class="text-gray-600">Dedicated board-certified specialists and professionals.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- Stats -->
+<section class="py-20 bg-gray-50">
+  <div class="container mx-auto px-6 grid md:grid-cols-4 gap-8 text-center">
+    <div class="bg-white p-8 rounded-xl shadow">
+      <h3 class="text-4xl font-bold text-red-600">50+</h3>
+      <p class="text-gray-700 mt-2">Experts</p>
+    </div>
+    <div class="bg-white p-8 rounded-xl shadow">
+      <h3 class="text-4xl font-bold text-red-600">150,000+</h3>
+      <p class="text-gray-700 mt-2">Tests Conducted</p>
+    </div>
+    <div class="bg-white p-8 rounded-xl shadow">
+      <h3 class="text-4xl font-bold text-red-600">24/7</h3>
+      <p class="text-gray-700 mt-2">Support</p>
+    </div>
+    <div class="bg-white p-8 rounded-xl shadow">
+      <h3 class="text-4xl font-bold text-red-600">100%</h3>
+      <p class="text-gray-700 mt-2">Patient-Centered</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- Facilities -->
+<section class="py-20 bg-white">
+  <div class="container mx-auto px-6">
+    <h2 class="text-3xl font-bold text-center text-navy mb-12">State-of-the-Art <span class="text-red-600">Facilities</span></h2>
+
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="rounded-xl overflow-hidden shadow-lg hover:scale-105 transition">
+        <img src="{{ url_for('static', filename='images/1.jpg') }}" alt="Facility 1" class="w-full h-80 object-cover">
+      </div>
+      <div class="rounded-xl overflow-hidden shadow-lg hover:scale-105 transition">
+        <img src="{{ url_for('static', filename='images/2.jpg') }}" alt="Facility 2" class="w-full h-80 object-cover">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Why Choose Us -->
+<section class="py-20 bg-gray-50">
+  <div class="container mx-auto px-6 text-center">
+    <h2 class="text-3xl font-bold text-navy mb-12">Why <span class="text-red-600">Choose Us</span></h2>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition">
+        <h3 class="text-xl font-bold text-navy mb-3">Qualified Professionals</h3>
+        <p class="text-gray-600">Board-certified specialists committed to your care.</p>
+      </div>
+      <div class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition">
+        <h3 class="text-xl font-bold text-navy mb-3">Excellent Services</h3>
+        <p class="text-gray-600">From routine checks to advanced diagnostics.</p>
+      </div>
+      <div class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition">
+        <h3 class="text-xl font-bold text-navy mb-3">Quality Results</h3>
+        <p class="text-gray-600">Reliable, precise, and timely diagnostic reports.</p>
+      </div>
+      <div class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition">
+        <h3 class="text-xl font-bold text-navy mb-3">24/7 Support</h3>
+        <p class="text-gray-600">Always available when you need us most.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Video Section -->
+<section class="py-20 bg-white">
+  <div class="container mx-auto px-6 text-center">
+    <h2 class="text-3xl font-bold text-navy mb-8">
+      Our <span class="text-red-600">Facility</span> in Motion
+    </h2>
+    <p class="text-gray-600 mb-12">
+      Experience our environment through short video highlights of Epiconsult facilities.
+    </p>
+
+    <div class="video-slider" aria-label="Epiconsult video carousel" oncontextmenu="return false;">
+      <div class="slider-viewport rounded-xl shadow-lg overflow-hidden">
+        <div class="slider-track">
+          {% for i in range(1,6) %}
+          <div class="slide h-64">
+            <!-- Transparent overlay to discourage saving -->
+            <div class="no-save" aria-hidden="true"></div>
+            <video
+              class="slide-video"
+              muted
+              playsinline
+              loop
+              preload="none"
+              disablepictureinpicture
+              controlsList="nodownload"
+              data-src="{{ url_for('static', filename='videos/epiconsult' ~ i ~ '.mp4') }}"
+            ></video>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Optional dots (auto-managed) -->
+      <div class="slider-dots" role="tablist" aria-label="Video slide indicators"></div>
+    </div>
+  </div>
+</section>
+
+<script src="{{ url_for('static', filename='js/about.js') }}"></script>
+
+
+
+
+{% endblock %}

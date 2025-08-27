@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{# ---- Hero Carousel ---- #}
+{% set header %}
+  Book Your <span class="text-red-600">Appointment</span> Today
+{% endset %}
+
+{% set texts %}
+<div class="hero-slide absolute inset-0 opacity-0 hidden transition-all duration-1000" data-effect="cover">
+  <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Schedule with Experts</h2>
+  <p class="text-base md:text-lg text-gray-200">Care when you need it, how you need it.</p>
+</div>
+
+<div class="hero-slide absolute inset-0 opacity-0 hidden transition-all duration-1000" data-effect="push">
+  <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Flexible Slots</h2>
+  <p class="text-base md:text-lg text-gray-200">Pick a time that fits your life.</p>
+</div>
+
+<div class="hero-slide absolute inset-0 opacity-0 hidden transition-all duration-1000" data-effect="reveal">
+  <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Comprehensive Services</h2>
+  <p class="text-base md:text-lg text-gray-200">All tests & consultations in one place.</p>
+</div>
+
+<div class="hero-slide absolute inset-0 opacity-0 hidden transition-all duration-1000" data-effect="flip">
+  <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">Book in Minutes</h2>
+  <p class="text-base md:text-lg text-gray-200">Fast • Secure • Reliable</p>
+</div>
+
+{% endset %}
+
+{% include "partials/carousel_slide.html" with context %}
+
+{# ---- Appointment Form ---- #}
+<section class="relative py-20 bg-gradient-to-br from-gray-900 via-navy to-black overflow-hidden">
+  <!-- Floating neon blobs for futuristic effect -->
+  <div class="absolute top-10 left-20 w-72 h-72 bg-red-500/30 rounded-full blur-3xl animate-pulse"></div>
+  <div class="absolute bottom-10 right-20 w-72 h-72 bg-blue-500/30 rounded-full blur-3xl animate-pulse"></div>
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.05),transparent)]"></div>
+
+<div class="max-w-4xl mx-auto bg-white/90 border border-gray-200 
+            rounded-3xl shadow-2xl shadow-black/10 
+            p-8 md:p-12 relative overflow-hidden">
+
+
+
+      <!-- Floating glow background (inside card) -->
+      <div class="absolute -top-16 -right-16 w-64 h-64 bg-red-300 rounded-full blur-3xl opacity-30"></div>
+      <div class="absolute -bottom-16 -left-16 w-64 h-64 bg-navy/50 rounded-full blur-3xl opacity-30"></div>
+
+
+  <!-- Futuristic Clock -->
+  <div class="absolute top-2 right-12 z-20">
+    <div class="bg-white/20 backdrop-blur-md px-3 py-2 rounded-lg shadow-lg border border-white/30 inline-block w-[190px] text-center">
+      <!-- Time -->
+      <div class="text-2xl font-mono font-bold text-navy tracking-widest whitespace-nowrap">
+        <span id="timeDigits">00:00:00</span>
+        <span id="ampm" class="ml-1">AM</span>
+      </div>
+      <!-- Date -->
+      <div id="liveDate" class="text-xs font-medium text-gray-800 mt-1">
+        Mon, Jan 01 2025
+      </div>
+    </div>
+  </div>
+      <h2 class="text-2xl font-bold text-navy mb-6 text-center">Book an <span class="text-red-600">Appointment</span></h2>
+
+
+
+      <form id="appointmentForm" class="relative z-10 space-y-6">
+
+        <!-- Search -->
+        <div>
+          <label for="searchInput" class="block font-semibold text-lg mb-3 text-navy">🔍 Search Test / Service</label>
+          <input id="searchInput" type="text" placeholder="Start typing… (e.g. Blood Test, ECG)" 
+                 class="w-full p-4 border rounded-xl shadow-sm focus:ring-2 focus:ring-red-500 focus:outline-none transition">
+          <div id="resultsPanel" class="hidden border border-gray-200 rounded-xl bg-white shadow-lg mt-2 max-h-60 overflow-y-auto">
+            <div id="resultsContainer" class="divide-y divide-gray-100"></div>
+          </div>
+          <p class="text-xs text-gray-500 mt-1">Type at least 2 letters to see results.</p>
+        </div>
+
+        <!-- Service Dropdowns -->
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <label class="block font-semibold mb-2">Select Category</label>
+            <select id="serviceCategory" class="w-full p-4 border rounded-xl shadow-sm focus:ring-2 focus:ring-red-500">
+              <option value="">-- Select Category --</option>
+            </select>
+          </div>
+          <div id="subcategoryWrapper" class="hidden">
+            <label class="block font-semibold mb-2">Select Test / Sub-Service</label>
+            <select id="serviceSubcategory" class="w-full p-4 border rounded-xl shadow-sm focus:ring-2 focus:ring-red-500">
+              <option value="">-- Select Test --</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Date & Time -->
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <label class="block font-semibold mb-2">Preferred Date</label>
+            <input type="date" id="appointmentDate" class="w-full p-4 border rounded-xl shadow-sm focus:ring-2 focus:ring-red-500">
+          </div>
+          <div>
+            <label class="block font-semibold mb-2">Preferred Time</label>
+            <select id="appointmentTime" class="w-full p-4 border rounded-xl shadow-sm focus:ring-2 focus:ring-red-500">
+              <option value="">-- Select Time --</option>
+              <option>Morning (9AM - 12PM)</option>
+              <option>Afternoon (12PM - 4PM)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Patient Info -->
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <label class="block font-semibold mb-2">Full Name *</label>
+            <input type="text" id="fullName" class="w-full p-4 border rounded-xl shadow-sm" required>
+          </div>
+          <div>
+            <label class="block font-semibold mb-2">Sex *</label>
+            <select id="sex" class="w-full p-4 border rounded-xl shadow-sm" required>
+              <option value="">-- Select --</option>
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold mb-2">Phone Number *</label>
+            <input type="tel" id="phone" placeholder="+234..." class="w-full p-4 border rounded-xl shadow-sm" required>
+          </div>
+          <div>
+            <label class="block font-semibold mb-2">Email *</label>
+            <input type="email" id="email" placeholder="you@email.com" list="emailSuggestions"
+                   class="w-full p-4 border rounded-xl shadow-sm" required>
+            <datalist id="emailSuggestions">
+              <option value="@gmail.com"></option>
+              <option value="@outlook.com"></option>
+              <option value="@hotmail.com"></option>
+              <option value="@yahoo.com"></option>
+              <option value="@icloud.com"></option>
+            </datalist>
+          </div>
+          <div class="md:col-span-2">
+            <label class="block font-semibold mb-2">Address (Optional)</label>
+            <input type="text" id="address" class="w-full p-4 border rounded-xl shadow-sm">
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col md:flex-row justify-center items-center gap-6">
+          <button type="button" id="bookOnlyBtn" 
+                  class="w-full md:w-auto bg-red-600 text-white px-10 py-4 rounded-full font-semibold shadow-lg hover:shadow-red-400/50 hover:scale-105 transform transition">
+            📅 Book Only
+          </button>
+          <button type="button" id="bookPayBtn" 
+                  class="w-full md:w-auto bg-navy text-white px-10 py-4 rounded-full font-semibold shadow-lg hover:shadow-blue-400/50 hover:scale-105 transform transition">
+            💳 Book & Pay Later
+          </button>
+        </div>
+
+        <p class="text-gray-500 text-center text-sm mt-6">
+          Or call us anytime at <span class="font-semibold">+234-7035765000</span>
+        </p>
+
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Booking Summary Modal -->
+<div id="summaryModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
+  <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8 animate-fade-in">
+    <h2 class="text-2xl font-bold text-navy mb-4">Confirm Your Booking</h2>
+    <div id="summaryContent" class="space-y-3 text-gray-700"></div>
+    <div class="flex justify-end gap-4 mt-6">
+      <button id="editBtn" class="px-5 py-2 border rounded-xl hover:bg-gray-50">Edit</button>
+      <button id="cancelBtn" class="px-5 py-2 border rounded-xl hover:bg-gray-50">Cancel</button>
+      <button id="confirmBtn" class="px-5 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script id="test-data" type="application/json">
+  {{ test_data | tojson }}
+</script>
+<script>
+  (function () {
+    try { window.testData = JSON.parse(document.getElementById('test-data').textContent); }
+    catch (e) { console.error('Failed to parse test data JSON', e); window.testData = {}; }
+  })();
+
+  // Live Futuristic Clock
+  function startClock() {
+    const clock = document.getElementById("liveClock");
+    if (!clock) return;
+    setInterval(() => {
+      const now = new Date();
+      clock.textContent = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    }, 1000);
+  }
+  startClock();
+</script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/service_header.css') }}">
+<script src="{{ url_for('static', filename='js/appointment.js') }}"></script>
+<script src="{{ url_for('static', filename='js/clock.js') }}"></script>
+<script src="{{ url_for('static', filename='js/service_header.js') }}"></script>
+<script src="{{ url_for('static', filename='js/email_suggestion.js') }}"></script>
+
+{% endblock %}

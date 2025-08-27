@@ -1,0 +1,9 @@
+# Ignore asset folders
+epiconsult_assets/
+jaiz_assets/
+fhc_assets/
+*.pdf
+*.xlsx
+*.ipynb
+*.csv
+.env

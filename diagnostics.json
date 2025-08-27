@@ -1,0 +1,14 @@
+{
+    "Diagnostics": {
+        "Imaging": {
+            "X-RAY": [],
+            "MAMO": [],
+            "ECG": [],
+            "ECHO": [],
+            "MR": [],
+            "CT SCAN": [],
+            "HSG": [],
+            "IUV": []
+        }
+    }
+}
