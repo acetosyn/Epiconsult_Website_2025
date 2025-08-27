@@ -7,3 +7,6 @@ fhc_assets/
 *.ipynb
 *.csv
 .env
+new_database/
+*.docx
+dataset/
