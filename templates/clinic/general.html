@@ -1,0 +1,46 @@
+{% extends "clinic/base_clinic.html" %}
+
+{% block clinic_cards %}
+<div class="grid md:grid-cols-2 gap-10">
+
+  <!-- In-House Doctor Consultation -->
+  <div class="glass-card relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-red-500/20 to-transparent rounded-bl-full"></div>
+    <div class="text-5xl mb-6 text-red-600">👨‍⚕️</div>
+    <h2 class="text-2xl font-semibold mb-4">Doctor Connect</h2>
+    <p class="text-gray-600 mb-6">
+      Need medical advice? Instantly connect with our in-house doctors for expert guidance.  
+      Book a session and let our team walk with you on your health journey.
+    </p>
+    <button onclick="confirmConsultation('doctor')" 
+            class="btn-primary">
+      💬 Book Consultation
+    </button>
+  </div>
+
+  <!-- TeleConsultation -->
+  <div class="glass-card relative overflow-hidden">
+    <div class="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-yellow-400/20 to-transparent rounded-tr-full"></div>
+    <div class="text-5xl mb-6 text-yellow-500">💻</div>
+    <h2 class="text-2xl font-semibold mb-4">TeleConsultation</h2>
+    <p class="text-gray-600 mb-6">
+      Prefer virtual care? Book a video consultation with our doctors from anywhere.  
+      Secure, private, and professional healthcare—right from your device.
+    </p>
+    <button onclick="confirmConsultation('tele')" 
+            class="btn-primary">
+      🎥 Video Consultation
+    </button>
+  </div>
+</div>
+
+<!-- Dynamic Slide-up Confirmation -->
+<div id="confirmationCard" class="hidden fixed bottom-6 right-6 w-96 bg-white shadow-2xl rounded-2xl p-6 border border-gray-200 animate-slideUp">
+  <h3 class="text-xl font-semibold text-navy mb-3">✅ Consultation Booked!</h3>
+  <p class="text-gray-600" id="confirmationMessage"></p>
+  <button onclick="closeConfirmation()" 
+          class="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
+    Close
+  </button>
+</div>
+{% endblock %}
