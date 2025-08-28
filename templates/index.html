@@ -309,3 +309,8 @@
 </section>
 
 {% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <!-- <script src="{{ url_for('static', filename='js/hero.js') }}"></script> -->
+{% endblock %}
