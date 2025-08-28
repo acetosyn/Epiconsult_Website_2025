@@ -36,6 +36,7 @@
 <!-- Global CSS -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
 
   {% block styles %}{% endblock %}
 </head>
@@ -435,17 +436,20 @@
 </div>
 </footer>
 
-<!-- Virtual Assistant Toggle Button -->
+<!-- Virtual Assistant Button (Floating Orb v2) -->
 <div class="fixed bottom-6 right-6 z-50">
-  <button id="chatbot-toggle"
-    class="w-20 h-20 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-full shadow-2xl 
-           flex items-center justify-center 
-           transition-all duration-500 hover:scale-110 hover:shadow-3xl animate-bounce">
-    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <path d="M12 20c4.418 0 8-2.91 8-6.5S16.418 7 12 7s-8 2.91-8 6.5c0 1.61.832 3.06 2.188 4.188L5 20l3.055-1.221A8.955 8.955 0 0 0 12 20z" />
-    </svg>
+  <button id="chatbot-toggle" class="chatbot-btn" aria-label="Open Virtual Assistant">
+    <!-- Dual glowing rings -->
+    <span class="glow-ring pink"></span>
+    <span class="glow-ring cyan"></span>
+
+    <!-- Chatbot Icon (switchable between chatbot.svg / chatbot2.svg) -->
+    <img src="{{ url_for('static', filename='data/chatbot.svg') }}" 
+         alt="Chatbot" class="chatbot-icon" />
   </button>
 </div>
+
+
 
 <!-- Virtual Assistant Panel -->
 <div id="chatbot-panel" 
@@ -558,6 +562,7 @@
 
 <!-- Scripts -->
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<!-- <script src="{{ url_for('static', filename='js/chatbot_toggle.js') }}"></script> -->
 <script src="{{ url_for('static', filename='js/scrollAnimation.js') }}"></script>
 <script src="{{ url_for('static', filename='js/hero.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chat.js') }}"></script>

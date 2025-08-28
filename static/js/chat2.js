@@ -1,20 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
   const chatMessages = document.getElementById("chat-messages");
 
+  // Futuristic typing bubble
   function showTypingIndicator() {
     const typingDiv = document.createElement("div");
     typingDiv.id = "typing-indicator";
-    typingDiv.className = "flex items-start space-x-2";
+    typingDiv.className = "flex items-start space-x-2 animate-fade-in";
     typingDiv.innerHTML = `
-      <img src="/static/images/bot.jpg" class="w-8 h-8 rounded-full object-cover">
-      <div class="bg-gray-100 text-gray-800 p-3 rounded-lg max-w-xs text-sm flex space-x-1">
-        <span class="dot dot1"></span>
-        <span class="dot dot2"></span>
-        <span class="dot dot3"></span>
+      <img src="/static/images/bot.jpg" class="w-8 h-8 rounded-full object-cover animate-avatar-pulse">
+      <div class="typing-bubble flex space-x-1 px-4 py-2 rounded-2xl">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
       </div>
     `;
     chatMessages.appendChild(typingDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: "smooth" });
   }
 
   function removeTypingIndicator() {
@@ -22,43 +23,64 @@ document.addEventListener("DOMContentLoaded", () => {
     if (typingDiv) typingDiv.remove();
   }
 
+  // Typing effect for bot messages
   function typeBotMessage(message) {
     removeTypingIndicator();
 
     const msgDiv = document.createElement("div");
-    msgDiv.className = "flex items-start space-x-2";
+    msgDiv.className = "chat-msg flex items-start space-x-2 mb-2 animate-slide-in";
+    msgDiv.dataset.chatMessage = "1";
+    msgDiv.dataset.isUser = "false";
     msgDiv.innerHTML = `
-      <img src="/static/images/bot.jpg" class="w-8 h-8 rounded-full object-cover">
-      <div class="bg-gray-100 text-gray-800 p-3 rounded-lg max-w-xs text-sm"></div>
+      <img src="/static/images/bot.jpg" class="w-8 h-8 rounded-full object-cover animate-avatar-pulse">
+      <div class="bot-bubble bg-gradient-to-r from-indigo-50 to-purple-50 text-gray-800 px-4 py-2 rounded-2xl max-w-xs text-sm shadow"></div>
     `;
 
-    const textContainer = msgDiv.querySelector("div.bg-gray-100");
+    const textContainer = msgDiv.querySelector(".bot-bubble");
     chatMessages.appendChild(msgDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: "smooth" });
 
     let i = 0;
     function typingStep() {
       if (i < message.length) {
         textContainer.textContent += message.charAt(i);
         i++;
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        setTimeout(typingStep, 30);
+        chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: "smooth" });
+        setTimeout(typingStep, 25); // typing speed (ms per char)
+      } else {
+        // Add timestamp when finished
+        const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+        const ts = document.createElement("div");
+        ts.className = "text-[10px] text-gray-400 mt-1";
+        ts.textContent = time;
+        textContainer.parentElement.appendChild(ts);
       }
     }
     typingStep();
   }
 
-  // 🔹 Instead of overriding, intercept bot replies
+  // Wrap addMessage so bot uses typing effect
   const originalAddMessage = window.addMessage;
   window.addMessage = function(message, isUser = false, save = true) {
     if (isUser) {
       originalAddMessage(message, true, save);
+
+      // Add seen ticks ✅
+      const lastMsg = chatMessages.querySelectorAll(".chat-msg[data-is-user='true']");
+      if (lastMsg.length > 0) {
+        const bubble = lastMsg[lastMsg.length - 1].querySelector(".bubble");
+        if (bubble && !bubble.querySelector(".ticks")) {
+          const ticks = document.createElement("span");
+          ticks.className = "ticks ml-2 text-xs text-emerald-500";
+          ticks.textContent = "✓✓";
+          bubble.appendChild(ticks);
+        }
+      }
     } else {
       showTypingIndicator();
       setTimeout(() => {
-        removeTypingIndicator();
         typeBotMessage(message);
-      }, 600);
+      }, 700); // delay before typing starts
     }
   };
 });
