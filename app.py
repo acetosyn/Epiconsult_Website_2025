@@ -1,8 +1,17 @@
 import os
 from flask import Flask, render_template, request, url_for
 from engine import get_test_data, get_department_info
+from flask import jsonify
+import json
 
 app = Flask(__name__)
+
+# 🔹 Load JSON files from /static
+with open(os.path.join(app.root_path, "static", "tips.json"), "r", encoding="utf-8") as f:
+    tips = json.load(f)
+
+with open(os.path.join(app.root_path, "static", "faqs.json"), "r", encoding="utf-8") as f:
+    faqs = json.load(f)
 
 # 🔹 Cache-busting helper
 @app.context_processor
@@ -55,6 +64,20 @@ def general():
 def sickle_cell():
     return render_template("clinic/sickle_cell.html")
 
+# -------------------------------
+# 🏥 JSON FILES
+# -------------------------------
+
+# ✅ JSON endpoints
+@app.route("/get-daily-tips")
+def get_daily_tips():
+    return jsonify(tips)
+
+@app.route("/faqs")
+def get_faqs():
+    return jsonify(faqs)
+
+
 @app.route("/clinic/specialist")
 def specialist():
     return render_template("clinic/specialist.html")
@@ -70,6 +93,9 @@ def imaging():
 def laboratory():
     test_data = get_test_data()  # optionally load lab services here
     return render_template("laboratory.html", lab_services=test_data.get("Laboratory", {}))
+
+
+
 
 # -------------------------------
 # OTHER MAIN ROUTES

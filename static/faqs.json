@@ -1,0 +1,62 @@
+[
+    {
+        "question": "what is a sickle cell disorder?",
+        "answer": "sickle cell disorder is an inherited genetic disorder that affects red blood cells. people with sickle cell disorder have red blood cells that become hard and pointed instead of soft and round. sickle cells cause anemia, pain and many other problems."
+    },
+    {
+        "question": "what is a sickle cell trait?",
+        "answer": "if you have sickle cell trait, you have inherited the gene for sickle cell disease. sickle cell trait does not turn into sickle cell disorder. if someone has sickle cell trait and his partner has sickle cell trait, they may produce a child with sickle cell anemia."
+    },
+    {
+        "question": "what medical problems are caused by a sickle cell disorder?",
+        "answer": "lung tissue damage, severe pain episodes, and stroke. the blockage of blood flow caused by sickled cells also causes damage to most organs including the spleen, kidneys, and liver."
+    },
+    {
+        "question": "are people of african descent the only group affected?",
+        "answer": "no. it is also present in portuguese, spanish, french corsicans, sardinians, sicilians, mainland italians, greeks, turks, and cypriots. sickle cell disease also appears in middle eastern countries and asia."
+    },
+    {
+        "question": "is there a cure for sickle cell?",
+        "answer": "there is no universal cure for sickle cell disorder. research in gene therapy, the ultimate universal cure, is currently underway. a relatively small number of patients with severe sickle cell disorder have been cured through stem cell transplants. the stem cells (immature cells that develop into blood cells) come from bone marrow, or less frequently, from umbilical cord blood, usually donated by siblings who are a good genetic match. most children with sickle cell disorder, however, do not have siblings who are good genetic matches. for this reason, researchers have recently begun performing stem cell transplants using umbilical cord blood from unrelated donors with apparent success."
+    },
+    {
+        "question": "what are the promising treatment developments?",
+        "answer": "the use of hydroxyurea has shown promising results in some adult sickle cell patients. it reduces the frequency of severe pain, acute chest syndrome, and the need for blood transfusions."
+    },
+    {
+        "question": "how many people have a sickle cell disorder?",
+        "answer": "sickle cell disease is a global health problem. in nigeria, one in every four persons is a carrier of the sickle cell gene. it is estimated that over 150,000 babies are born with symptomatic sickle cell anemia each year in the country."
+    },
+    {
+        "question": "can people with sickle cell disease live a productive life?",
+        "answer": "yes. but like all patients with chronic diseases, sickle cell patients are best managed in a comprehensive multi-disciplinary program of care and a strong extended support system."
+    },
+    {
+        "question": "can sickle cell disease be transmitted from one carrier to another?",
+        "answer": "no. sickle cell disease is not contagious and cannot be transmitted through contact with affected persons. it is an inherited condition."
+    },
+    {
+        "question": "what are the symptoms of sickle cell disease?",
+        "answer": "symptoms of sickle cell disease include episodes of pain, swelling in the hands and feet, frequent infections, and anemia. some patients may also experience delayed growth, vision problems, and other complications."
+    },
+    {
+        "question": "how can i find out i have a sickle cell trait?",
+        "answer": "a blood test called hemoglobin electrophoresis can determine whether you have sickle cell trait or disease. it is recommended that people of childbearing age get tested so that they are aware of their sickle cell status before starting a family."
+    },
+    {
+        "question": "can a woman with sickle cell disorder have a safe pregnancy?",
+        "answer": "yes. however, women with sickle cell disease are at increased risk of complications that can affect their health and that of their babies. during pregnancy, the disease may become more severe and pain episodes may occur more frequently. a pregnant woman with sickle cell disease is at increased risk of preterm and of having a low-birthweight baby. however, with early prenatal care and careful monitoring throughout pregnancy, women with sickle cell disease can have a healthy pregnancy. if the baby’s father has sickle cell trait, the baby has a 50 percent chance of having the disease. if he does not, the baby will have only the trait."
+    },
+    {
+        "question": "is there a test for a sickle cell disorder or trait?",
+        "answer": "yes. a person can have a blood test to find out if he has either sickle cell trait or a form of the disorder. there also are prenatal tests to find out if the baby will have the disorder or not. this procedure is available at our centre."
+    },
+    {
+        "question": "is it possible for a child with sickle cell disorder to have a stroke?",
+        "answer": "yes, about 10% of children between the ages 2 to 16 years are at risk of stroke, but it is possible to determine the risk through a scan called transcranial doppler ultrasonography (tcd). this scan can be done at our centre."
+    },
+    {
+        "question": "is it possible to test the genotype of a newborn?",
+        "answer": "yes, it is possible and this is called newborn screening. it is hoped that the federal ministry of health follows through with its plan for the establishment of newborn screening as a national programme."
+    }
+]

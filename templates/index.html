@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 
 {% block styles %}
-  {% endblock %}
+{% endblock %}
 
 {% block content %}
+  {% include "partials/carousel_slide.html" %}
 
 <!-- Hero Section -->
 <section class="relative h-screen overflow-hidden">
@@ -306,6 +307,13 @@
       </div>
     </div>
   </div>
+
+
 </section>
 
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  <script src="{{ url_for('static', filename='js/carousel_slider.js') }}"></script>
 {% endblock %}

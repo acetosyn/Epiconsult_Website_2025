@@ -1,0 +1,122 @@
+/* ==============================
+   Sickle Cell Page Styles
+   ============================== */
+
+/* Hero Section */
+.hero-slider {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.hero-slide {
+  transition: opacity 1s ease-in-out;
+}
+
+.hero-slide img {
+  filter: brightness(0.85);
+}
+
+.hero-text {
+  transition: all 0.8s ease-in-out;
+}
+
+.hero-text.visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Hero Dots */
+.hero-dot {
+  transition: all 0.3s ease;
+}
+.hero-dot.active {
+  background-color: #facc15; /* yellow-400 */
+  transform: scale(1.2);
+}
+
+/* Why Choose Section */
+section.bg-gray-50 h2 span {
+  color: #dc2626; /* red-600 */
+}
+
+/* Book Consultation */
+#book-consultation form input,
+#book-consultation form select {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#book-consultation form input:focus,
+#book-consultation form select:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.25);
+}
+
+/* Daily Tips Animation */
+.animated-tip {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #374151; /* gray-700 */
+}
+
+.slide-in-out {
+  animation: slideInOut 5s ease-in-out infinite;
+}
+
+@keyframes slideInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  10%, 90% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+/* FAQs */
+.faq-item {
+  border: 1px solid #e5e7eb; /* gray-200 */
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.faq-item h4 {
+  font-weight: 600;
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+  color: #1e293b; /* navy-like */
+}
+
+.faq-item p {
+  display: none;
+  font-size: 0.95rem;
+  color: #4b5563; /* gray-600 */
+}
+
+.faq-item .toggle-icon {
+  position: absolute;
+  right: 1rem;
+  top: 1.25rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #dc2626; /* red */
+}
+
+.faq-item.active {
+  border-color: #dc2626;
+  background: #fef2f2; /* subtle red background */
+}
+
+.faq-item.active p {
+  display: block;
+}

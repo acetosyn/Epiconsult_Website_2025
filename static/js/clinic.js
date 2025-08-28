@@ -1,6 +1,8 @@
-// clinic.js
+// static/js/clinic.js
 document.addEventListener("DOMContentLoaded", () => {
   const slides = document.querySelectorAll(".hero-slide");
+  if (!slides || slides.length === 0) return; // guard
+
   let index = 0;
   const effects = ["flip", "cover", "uncover"];
 
