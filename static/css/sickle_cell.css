@@ -12,3 +12,15 @@
     opacity: 1;
   }
 }
+
+
+/* Prevent text clipping when zoomed */
+.faq-answer p {
+  transform-origin: left top;  /* zoom grows upward/sideways instead of pushing down */
+  transition: transform 0.3s ease, color 0.3s ease; /* smooth zoom + color if needed */
+}
+
+.faq-answer p.scale-105 {
+  transform: scale(1.02); /* gentler zoom than 1.05 */
+}
+
