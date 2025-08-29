@@ -110,9 +110,10 @@ document.addEventListener("DOMContentLoaded", () => {
     chatInputBar.classList.add("translate-y-2");
 
     setTimeout(() => {
-      const response = getBotResponse(message);
-      addMessage(response, false);
-    }, 800);
+  const response = getBotResponse(message);
+  window.addMessage(response, false);  // ✅ Goes through chat2.js wrapper
+}, 800);
+
   }
 
   function getBotResponse(msg) {

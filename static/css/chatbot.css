@@ -1,0 +1,74 @@
+/* Floating Orb Button */
+.chatbot-btn {
+  width: 72px;   
+  height: 72px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.4s ease;
+  box-shadow: 0 0 25px rgba(255, 0, 128, 0.8),
+              0 0 45px rgba(0, 255, 255, 0.7);
+  animation: bounce-slow 3s infinite;
+  overflow: hidden; /* keeps ripple inside */
+}
+
+/* Outer circle hover effect → grows a little */
+.chatbot-btn:hover {
+  transform: scale(1.07);  /* slightly more growth */
+  box-shadow: 0 0 35px rgba(255, 0, 128, 1),
+              0 0 70px rgba(0, 255, 255, 1);
+}
+
+/* Icon inside → almost fills the circle */
+.chatbot-icon {
+  width: 58px;   /* fills more of the 72px button */
+  height: 58px;
+  z-index: 10;
+  filter: invert(1) brightness(1.5);
+  transition: transform 0.4s ease;
+}
+
+/* Icon grows much bigger than button hover */
+.chatbot-btn:hover .chatbot-icon {
+  transform: scale(1.45);  /* dramatic expansion */
+}
+
+/* Rings */
+.glow-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.glow-ring.pink {
+  border-color: #ec4899; 
+  animation: ping 2s infinite;
+}
+
+.glow-ring.cyan {
+  border-color: #22d3ee;
+  animation: pulse 3s infinite;
+}
+
+/* Animations */
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes ping {
+  0% { transform: scale(1); opacity: 0.8; }
+  75%, 100% { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
