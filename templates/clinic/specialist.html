@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/specialist.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="relative h-[50vh] overflow-hidden">
+  <div class="relative h-full">
+    <img src="{{ url_for('static', filename='images/specialist/1.jpg') }}" 
+         alt="Specialist Consultation" 
+         class="absolute inset-0 w-full h-full object-cover" />
+    <div class="absolute inset-0 bg-gradient-to-r from-navy/80 via-black/50 to-transparent"></div>
+
+    <!-- Text Overlay -->
+    <div class="absolute inset-0 flex items-center">
+      <div class="container mx-auto px-6">
+        <div class="max-w-3xl text-white animate-fadeInUp">
+          <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            Meet Our <span class="text-red-500">Specialists</span>
+          </h1>
+          <p class="text-xl text-gray-200 leading-relaxed">
+            Expert consultations across <span class="font-bold">SURGERY</span> and <span class="font-bold">MEDICINE</span>.  
+            Book today for personalized care.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Specialist Categories -->
+<section class="py-20 bg-gray-50">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8 text-center">
+    <h2 class="text-4xl font-bold text-navy mb-12">
+      Choose Your <span class="text-red-600">Specialist Category</span>
+    </h2>
+
+    <div class="grid md:grid-cols-2 gap-10">
+
+      <!-- Medicine Card -->
+      <div class="special-card zoom-effect bg-[rgb(0,47,94)] text-white p-8 rounded-2xl shadow-lg">
+        <div class="text-6xl mb-6">⚕️</div>
+        <h3 class="text-2xl font-bold mb-4">MEDICINE</h3>
+        <p class="mb-6">World-class medical specialists offering consultations in diverse fields.</p>
+        <button id="medicineBtn"
+                class="bg-white text-navy font-semibold px-6 py-3 rounded-lg transition hover:bg-navy hover:text-white">
+          Select
+        </button>
+      </div>
+
+      <!-- Surgery Card -->
+      <div class="special-card zoom-effect bg-red-600 text-white p-8 rounded-2xl shadow-lg">
+        <div class="text-6xl mb-6">🩺</div>
+        <h3 class="text-2xl font-bold mb-4">SURGERY</h3>
+        <p class="mb-6">Expert surgical care across multiple specialties for comprehensive treatment.</p>
+        <button id="surgeryBtn"
+                class="bg-white text-red-600 font-semibold px-6 py-3 rounded-lg transition hover:bg-red-700 hover:text-white">
+          Select
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Slide-up Service Modal -->
+<div id="serviceModal" class="hidden fixed inset-0 bg-black/70 flex items-end justify-center z-50">
+  <div class="modal-content bg-white rounded-t-2xl shadow-2xl w-full md:w-3/4 lg:w-1/2 p-8 animate-slideUp">
+    <h3 id="modalTitle" class="text-2xl font-bold text-navy mb-6"></h3>
+    <div id="serviceList" class="grid grid-cols-2 md:grid-cols-3 gap-6"></div>
+    <div class="mt-6 flex justify-end">
+      <button id="closeModalBtn"
+              class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Booking Modal -->
+<div id="bookingModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+  <div class="bg-white rounded-2xl shadow-2xl w-96 p-8 animate-fadeIn">
+    <h3 id="bookingTitle" class="text-xl font-bold text-navy mb-4"></h3>
+    <p class="text-gray-600 mb-6">Book a consultation with this specialist.  
+       Payment details will be shared after confirmation.</p>
+    <div class="flex justify-end gap-3">
+      <button id="confirmBookingBtn"
+              class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition">
+        Book Now
+      </button>
+      <button id="closeBookingBtn"
+              class="text-gray-600 hover:underline">
+        Cancel
+      </button>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/specialist.js') }}"></script>
+{% endblock %}
