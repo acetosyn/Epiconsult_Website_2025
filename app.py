@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 
 # 🔹 Load JSON files from /static
-with open(os.path.join(app.root_path, "static", "tips.json"), "r", encoding="utf-8") as f:
+with open(os.path.join(app.root_path, "static", "data", "tips.json"), "r", encoding="utf-8") as f:
     tips = json.load(f)
 
 with open(os.path.join(app.root_path, "static", "faqs.json"), "r", encoding="utf-8") as f:

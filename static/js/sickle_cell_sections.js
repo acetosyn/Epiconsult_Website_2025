@@ -8,6 +8,14 @@ document.addEventListener("DOMContentLoaded", () => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("visible");
+
+          // 🔹 Stagger children (like tips cards or feature boxes)
+          const children = entry.target.querySelectorAll(".stagger-item");
+          children.forEach((child, index) => {
+            setTimeout(() => {
+              child.classList.add("visible");
+            }, index * 150); // 150ms stagger
+          });
         }
       });
     },
@@ -15,7 +23,11 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   sections.forEach((section) => {
-    section.classList.add("fade-zoom"); // apply base style
+    section.classList.add("fade-zoom"); // base animation for section
     observer.observe(section);
+
+    // Mark children for stagger
+    const children = section.querySelectorAll(".stagger-item");
+    children.forEach((child) => child.classList.add("fade-zoom"));
   });
 });

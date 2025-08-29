@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     slice.forEach((t, i) => {
       const card = document.createElement("div");
       card.className =
-        "tip-card bg-white border border-gray-200 rounded-2xl shadow-md p-6 text-center transform transition duration-500 opacity-0 translate-y-4";
+        "tip-card stagger-item fade-zoom bg-white border border-gray-200 rounded-2xl shadow-md p-6 text-center transform transition duration-500 opacity-0 translate-y-4";
 
       const text = document.createElement("p");
       text.className = "text-gray-700 font-medium";
