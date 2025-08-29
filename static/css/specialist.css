@@ -82,3 +82,43 @@
 .modal-red .service-icon {
   color: #b91c1c; /* red-700 accent */
 }
+
+
+
+/* ===== Book Now Button ===== */
+.book-btn {
+  font-weight: 600;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+/* Medicine (navy theme) */
+/* Medicine (navy theme) */
+.modal-navy .book-btn {
+  background: #ffffff;
+  color: #003366;
+  border: 2px solid #ffffff;
+}
+.modal-navy .book-btn:hover {
+  background: #003366;
+  color: #ffffff;
+  border-color: #003366;
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(0, 51, 102, 0.4);
+}
+
+/* Surgery (red theme) */
+.modal-red .book-btn {
+  background: transparent;
+  color: #b91c1c;
+  border-color: #b91c1c;
+}
+.modal-red .book-btn:hover {
+  background: #b91c1c;
+  color: #ffffff;
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(185, 28, 28, 0.4);
+}

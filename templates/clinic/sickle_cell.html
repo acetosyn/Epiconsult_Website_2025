@@ -17,23 +17,21 @@
            class="absolute inset-0 w-full h-full object-cover" />
       <!-- 🔹 Red + Blue Gradient Overlay -->
       <div class="absolute inset-0 bg-gradient-to-r from-red-800/70 via-blue-900/50 to-transparent"></div>
-</div>
     </div>
 
     <!-- Text Overlay -->
     <div class="absolute inset-0 z-10 flex items-center">
       <div class="container mx-auto px-6">
         <div class="max-w-2xl text-white sickle-hero-text animate-fadeInUp">
+          <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight drop-shadow-lg">
+            Advanced <span class="text-yellow-400">Sickle Cell</span> Care
+          </h1>
 
-<h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight drop-shadow-lg">
-  Advanced <span class="text-yellow-400">Sickle Cell</span> Care
-</h1>
-
-<p class="text-xl mb-8 leading-relaxed text-gray-100 drop-shadow-md">
-  Dedicated clinic open 
-  <span class="font-bold text-yellow-300">Wednesdays & Saturdays, 10AM – 5PM</span>  
-  for comprehensive specialist consultations.
-</p>
+          <p class="text-xl mb-8 leading-relaxed text-gray-100 drop-shadow-md">
+            Dedicated clinic open 
+            <span class="font-bold text-yellow-300">Wednesdays & Saturdays, 10AM – 5PM</span>  
+            for comprehensive specialist consultations.
+          </p>
 
           <a href="#book-consultation" 
              class="bg-red-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-red-700 hover:scale-105 hover:shadow-xl transition-all duration-300">
@@ -50,8 +48,6 @@
     <button class="sickle-hero-dot w-3 h-3 rounded-full bg-blue-500/50" data-slide="1"></button>
   </div>
 </section>
-
-
 
 <!-- Why Choose Our Sickle Cell Clinic -->
 <section class="py-20 bg-gray-50">
@@ -82,7 +78,6 @@
   </div>
 </section>
 
-
 <!-- Book Consultation Section -->
 <section id="book-consultation" class="relative py-20 bg-gradient-to-r from-navy to-navy/95 text-white overflow-hidden">
   <div class="absolute inset-0">
@@ -90,19 +85,18 @@
   </div>
 
   <div class="relative max-w-5xl mx-auto px-6 lg:px-8">
-  <div class="bg-white rounded-2xl p-10 shadow-2xl text-navy">
-    <div class="text-center mb-8">
-      <h2 class="text-3xl md:text-4xl font-bold mb-3">
-        Book Your <span class="text-red-600">Consultation</span>
-      </h2>
-      <p class="text-gray-600 text-base md:text-lg">
-        Available <span class="font-semibold text-navy">Wednesdays & Saturdays</span> • 
-        <span class="font-bold text-gray-900 text-lg md:text-xl">10AM – 5PM</span>
-      </p>
-    </div>
+    <div class="bg-white rounded-2xl p-10 shadow-2xl text-navy">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl md:text-4xl font-bold mb-3">
+          Book Your <span class="text-red-600">Consultation</span>
+        </h2>
+        <p class="text-gray-600 text-base md:text-lg">
+          Available <span class="font-semibold text-navy">Wednesdays & Saturdays</span> • 
+          <span class="font-bold text-gray-900 text-lg md:text-xl">10AM – 5PM</span>
+        </p>
+      </div>
 
       <form method="POST" action="#" class="space-y-6">
-
         <div class="grid md:grid-cols-2 gap-6">
           <div class="space-y-2">
             <label class="block text-sm font-semibold">Full Name</label>
@@ -134,14 +128,19 @@
   </div>
 </section>
 
-
 <!-- Daily Tips -->
 <section id="daily-tips" class="py-20 bg-gradient-to-r from-teal-50 to-white">
-  <div class="max-w-4xl mx-auto text-center">
-    <h3 class="text-3xl font-bold text-navy mb-8">💡 Daily Health Tips</h3>
-    <ul id="tips-container" class="text-lg text-gray-700 font-medium h-20 flex items-center justify-center"></ul>
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 text-center">
+    <h3 class="text-3xl font-bold text-navy mb-12">💡 Daily Health Tips</h3>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10" 
+         id="tips-container"
+         data-url="{{ url_for('static', filename='data/tips.json') }}">
+      <!-- Tips injected dynamically as cards -->
+    </div>
   </div>
 </section>
+
+
 
 <!-- FAQs -->
 <section id="faqs" class="py-20 bg-gray-100">
@@ -155,7 +154,7 @@
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/sickle_cell_hero.js') }}"></script>
-
-<script src="{{ url_for('static', filename='js/tips.js') }}"></script>
 <script src="{{ url_for('static', filename='js/faqs.js') }}"></script>
+<script src="{{ url_for('static', filename='js/tips.js') }}"></script>
+<script src="{{ url_for('static', filename='js/sickle_cell_sections.js') }}"></script>
 {% endblock %}
