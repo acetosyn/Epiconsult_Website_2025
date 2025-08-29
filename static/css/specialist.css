@@ -1,34 +1,84 @@
+/* ===== Specialist Cards ===== */
 .special-card {
-  background: white;
   border-radius: 1rem;
   padding: 2rem;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-  cursor: pointer;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
   transition: transform 0.3s, box-shadow 0.3s;
 }
 .special-card:hover {
   transform: scale(1.05);
-  box-shadow: 0 20px 30px rgba(0,0,0,0.15);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
 }
 
+/* ===== Service Items ===== */
 .service-item {
-  text-align: center;
   font-weight: 500;
-  transition: transform 0.3s ease, background 0.3s;
+  border-radius: 0.75rem;
+  transition: transform 0.3s ease, background 0.3s ease;
 }
 .service-item:hover {
   transform: scale(1.08);
-  background: #f9fafb;
 }
 
-@keyframes slideUp {
-  from { transform: translateY(100%); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+/* ===== Modal Animation ===== */
+.modal-content {
+  opacity: 0;
+  transform: translateY(30px) scale(0.95);
 }
-.animate-slideUp { animation: slideUp 0.4s ease-out; }
+.modal-content.show {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+  transition: all 0.3s ease-out;
+}
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+/* ===== Dynamic Modal Themes ===== */
+.modal-navy {
+  background: rgb(0, 47, 94); /* deep navy */
+  color: white;
 }
-.animate-fadeIn { animation: fadeIn 0.3s ease-out; }
+.modal-navy h3 {
+  color: #ffffff;
+}
+.modal-navy .service-item {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+.modal-navy .service-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Red-themed modal with white base + red accents */
+.modal-red {
+  background: #ffffff; /* clean white background */
+  color: #333333; /* dark text for readability */
+}
+.modal-red h3 {
+  color: #b91c1c; /* Tailwind red-700 */
+}
+.modal-red .service-item {
+  background: #fef2f2; /* subtle red-tinted background */
+  border: 1px solid #fecaca; /* light red border */
+  color: #991b1b; /* red-800 text */
+}
+.modal-red .service-item:hover {
+  background: #fee2e2; /* hover: slightly deeper red tint */
+}
+
+/* ===== Service Card Icons ===== */
+.service-icon {
+  display: inline-block;
+  font-size: 3.5rem;
+  line-height: 1;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+.special-card:hover .service-icon {
+  transform: scale(1.15) rotate(-5deg);
+}
+
+/* Icons adapt inside modal themes */
+.modal-navy .service-icon {
+  color: #ffffff; /* white tint */
+}
+.modal-red .service-icon {
+  color: #b91c1c; /* red-700 accent */
+}
