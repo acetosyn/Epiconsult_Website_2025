@@ -1,0 +1,390 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/lab.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<section class="relative h-[45vh] md:h-[45vh] overflow-hidden">
+  <div class="lab-hero relative h-full">
+    <img
+      src="{{ url_for('static', filename='images/lab/1.jpg') }}"
+      alt="Modern Medical Laboratory"
+      class="absolute inset-0 w-full h-full object-cover" />
+    <div class="absolute inset-0 bg-gradient-to-r from-navy/80 via-navy/60 to-transparent"></div>
+
+    <div class="absolute inset-0 z-10 flex items-center">
+      <div class="container mx-auto px-6">
+        <div class="max-w-3xl text-white lab-hero-text animate-fadeInUp">
+          <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight drop-shadow-lg">
+            Advanced <span class="text-red-500">Laboratory</span> Services
+          </h1>
+          <p class="text-xl md:text-2xl mb-8 leading-relaxed text-gray-100 drop-shadow-md">
+            Accurate diagnostics, rapid turnaround, and compassionate care—powered by cutting-edge technology.
+          </p>
+          <a href="#book-lab" class="book-btn px-10 py-4 text-lg rounded-full">
+            🧪 Book a Lab Test
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE OUR LAB -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <h2 class="text-4xl font-bold text-navy text-center mb-12">
+      Why Choose Our <span class="text-red-600">Lab</span>?
+    </h2>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="zoom-effect bg-white p-8 rounded-2xl shadow">
+        <div class="text-4xl mb-4">🔬</div>
+        <h3 class="text-xl font-semibold mb-2">ISO-Standard Workflow</h3>
+        <p class="text-gray-600">Standardized processes and multi-layer QC for reliable, reproducible results.</p>
+      </div>
+
+      <div class="zoom-effect bg-white p-8 rounded-2xl shadow">
+        <div class="text-4xl mb-4">⚡</div>
+        <h3 class="text-xl font-semibold mb-2">Fast Turnaround</h3>
+        <p class="text-gray-600">Most routine tests within 24 hours. STAT options for urgent cases.</p>
+      </div>
+
+      <div class="zoom-effect bg-white p-8 rounded-2xl shadow">
+        <div class="text-4xl mb-4">🧑‍⚕️</div>
+        <h3 class="text-xl font-semibold mb-2">Expert Scientists</h3>
+        <p class="text-gray-600">Experienced biomedical scientists and pathologists review critical values.</p>
+      </div>
+
+      <div class="zoom-effect bg-white p-8 rounded-2xl shadow">
+        <div class="text-4xl mb-4">🔒</div>
+        <h3 class="text-xl font-semibold mb-2">Secure Digital Reports</h3>
+        <p class="text-gray-600">Encrypted portals & email delivery. Easy downloads and provider sharing.</p>
+      </div>
+    </div>
+
+    <!-- Quality strip -->
+    <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+      <div class="zoom-effect bg-white p-5 rounded-xl shadow">
+        <p class="text-sm text-gray-500">Average TAT</p>
+        <p class="text-2xl font-bold text-navy">12–24h</p>
+      </div>
+      <div class="zoom-effect bg-white p-5 rounded-xl shadow">
+        <p class="text-sm text-gray-500">Critical Alerting</p>
+        <p class="text-2xl font-bold text-navy">15–30m</p>
+      </div>
+      <div class="zoom-effect bg-white p-5 rounded-xl shadow">
+        <p class="text-sm text-gray-500">Home Collection</p>
+        <p class="text-2xl font-bold text-navy">Available</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEST FINDER (Feature 1) -->
+<section class="py-14 bg-gradient-to-r from-blue-50 to-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8">
+      <div>
+        <h2 class="text-3xl md:text-4xl font-bold text-navy">Find a Test</h2>
+        <p class="text-gray-600 mt-2">Search by name and filter by category. See prep notes and TAT at a glance.</p>
+      </div>
+      <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+        <div class="relative flex-1">
+          <input id="test-search" type="text" placeholder="Search tests e.g., FBC, Lipid, HBsAg"
+                 class="w-full p-3 pr-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500">
+          <span class="absolute right-3 top-1/2 -translate-y-1/2">🔎</span>
+        </div>
+        <button id="clear-search" class="btn-ghost px-5 py-3 rounded-xl">Clear</button>
+      </div>
+    </div>
+
+    <!-- Filter Chips -->
+    <div id="category-filters" class="flex flex-wrap gap-3 mb-8">
+      <!-- chips injected by lab.js -->
+    </div>
+
+    <!-- Results -->
+    <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white">
+      <div class="grid grid-cols-12 px-5 py-3 bg-gray-50 text-gray-600 text-sm font-semibold">
+        <div class="col-span-5">Test</div>
+        <div class="col-span-2">Category</div>
+        <div class="col-span-2">TAT</div>
+        <div class="col-span-2">Price</div>
+        <div class="col-span-1 text-center">Book</div>
+      </div>
+      <div id="test-results" class="divide-y">
+        <!-- rows injected by lab.js -->
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="text-sm text-gray-500 mt-4">
+      <span class="inline-block px-2 py-1 rounded-full bg-green-100 text-green-700 mr-2">Routine</span>
+      <span class="inline-block px-2 py-1 rounded-full bg-yellow-100 text-yellow-700 mr-2">Priority</span>
+      <span class="inline-block px-2 py-1 rounded-full bg-red-100 text-red-700">STAT</span>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES GRID (from your list) -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 text-center">
+    <h2 class="text-3xl md:text-4xl font-bold text-navy mb-12">Laboratory <span class="text-red-600">Services</span></h2>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% set lab_services = [
+        ("🩸", "All Blood Tests"),
+        ("🧃", "Urine Tests"),
+        ("🧪", "Stool Tests"),
+        ("🧫", "Microbiology & Cultures"),
+        ("🧬", "Histology & Cytology"),
+        ("🦠", "Virology"),
+        ("🛡️", "Immunology & Autoimmune Tests"),
+        ("🎯", "Tumor Markers"),
+        ("⚖️", "Hormonal & Endocrine Tests"),
+        ("📊", "Hematology Investigations"),
+        ("🏥", "Blood Bank Services (Whole Blood, Platelets, Plasma)")
+      ] %}
+      {% for icon, title in lab_services %}
+      <div class="zoom-effect bg-white p-8 rounded-2xl shadow text-left">
+        <div class="text-4xl mb-5">{{ icon }}</div>
+        <h3 class="text-xl font-bold mb-3">{{ title }}</h3>
+        <p class="text-gray-600 mb-6">Reliable analysis, verified by multi-stage QC and reviewed when critical.</p>
+        <button class="book-btn px-6 py-3 text-base rounded-full" data-book-category="{{ title }}">Book Now</button>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- PREP INSTRUCTIONS (Feature 2) -->
+<section class="py-14 bg-white">
+  <div class="max-w-6xl mx-auto px-6 lg:px-8">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-3xl font-bold text-navy">Preparation Instructions</h2>
+      <button id="expand-all-prep" class="btn-ghost px-5 py-3 rounded-xl">Expand All</button>
+    </div>
+
+    <div id="prep-accordion" class="space-y-4">
+      <!-- items injected by lab.js -->
+    </div>
+  </div>
+</section>
+
+<!-- HOME SAMPLE COLLECTION CTA (Feature 3) -->
+<section class="relative overflow-hidden py-16 bg-gradient-to-r from-navy to-navy/95 text-white">
+  <div class="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_top_left,white,transparent_40%)]"></div>
+  <div class="relative max-w-6xl mx-auto px-6 lg:px-8">
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <div>
+        <h3 class="text-3xl font-bold mb-4">Home & Office Sample Collection</h3>
+        <p class="text-gray-100 mb-6">Busy schedule? Our trained phlebotomists collect samples at your location with proper chain-of-custody.</p>
+        <ul class="space-y-2 text-gray-100 mb-6 list-disc list-inside">
+          <li>Same-day pickup in most areas</li>
+          <li>Cool boxes and stabilizers for transport</li>
+          <li>e-Consent and digital receipts</li>
+        </ul>
+        <a href="#book-lab" class="book-btn px-8 py-3 rounded-full">Schedule a Pickup</a>
+      </div>
+      <div class="zoom-effect bg-white/10 backdrop-blur-md p-8 rounded-2xl border border-white/20">
+        <div class="grid grid-cols-2 gap-4 text-center">
+          <div>
+            <p class="text-sm text-gray-300">Coverage</p>
+            <p class="text-2xl font-bold">City-Wide</p>
+          </div>
+          <div>
+            <p class="text-sm text-gray-300">Cutoff</p>
+            <p class="text-2xl font-bold">3:00 PM</p>
+          </div>
+          <div>
+            <p class="text-sm text-gray-300">Avg Pickup</p>
+            <p class="text-2xl font-bold">&lt; 90m</p>
+          </div>
+          <div>
+            <p class="text-sm text-gray-300">Cold Chain</p>
+            <p class="text-2xl font-bold">Yes</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POPULAR TESTS (Feature 4) -->
+<section class="py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="flex items-end justify-between mb-6">
+      <h2 class="text-3xl md:text-4xl font-bold text-navy">Popular Tests & Panels</h2>
+      <a href="#book-lab" class="book-btn px-6 py-3 rounded-full">Book Now</a>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- Cards -->
+      <div class="zoom-effect bg-white p-6 rounded-2xl shadow">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-semibold text-lg">Full Blood Count (FBC)</h3>
+          <span class="badge badge-green">Routine</span>
+        </div>
+        <p class="text-gray-600 mb-4">Hematology panel including RBC, WBC, Platelets with indices.</p>
+        <div class="flex items-center justify-between">
+          <span class="text-gray-700">TAT: 6–12h</span>
+          <button class="book-btn px-5 py-2 rounded-full" data-book-test="FBC">Book</button>
+        </div>
+      </div>
+
+      <div class="zoom-effect bg-white p-6 rounded-2xl shadow">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-semibold text-lg">Liver Function Test (LFT)</h3>
+          <span class="badge badge-yellow">Priority</span>
+        </div>
+        <p class="text-gray-600 mb-4">ALT, AST, ALP, Bilirubin, Albumin and more.</p>
+        <div class="flex items-center justify-between">
+          <span class="text-gray-700">TAT: 12–24h</span>
+          <button class="book-btn px-5 py-2 rounded-full" data-book-test="LFT">Book</button>
+        </div>
+      </div>
+
+      <div class="zoom-effect bg-white p-6 rounded-2xl shadow">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-semibold text-lg">Lipid Profile</h3>
+          <span class="badge badge-green">Routine</span>
+        </div>
+        <p class="text-gray-600 mb-4">Total Cholesterol, HDL, LDL, Triglycerides.</p>
+        <div class="flex items-center justify-between">
+          <span class="text-gray-700">TAT: 12–24h</span>
+          <button class="book-btn px-5 py-2 rounded-full" data-book-test="Lipid Profile">Book</button>
+        </div>
+      </div>
+
+      <div class="zoom-effect bg-white p-6 rounded-2xl shadow">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-semibold text-lg">HBsAg</h3>
+          <span class="badge badge-yellow">Priority</span>
+        </div>
+        <p class="text-gray-600 mb-4">Hepatitis B surface antigen screening.</p>
+        <div class="flex items-center justify-between">
+          <span class="text-gray-700">TAT: 6–24h</span>
+          <button class="book-btn px-5 py-2 rounded-full" data-book-test="HBsAg">Book</button>
+        </div>
+      </div>
+
+      <div class="zoom-effect bg-white p-6 rounded-2xl shadow">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-semibold text-lg">HBA1c</h3>
+          <span class="badge badge-green">Routine</span>
+        </div>
+        <p class="text-gray-600 mb-4">3-month average blood glucose control.</p>
+        <div class="flex items-center justify-between">
+          <span class="text-gray-700">TAT: 12–24h</span>
+          <button class="book-btn px-5 py-2 rounded-full" data-book-test="HBA1c">Book</button>
+        </div>
+      </div>
+
+      <div class="zoom-effect bg-white p-6 rounded-2xl shadow">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-semibold text-lg">Malaria Parasite (MP)</h3>
+          <span class="badge badge-red">STAT</span>
+        </div>
+        <p class="text-gray-600 mb-4">Rapid detection and microscopic confirmation.</p>
+        <div class="flex items-center justify-between">
+          <span class="text-gray-700">TAT: &lt; 2h</span>
+          <button class="book-btn px-5 py-2 rounded-full" data-book-test="Malaria Parasite">Book</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSURANCE / PARTNERS (Feature 5) -->
+<section class="py-12 bg-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <h3 class="text-2xl font-bold text-navy mb-6">Insurance & Partners</h3>
+    <div id="partner-strip" class="partner-strip overflow-hidden rounded-2xl border border-gray-200 bg-gray-50">
+      <div class="partner-track">
+        <!-- logos injected by lab.js (infinite scroll) -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section id="book-lab" class="relative py-20 bg-gradient-to-r from-navy to-navy/95 text-white overflow-hidden">
+  <div class="absolute inset-0">
+    <div class="absolute inset-0 bg-[url('{{ url_for('static', filename='images/medical-bg.jpg') }}')] bg-cover bg-center opacity-10"></div>
+  </div>
+
+  <div class="relative max-w-5xl mx-auto px-6 lg:px-8">
+    <div class="bg-white rounded-2xl p-10 shadow-2xl text-navy">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl md:text-4xl font-bold mb-3">
+          Book Your <span class="text-red-600">Lab</span> Test
+        </h2>
+        <p class="text-gray-600 text-base md:text-lg">
+          Choose a category or search a specific test. You’ll get a confirmation email with details.
+        </p>
+      </div>
+
+      <form id="lab-booking-form" method="POST" action="#" class="space-y-6">
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label class="block text-sm font-semibold">Full Name</label>
+            <input type="text" name="name" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+          </div>
+          <div class="space-y-2">
+            <label class="block text-sm font-semibold">Email Address</label>
+            <input type="email" name="email" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label class="block text-sm font-semibold">Select Category</label>
+            <select id="booking-category" name="category" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+              <option value="">-- Choose Category --</option>
+              <option>All Blood Tests</option>
+              <option>Urine Tests</option>
+              <option>Stool Tests</option>
+              <option>Microbiology & Cultures</option>
+              <option>Histology & Cytology</option>
+              <option>Virology</option>
+              <option>Immunology & Autoimmune Tests</option>
+              <option>Tumor Markers</option>
+              <option>Hormonal & Endocrine Tests</option>
+              <option>Hematology Investigations</option>
+              <option>Blood Bank Services (Whole Blood, Platelets, Plasma)</option>
+            </select>
+          </div>
+
+          <div class="space-y-2">
+            <label class="block text-sm font-semibold">Preferred Date</label>
+            <input type="date" name="date" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-sm font-semibold">Specific Test (optional)</label>
+          <input id="booking-test" type="text" name="test" placeholder="e.g., FBC, HBA1c" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <div class="pt-4 text-center">
+          <button type="submit" class="book-btn px-10 py-4 text-lg rounded-full">
+            Confirm Booking
+          </button>
+          <p class="text-gray-500 text-sm mt-4">
+            A confirmation email will be sent with appointment details.
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/lab.js') }}"></script>
+{% endblock %}

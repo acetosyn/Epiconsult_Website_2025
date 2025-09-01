@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     faqs.forEach(faq => {
       const faqItem = document.createElement("div");
       faqItem.className =
-        "faq-item border rounded-lg p-5 mb-3 cursor-pointer bg-white shadow-sm transition hover:shadow-md";
+        "faq-item zoom-effect border rounded-lg p-5 mb-3 cursor-pointer bg-white shadow-sm transition hover:shadow-md";
 
       const header = document.createElement("div");
       header.className = "flex justify-between items-center";

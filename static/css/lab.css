@@ -1,0 +1,138 @@
+/* ------------------------------
+   Laboratory Page Styles
+   ------------------------------ */
+
+/* Hero Section */
+.lab-hero-slider {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.lab-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.lab-slide.active {
+  opacity: 1;
+}
+
+.lab-hero-text {
+  animation: fadeInUp 1s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero Navigation Dots */
+.lab-dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background-color: #d1d5db;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.lab-dot.active {
+  background-color: #10b981; /* emerald green for lab */
+}
+
+/* Zoom-in / Zoom-out hover effect */
+.zoom-effect {
+  transition: transform 0.4s ease, box-shadow 0.4s ease !important;
+}
+
+.zoom-effect:hover {
+  transform: scale(1.05) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Lab Service Cards */
+.lab-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  text-align: center;
+}
+
+.lab-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Section Headings */
+.lab-section-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #0f172a; /* navy-like */
+  margin-bottom: 3rem;
+}
+
+.lab-section-title span {
+  color: #10b981; /* emerald highlight */
+}
+
+/* Booking Form Styling */
+.lab-form input,
+.lab-form select,
+.lab-form textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.lab-form input:focus,
+.lab-form select:focus,
+.lab-form textarea:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+  outline: none;
+}
+
+/* Button */
+.lab-btn {
+  background-color: #10b981;
+  color: white;
+  font-weight: 600;
+  padding: 0.85rem 2.5rem;
+  border-radius: 9999px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  display: inline-block;
+}
+
+.lab-btn:hover {
+  background-color: #059669;
+  transform: scale(1.05);
+}
+
+/* Futuristic background effect for booking */
+.lab-booking-bg {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.95), rgba(15, 23, 42, 0.95));
+  position: relative;
+  overflow: hidden;
+}
+
+.lab-booking-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("../images/medical-bg.jpg") center/cover no-repeat;
+  opacity: 0.1;
+}
