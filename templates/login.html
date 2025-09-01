@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login & Register | Epiconsult Diagnostics</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Logo + Branding -->
+  <div class="logo-header">
+    <a href="/" class="brand">
+      <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Epiconsult Logo" class="logo-img">
+      <div>
+        <h1><span class="text-red">Epiconsult</span> <span class="text-navy">Diagnostics</span></h1>
+        <p class="tagline">WITH YOU FOR LIFE</p>
+      </div>
+    </a>
+  </div>
+
+  <main class="auth-container">
+    <!-- Tabs -->
+    <div class="tab-buttons">
+      <button id="loginTab" class="tab-btn active">Sign In</button>
+      <button id="signupTab" class="tab-btn">Sign Up</button>
+    </div>
+
+    <!-- Forms -->
+    <div class="auth-forms">
+      <!-- Login -->
+      <form method="POST" action="{{ url_for('login') }}" id="loginForm" class="form active">
+        <div class="typewriter-message">
+          <span id="login-typewriter"></span>
+        </div>
+
+        <label>Email
+          <input type="email" name="email" required>
+        </label>
+
+        <label>Password
+          <input type="password" name="password" required>
+        </label>
+
+        <button class="submit-btn" type="submit">Sign In</button>
+        
+        <button type="button" class="google-btn" onclick="window.location.href='{{ url_for('google_login') }}'">
+          <img src="{{ url_for('static', filename='images/google-icon.png') }}" alt="Google"> Sign in with Google
+        </button>
+      </form>
+
+      <!-- Signup -->
+      <form method="POST" action="{{ url_for('register') }}" id="signupForm" class="form">
+        <div class="typewriter-message">
+          <span id="signup-typewriter"></span>
+        </div>
+
+        <label>First Name
+          <input type="text" name="first_name" required>
+        </label>
+
+        <label>Last Name
+          <input type="text" name="last_name" required>
+        </label>
+
+        <label>Email
+          <input type="email" name="email" required>
+        </label>
+
+        <label>Password
+          <input type="password" name="password" required>
+        </label>
+
+        <label>Confirm Password
+          <input type="password" name="confirm_password" required>
+        </label>
+
+        <button class="submit-btn" type="submit">Create Account</button>
+        
+        <button type="button" class="google-btn" onclick="window.location.href='{{ url_for('google_login') }}'">
+          <img src="{{ url_for('static', filename='images/google-icon.png') }}" alt="Google"> Sign up with Google
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>
