@@ -51,6 +51,7 @@
 
 
 <!-- Services -->
+<!-- Services -->
 <section class="py-20 bg-gray-50">
   <div class="max-w-7xl mx-auto px-6 lg:px-8 text-center">
     <h2 class="text-4xl font-bold text-navy mb-12">
@@ -59,7 +60,6 @@
 
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
 
-      <!-- Cards dynamically mapped from local list -->
       {% set lab_cards = [
         ("🩸", "Blood Tests", "blood"),
         ("🧃", "Urine Tests", "urine"),
@@ -72,7 +72,17 @@
         ("⚖️", "Hormonal & Endocrine", "hormonal"),
         ("📊", "Hematology Investigations", "hematology"),
         ("🏥", "Blood Bank Services", "bloodbank"),
-        ("🌿", "Allergy Panels", "allergy")
+        ("🌿", "Allergy Panels", "allergy"),
+        ("🍬", "Diabetic Profile", "diabetic"),
+        ("💧", "Kidney Function Test", "kidney"),
+        ("❤️", "Cardiac Marker Test", "cardiac"),
+        ("🍷", "Liver Function Test", "liver"),
+        ("🥼", "Pancreatic Function Test", "pancreatic"),
+        ("🦴", "Bone Profile", "bone"),
+        ("👶", "Fertility Profile", "fertility"),
+        ("🤰", "Miscarriage Profile", "miscarriage"),
+        ("🧻", "Infection Screening", "infection"),
+        ("🩹", "Clotting Profile", "clotting")
       ] %}
       {% for icon, title, key in lab_cards %}
       <div class="special-card zoom-effect bg-white text-navy p-8 rounded-2xl shadow-lg">
@@ -88,6 +98,7 @@
     </div>
   </div>
 </section>
+
 
 <!-- Service Modal -->
 <div id="serviceModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
@@ -205,13 +216,11 @@
           <select id="booking-category" name="category" required
                   class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-500">
             <option value="">-- Select Category --</option>
-            {% for key, title in lab_categories %}
-              <option value="{{ key }}">{{ title }}</option>
-            {% endfor %}
+            <!-- options will now be injected dynamically by JS -->
           </select>
         </div>
 
-        <!-- Step 3: Test Selector (hidden until category selected) -->
+<!-- Step 3: Test Selector (hidden until category selected) -->
 <div id="test-selector" class="hidden">
   <label class="block text-sm font-semibold mb-1">Specific Test</label>
   <div class="flex items-center gap-2">
@@ -219,14 +228,12 @@
            type="text"
            placeholder="Search or select a test..."
            class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-red-500" />
-    <button type="button" id="clear-test" class="px-3 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">
-      ❌
-    </button>
   </div>
   <select id="booking-test" name="test" class="hidden">
     <option value="">-- Select Test --</option>
   </select>
 </div>
+
 
         <!-- Step 3.5: Global Search -->
         <div>
@@ -243,14 +250,21 @@
           </div>
         </div>
 
-        <!-- Submit -->
-        <div class="text-center pt-6">
-          <button type="submit" class="px-10 py-4 text-lg rounded-full text-white font-semibold transition hover:opacity-90"
-            style="background-color: rgb(220 38 38 / var(--tw-bg-opacity, 1));">
+        <!-- Submit + Clear -->
+        <div class="text-center pt-6 flex flex-col sm:flex-row justify-center gap-4">
+          <button type="submit"
+            class="px-10 py-4 text-lg rounded-full text-white font-semibold transition hover:opacity-90 bg-red-600">
             🚀 Confirm Booking
           </button>
-          <p class="text-sm text-gray-500 mt-4">✔ Secure Booking • ⚡ Fast Results • 📧 Instant Confirmation</p>
+          <button type="button" id="clear-booking"
+            class="hidden px-10 py-4 text-lg rounded-full text-white font-semibold transition hover:opacity-90 bg-gray-500">
+            🔄 Clear
+          </button>
         </div>
+
+        <p class="text-sm text-gray-500 mt-4 text-center">
+          ✔ Secure Booking • ⚡ Fast Results • 📧 Instant Confirmation
+        </p>
       </form>
     </div>
 

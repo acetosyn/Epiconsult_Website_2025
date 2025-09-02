@@ -5,17 +5,15 @@ let searchInput;
 let resultContainer;
 let currentTests = [];
 let allTests = [];
-let labData = {}; // make globally accessible
+let labData = {}; // global lab data
 
 async function loadLabData() {
   try {
     const response = await fetch("/static/data/lab_packages.json");
     const data = await response.json();
+    labData = data; // store globally
 
-    // Store globally
-    labData = data;
-
-    console.log("✅ Lab data loaded:", data);
+    console.log("✅ Lab data loaded:", Object.keys(data));
 
     const categorySelect = document.getElementById("booking-category");
     const testSelect = document.getElementById("booking-test");
@@ -23,20 +21,28 @@ async function loadLabData() {
     const testSelectorDiv = document.getElementById("test-selector");
     const searchTestsInput = document.getElementById("search-tests");
 
+    // Populate booking category <select> dynamically
+    categorySelect.innerHTML = '<option value="">-- Select Category --</option>';
+    Object.keys(labData).forEach((catKey) => {
+      const option = document.createElement("option");
+      option.value = catKey;
+      option.textContent = labData[catKey].category; // user-friendly label
+      categorySelect.appendChild(option);
+    });
+
     // Flatten all tests for global search
     Object.keys(data).forEach((catKey) => {
       data[catKey].tests.forEach((test) => {
         allTests.push({ name: test, category: catKey });
       });
     });
-    console.log("📋 Flattened all tests:", allTests.length);
+    console.log("📋 Total tests indexed for search:", allTests.length);
 
     // -----------------------------
     // Service Modal Handling
     // -----------------------------
     function openCategory(category) {
       console.log("🟢 openCategory called with:", category);
-      console.log("🔎 Data available for category:", labData[category]);
 
       if (!labData[category]) {
         console.warn("⚠️ No category found in labData for:", category);
@@ -53,8 +59,6 @@ async function loadLabData() {
 
       // Render each test as a styled card
       labData[category].tests.forEach((test) => {
-        console.log(`🧪 Rendering test for category [${category}]:`, test);
-
         const card = document.createElement("div");
         card.className =
           "special-card zoom-effect bg-white text-navy p-6 rounded-2xl shadow-lg cursor-pointer transition transform hover:scale-105";
@@ -71,8 +75,8 @@ async function loadLabData() {
           testSelect.innerHTML = `<option value="${test}" selected>${test}</option>`;
           testSelectorDiv.classList.remove("hidden");
           updateSummary();
+          toggleClearButton(); // 👈 show Clear button
 
-          // Close modal
           closeModal();
           scrollToBooking();
         };
@@ -92,7 +96,6 @@ async function loadLabData() {
     }
 
     document.getElementById("closeModalBtn")?.addEventListener("click", closeModal);
-
     window.openCategory = openCategory; // Expose globally
 
     // -----------------------------
@@ -120,7 +123,6 @@ async function loadLabData() {
     testPopup.appendChild(resultContainer);
 
     function renderTests(tests, query = "") {
-      console.log("📋 renderTests called with:", tests.length, "tests");
       resultContainer.innerHTML = "";
       if (!tests || tests.length === 0) {
         resultContainer.innerHTML =
@@ -151,6 +153,7 @@ async function loadLabData() {
           testPopup.classList.add("hidden");
           testSelectorDiv.classList.remove("hidden");
           updateSummary();
+          toggleClearButton(); // 👈 show Clear button
         };
 
         resultContainer.appendChild(item);
@@ -179,7 +182,6 @@ async function loadLabData() {
           name: t,
           category: selected,
         }));
-        console.log("🔎 Tests for category:", currentTests);
         renderTests(currentTests);
         testPopup.classList.remove("hidden");
         positionPopup(categorySelect);
@@ -187,6 +189,7 @@ async function loadLabData() {
         console.warn("⚠️ No tests found for:", selected);
       }
       updateSummary();
+      toggleClearButton(); // 👈 show Clear button if test already picked
     });
 
     testInput.addEventListener("focus", () => {
@@ -195,7 +198,6 @@ async function loadLabData() {
           name: t,
           category: categorySelect.value,
         }));
-        console.log("📝 Focus triggered. Showing tests:", currentTests);
         renderTests(currentTests);
       }
       testPopup.classList.remove("hidden");
@@ -204,12 +206,10 @@ async function loadLabData() {
 
     searchInput.addEventListener("input", (e) => {
       const query = e.target.value.trim().toLowerCase();
-      console.log("🔍 Popup search query:", query);
       if (query.length >= 3) {
         const filtered = allTests.filter((t) =>
           t.name.toLowerCase().includes(query)
         );
-        console.log("🔎 Filtered results:", filtered);
         renderTests(filtered, query);
         testPopup.classList.remove("hidden");
         positionPopup(testInput);
@@ -226,19 +226,15 @@ async function loadLabData() {
     if (searchTestsInput) {
       searchTestsInput.addEventListener("input", (e) => {
         const query = e.target.value.trim().toLowerCase();
-        console.log("🌍 Global search query:", query);
         if (query.length >= 3) {
           const filtered = allTests.filter((t) =>
             t.name.toLowerCase().includes(query)
           );
-          console.log("🌍 Global filtered results:", filtered);
           renderTests(filtered, query);
           testPopup.classList.remove("hidden");
           positionPopup(searchTestsInput);
         }
       });
-    } else {
-      console.warn("⚠️ search-tests input not found in DOM.");
     }
 
     // -----------------------------
@@ -249,7 +245,6 @@ async function loadLabData() {
     const dateInput = document.querySelector("input[name='date']");
 
     function updateSummary() {
-      console.log("📑 Updating summary...");
       document.getElementById("summary-name").textContent =
         nameInput.value || "-";
       document.getElementById("summary-email").textContent =
@@ -270,7 +265,11 @@ async function loadLabData() {
     // Close popup on outside click
     // -----------------------------
     document.addEventListener("click", (e) => {
-      if (!testPopup.contains(e.target) && e.target !== testInput && e.target !== searchTestsInput) {
+      if (
+        !testPopup.contains(e.target) &&
+        e.target !== testInput &&
+        e.target !== searchTestsInput
+      ) {
         testPopup.classList.add("hidden");
       }
     });
@@ -278,7 +277,6 @@ async function loadLabData() {
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") testPopup.classList.add("hidden");
     });
-
   } catch (err) {
     console.error("❌ Failed to load lab packages:", err);
   }
