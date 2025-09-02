@@ -45,6 +45,11 @@ window.addEventListener("DOMContentLoaded", () => {
         document.getElementById("summary-test").textContent = testObj.name;
 
         scrollToBooking();
+
+        // ✅ Show Clear button when picking from global search
+        if (typeof toggleClearButton === "function") {
+          toggleClearButton();
+        }
       });
 
       globalResults.appendChild(card);
