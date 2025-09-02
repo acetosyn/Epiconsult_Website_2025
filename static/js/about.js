@@ -108,3 +108,25 @@ document.addEventListener("DOMContentLoaded", () => {
   // Prevent context menu
   slider.addEventListener("contextmenu", (e) => e.preventDefault());
 });
+
+
+
+// about.js
+
+document.addEventListener("DOMContentLoaded", () => {
+  const zoomSections = document.querySelectorAll(".zoom-section");
+
+  const observer = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target); // animate once
+        }
+      });
+    },
+    { threshold: 0.2 }
+  );
+
+  zoomSections.forEach(section => observer.observe(section));
+});

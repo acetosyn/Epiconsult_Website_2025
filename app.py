@@ -72,6 +72,10 @@ def register():
 def general():
     return render_template("clinic/general.html")
 
+@app.route("/teleconsultation")
+def teleconsultation():
+    return render_template("teleconsultation.html")
+
 @app.route("/clinic/sickle-cell")
 def sickle_cell():
     return render_template("clinic/sickle_cell.html")
@@ -129,9 +133,7 @@ def book_appointment():
     test_data = get_test_data()
     return render_template("appointment.html", test_data=test_data)
 
-@app.route("/teleconsultation")
-def teleconsultation():
-    return render_template("teleconsultation.html")
+
 
 @app.route("/contact")
 def contact():

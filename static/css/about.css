@@ -64,3 +64,23 @@
 @media (prefers-reduced-motion: reduce) {
   .slider-track { transition: none; }
 }
+
+
+
+/* 🔹 Zoom effect on scroll/hover */
+.zoom-section {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.zoom-section.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* 🔹 Extra hover pop */
+.zoom-section:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
