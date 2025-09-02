@@ -1,8 +1,10 @@
 import os
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, redirect
 from engine import get_test_data, get_department_info
 from flask import jsonify
 import json
+from lab import load_lab_categories   # 👈 import our helper
+
 
 app = Flask(__name__)
 
@@ -37,6 +39,29 @@ def root():
 @app.route("/home")
 def home():
     return render_template("index.html")
+
+
+# ...
+
+@app.route("/login")
+def login():
+    next_page = request.args.get("next")
+    return render_template("login.html", next_page=next_page)
+
+
+
+@app.route("/google-login")
+def google_login():
+    return redirect(url_for("login", next="home"))
+
+@app.route("/register", methods=["POST"])
+def register():
+    # For now, just redirect back to login page
+    # Later you’ll implement user creation logic
+    return redirect(url_for("login", next="home"))
+
+
+
 
 
 
@@ -81,10 +106,16 @@ def get_faqs():
 def imaging():
     return render_template("imaging.html")
 
+
 @app.route("/diagnostics/laboratory")
 def laboratory():
-    test_data = get_test_data()  # optionally load lab services here
-    return render_template("laboratory.html", lab_services=test_data.get("Laboratory", {}))
+    test_data = get_test_data()
+    categories = load_lab_categories()
+    return render_template(
+        "laboratory.html",
+        lab_services=test_data.get("Laboratory", {}),
+        lab_categories=categories
+    )
 
 
 

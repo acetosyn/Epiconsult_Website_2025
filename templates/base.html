@@ -98,110 +98,132 @@
         </div>
       </a>
 
-        <!-- Desktop Nav -->
-        <div class="hidden lg:flex items-center space-x-10">
-          <a href="{{ url_for('home') }}" class="nav-link">HOME</a>
+      <!-- Desktop Nav -->
+      <div class="hidden lg:flex items-center space-x-10">
+        <a href="{{ url_for('home') }}" class="nav-link">HOME</a>
 
-          <!-- CLINIC Dropdown -->
-          <div class="relative group">
-            <a href="#" class="nav-link flex items-center">
-              CLINIC
-              <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-              </svg>
-            </a>
-            <div class="dropdown-card w-72">
-              <a href="{{ url_for('general') }}" class="dropdown-link">General Consultation</a>
-              <a href="{{ url_for('sickle_cell') }}" class="dropdown-link">Sickle Cell Clinic</a>
-              <a href="{{ url_for('specialist') }}" class="dropdown-link">Specialist Clinic</a>
-            </div>
-          </div>
-
-          <!-- DIAGNOSTICS Dropdown -->
-          <div class="relative group">
-            <a href="#" class="nav-link flex items-center">
-              DIAGNOSTICS
-              <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-              </svg>
-            </a>
-            <div class="dropdown-card w-72">
-              <a href="{{ url_for('imaging') }}" class="dropdown-link">Imaging</a>
-              <a href="{{ url_for('laboratory') }}" class="dropdown-link">Laboratory</a>
-            </div>
-          </div>
-
-          <a href="{{ url_for('teleconsultation') }}" class="nav-link">TELECONSULTATION</a>
-          <a href="{{ url_for('about') }}" class="nav-link">ABOUT</a>
-          <a href="{{ url_for('contact') }}" class="nav-link">CONTACT</a>
-
-          <a href="{{ url_for('patient_portal') }}" class="btn-primary">
-            🔒 Patient Portal
+        <!-- CLINIC Dropdown -->
+        <div class="relative group">
+          <a href="#" class="nav-link flex items-center">
+            CLINIC
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
           </a>
+          <div class="dropdown-card w-72">
+            <a href="{{ url_for('general') }}" class="dropdown-link">General Consultation</a>
+            <a href="{{ url_for('sickle_cell') }}" class="dropdown-link">Sickle Cell Clinic</a>
+            <a href="{{ url_for('specialist') }}" class="dropdown-link">Specialist Clinic</a>
+          </div>
         </div>
 
-<!-- Mobile Menu Button -->
-<button id="mobile-menu-button" class="lg:hidden text-navy focus:outline-none z-50 relative">
-  <!-- Hamburger Icon -->
-  <svg id="icon-hamburger" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-          d="M4 6h16M4 12h16M4 18h16"></path>
-  </svg>
-  <!-- Close (X) Icon -->
-  <svg id="icon-close" class="w-7 h-7 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M6 18L18 6M6 6l12 12"></path>
-  </svg>
-</button>
-</div>
+        <!-- DIAGNOSTICS Dropdown -->
+        <div class="relative group">
+          <a href="#" class="nav-link flex items-center">
+            DIAGNOSTICS
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </a>
+          <div class="dropdown-card w-72">
+            <a href="{{ url_for('imaging') }}" class="dropdown-link">Imaging</a>
+            <a href="{{ url_for('laboratory') }}" class="dropdown-link">Laboratory</a>
+          </div>
+        </div>
 
-<!-- Dark Overlay -->
-<div id="mobile-overlay" class="fixed inset-0 bg-black/40 hidden z-30"></div>
+        <a href="{{ url_for('teleconsultation') }}" class="nav-link">TELECONSULTATION</a>
+        <a href="{{ url_for('about') }}" class="nav-link">ABOUT</a>
+        <a href="{{ url_for('contact') }}" class="nav-link">CONTACT</a>
 
-<!-- Mobile Menu (Drawer) -->
-<div id="mobile-menu" 
-     class="fixed inset-y-0 right-0 w-3/4 max-w-sm bg-white shadow-lg 
-            transform translate-x-full transition-transform duration-500 ease-in-out z-40">
-  <div class="px-6 py-6 space-y-4 h-full overflow-y-auto">
-    
-    <a href="{{ url_for('home') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
-      HOME
-    </a>
+<!-- Login + Patient Portal -->
+<a href="{{ url_for('login') }}" 
+   class="btn-primary flex items-center space-x-1 px-3 py-1 text-sm">
+  <span>🔑</span>
+  <span class="font-medium">Login</span>
+</a>
 
-    <div>
-      <span class="block text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">CLINIC</span>
-      <div class="ml-4 space-y-2">
-        <a href="{{ url_for('general') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">General Consultation</a>
-        <a href="{{ url_for('sickle_cell') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Sickle Cell</a>
-        <a href="{{ url_for('specialist') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Specialist</a>
-      </div>
+<a href="{{ url_for('patient_portal') }}" 
+   class="btn-primary flex items-center space-x-1 px-3 py-1 text-sm">
+  <span>🔒</span>
+  <span class="font-medium">Patient Portal</span>
+</a>
+
+
+
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-button" class="lg:hidden text-navy focus:outline-none z-50 relative">
+        <!-- Hamburger Icon -->
+        <svg id="icon-hamburger" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+        <!-- Close (X) Icon -->
+        <svg id="icon-close" class="w-7 h-7 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
     </div>
 
-    <div>
-      <span class="block text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">DIAGNOSTICS</span>
-      <div class="ml-4 space-y-2">
-        <a href="{{ url_for('imaging') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Imaging</a>
-        <a href="{{ url_for('laboratory') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Laboratory</a>
+    <!-- Dark Overlay -->
+    <div id="mobile-overlay" class="fixed inset-0 bg-black/40 hidden z-30"></div>
+
+    <!-- Mobile Menu (Drawer) -->
+    <div id="mobile-menu" 
+        class="fixed inset-y-0 right-0 w-3/4 max-w-sm bg-white shadow-lg 
+              transform translate-x-full transition-transform duration-500 ease-in-out z-40">
+      <div class="px-6 py-6 space-y-4 h-full overflow-y-auto">
+        
+        <a href="{{ url_for('home') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
+          HOME
+        </a>
+
+        <div>
+          <span class="block text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">CLINIC</span>
+          <div class="ml-4 space-y-2">
+            <a href="{{ url_for('general') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">General Consultation</a>
+            <a href="{{ url_for('sickle_cell') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Sickle Cell</a>
+            <a href="{{ url_for('specialist') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Specialist</a>
+          </div>
+        </div>
+
+        <div>
+          <span class="block text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">DIAGNOSTICS</span>
+          <div class="ml-4 space-y-2">
+            <a href="{{ url_for('imaging') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Imaging</a>
+            <a href="{{ url_for('laboratory') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Laboratory</a>
+          </div>
+        </div>
+
+        <a href="{{ url_for('teleconsultation') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
+          TELECONSULTATION
+        </a>
+        <a href="{{ url_for('about') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
+          ABOUT
+        </a>
+        <a href="{{ url_for('contact') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
+          CONTACT
+        </a>
+
+<!-- Login + Patient Portal Mobile -->
+<a href="{{ url_for('login') }}" 
+   class="w-full flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 
+          text-white py-2 rounded-full font-medium mt-3 shadow transition">
+  <span>🔑</span><span>Login</span>
+</a>
+
+<a href="{{ url_for('patient_portal') }}" 
+   class="w-full flex items-center justify-center space-x-2 bg-red-600 hover:bg-red-700 
+          text-white py-2 rounded-full font-medium mt-2 shadow transition">
+  <span>🔒</span><span>Patient Portal</span>
+</a>
+
+
       </div>
     </div>
-
-    <a href="{{ url_for('teleconsultation') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
-      TELECONSULTATION
-    </a>
-    <a href="{{ url_for('about') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
-      ABOUT
-    </a>
-    <a href="{{ url_for('contact') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
-      CONTACT
-    </a>
-
-    <a href="{{ url_for('patient_portal') }}" 
-       class="w-full block text-center bg-red-600 hover:bg-red-700 text-white py-3 rounded-full font-semibold mt-4 shadow-md transition">
-      Patient Portal
-    </a>
   </div>
-</div>
 </nav>
+
 
   <main>
     {% block content %}

@@ -1,0 +1,232 @@
+:root {
+  --primary: #e63946;       /* Red */
+  --primary-dark: #b71c1c;  /* Darker Red */
+  --dark: #04175d;          /* Navy Blue */
+  --light: #f3f3f3;
+  --gray: #666;
+  --white: #ffffff;
+}
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Background + Layout */
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* Container */
+.auth-container {
+  width: 100%;
+  max-width: 460px;
+  background: var(--white);
+  padding: 30px 25px;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Logo Header */
+.logo-header {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.logo-header .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.logo-img {
+  width: 50px;
+  height: auto;
+  border-radius: 8px;
+}
+
+.logo-header h1 {
+  font-size: 22px;
+  color: var(--dark);
+}
+
+.text-red {
+  color: var(--primary);
+}
+
+.text-navy {
+  color: var(--dark);
+}
+
+.tagline {
+  font-size: 13px;
+  color: var(--gray);
+  margin-top: 2px;
+}
+
+/* Header */
+.auth-header {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.auth-header h1 {
+  font-size: 24px;
+  color: var(--dark);
+  margin-bottom: 4px;
+}
+
+.auth-header p {
+  font-size: 14px;
+  color: var(--gray);
+}
+
+/* Tab Buttons */
+.tab-buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--primary);
+  background: var(--white);
+  color: var(--primary);
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-btn.active {
+  background: var(--primary);
+  color: white;
+}
+
+/* Forms Wrapper for Slide Effect (Desktop Only) */
+.auth-forms-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.auth-forms {
+  display: flex;
+  width: 200%;
+  transition: transform 0.5s ease-in-out;
+}
+
+.auth-forms.show-signup {
+  transform: translateX(-50%);
+}
+
+.form {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 0 10px;
+}
+
+/* On mobile: disable sliding, just show/hide */
+@media (max-width: 768px) {
+  .auth-forms {
+    display: block;
+    width: 100%;
+    transform: none !important;
+  }
+  .form {
+    width: 100%;
+    display: none;
+  }
+  .form.active {
+    display: flex;
+  }
+}
+
+/* Labels + Inputs */
+label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--dark);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+input {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  background: #fdfdfd;
+  transition: border 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background-color: #fff;
+}
+
+/* Submit Button */
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.submit-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+/* Google Button */
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px;
+  background: #fff;
+  color: #444;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.2s ease;
+}
+
+.google-btn img {
+  width: 18px;
+  height: 18px;
+}
+
+.google-btn:hover {
+  background: #f5f5f5;
+  transform: translateY(-2px);
+}

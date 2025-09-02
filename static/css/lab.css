@@ -1,30 +1,8 @@
 /* ------------------------------
-   Laboratory Page Styles
+   Laboratory Page Styles (Updated)
    ------------------------------ */
 
-/* Hero Section */
-.lab-hero-slider {
-  position: relative;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-}
-
-.lab-slide {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-}
-
-.lab-slide.active {
-  opacity: 1;
-}
-
-.lab-hero-text {
-  animation: fadeInUp 1s ease forwards;
-}
-
+/* Fade-in animation for hero text */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -35,104 +13,179 @@
     transform: translateY(0);
   }
 }
-
-/* Hero Navigation Dots */
-.lab-dot {
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: 50%;
-  background-color: #d1d5db;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.animate-fadeInUp {
+  animation: fadeInUp 1s ease forwards;
 }
 
-.lab-dot.active {
-  background-color: #10b981; /* emerald green for lab */
-}
-
-/* Zoom-in / Zoom-out hover effect */
+/* Zoom hover for category/service cards */
 .zoom-effect {
-  transition: transform 0.4s ease, box-shadow 0.4s ease !important;
-}
-
-.zoom-effect:hover {
-  transform: scale(1.05) !important;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25) !important;
-}
-
-/* Lab Service Cards */
-.lab-card {
-  background: white;
-  border-radius: 1rem;
-  padding: 2rem;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
   transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.zoom-effect:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Category & service cards */
+.special-card {
+  transition: all 0.3s ease;
+}
+.special-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+}
+
+/* Buttons (Explore, Book Now, Schedule Pickup, etc.) */
+.book-btn {
+  background-color: rgb(220 38 38 / 1);
+  color: white;
+  font-weight: 600;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+.book-btn:hover {
+  background-color: rgb(185 28 28 / 1);
+  transform: translateY(-2px);
+}
+
+/* ------------------------------
+   Modals
+   ------------------------------ */
+#serviceModal .modal-content,
+#bookingModal .modal-content {
+  transform-origin: center;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.3s ease;
+}
+
+/* Show state (when .show is added directly to modal-content) */
+#serviceModal .modal-content.show,
+#bookingModal .modal-content.show {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+}
+
+/* Modal content general styles */
+#serviceModal .modal-content,
+#bookingModal .modal-content {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Service Modal Grid Layout */
+#serviceModal #serviceList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Individual test card inside modal */
+#serviceModal #serviceList .special-card {
+  padding: 1.25rem;
   text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+#serviceModal #serviceList .special-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
-.lab-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+/* ------------------------------
+   Booking Progress Steps
+   ------------------------------ */
+.step {
+  text-align: center;
+  position: relative;
+  flex-shrink: 0;
+}
+.circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin: auto;
+  position: relative;
+  transition: all 0.3s ease;
 }
 
-/* Section Headings */
-.lab-section-title {
-  font-size: 2.25rem;
-  font-weight: 700;
-  color: #0f172a; /* navy-like */
-  margin-bottom: 3rem;
+/* Active step (highlighted red) */
+.step.active .circle {
+  background: rgb(220 38 38 / 1);
+  color: #fff;
+  border: 2px solid rgb(220 38 38 / 1);
 }
 
-.lab-section-title span {
-  color: #10b981; /* emerald highlight */
+/* Completed step with checkmark */
+.step.completed .circle {
+  background: rgb(220 38 38 / 1);
+  color: #fff;
+  font-size: 0;
+}
+.step.completed .circle::after {
+  content: "✔";
+  font-size: 18px;
+  animation: popIn 0.3s ease;
 }
 
-/* Booking Form Styling */
-.lab-form input,
-.lab-form select,
-.lab-form textarea {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.5rem;
+/* Progress connector line */
+.line {
+  flex: 1;
+  height: 4px;
+  background: #e5e7eb;
+  margin: 0 10px;
+  position: relative;
+  top: -20px;
+  transition: background 0.3s ease;
+}
+.step.completed ~ .line,
+.step.active ~ .line {
+  background: rgb(220 38 38 / 1);
+}
+
+/* Checkmark pop animation */
+@keyframes popIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ------------------------------
+   Booking Form
+   ------------------------------ */
+#lab-booking-form input,
+#lab-booking-form select {
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
-
-.lab-form input:focus,
-.lab-form select:focus,
-.lab-form textarea:focus {
-  border-color: #10b981;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+#lab-booking-form input:focus,
+#lab-booking-form select:focus {
+  border-color: rgb(220 38 38 / 1);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
   outline: none;
 }
 
-/* Button */
-.lab-btn {
-  background-color: #10b981;
-  color: white;
-  font-weight: 600;
-  padding: 0.85rem 2.5rem;
-  border-radius: 9999px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  display: inline-block;
+/* Date input icon alignment fix */
+#lab-booking-form .relative span {
+  pointer-events: none;
 }
 
-.lab-btn:hover {
-  background-color: #059669;
-  transform: scale(1.05);
+/* ------------------------------
+   Booking Summary
+   ------------------------------ */
+.summary-card {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
 }
-
-/* Futuristic background effect for booking */
-.lab-booking-bg {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.95), rgba(15, 23, 42, 0.95));
-  position: relative;
-  overflow: hidden;
-}
-
-.lab-booking-bg::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: url("../images/medical-bg.jpg") center/cover no-repeat;
-  opacity: 0.1;
+.summary-card:hover {
+  transform: translateY(-4px);
 }
