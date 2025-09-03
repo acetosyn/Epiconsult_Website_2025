@@ -7,8 +7,8 @@
   --white: #ffffff;
   --shadow: 0 10px 40px rgba(0, 47, 94, 0.15);
   --radius: 18px;
-  --card-max-w: 1000px; /* wider like lab form */
-  --input-font: 1.1rem;
+  --card-max-w: 650px; /* reduced width */
+  --input-font: 1.05rem;
 }
 
 /* Reset */
@@ -41,7 +41,7 @@ main.auth-container::before {
   width: 100%;
   max-width: var(--card-max-w);
   background: var(--white);
-  padding: 2.5rem;
+  padding: 2.2rem;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   overflow: hidden;
@@ -51,21 +51,21 @@ main.auth-container::before {
 .logo-header { text-align: center; margin-bottom: 1.2rem; }
 .logo-header .brand { display: inline-flex; align-items: center; gap: 0.75rem; text-decoration: none; }
 .logo-img { width: 56px; height: 56px; border-radius: 0.75rem; object-fit: cover; }
-.logo-header h1 { font-size: 1.4rem; font-weight: 700; color: var(--navy); margin: 0; }
+.logo-header h1 { font-size: 1.8rem; font-weight: 700; color: var(--navy); margin: 0; }
 .text-red { color: var(--primary); }
 .text-navy { color: var(--navy); }
 .tagline { font-size: 0.8rem; color: var(--gray); }
 
 /* Auth Title */
-.auth-header { text-align: center; margin-bottom: 1.5rem; }
-.auth-header h1 { font-size: 1.9rem; font-weight: 700; color: var(--navy); }
-.auth-header p { font-size: 1rem; color: var(--gray); }
+.auth-header { text-align: center; margin-bottom: 1.3rem; }
+.auth-header h1 { font-size: 1.3rem; font-weight: 600; color: var(--navy); }
+.auth-header p { font-size: 0.95rem; color: var(--gray); }
 
 /* Tabs */
 .tab-buttons { display: flex; gap: 0.75rem; justify-content: center; margin-bottom: 1.5rem; }
 .tab-btn {
   flex: 1;
-  padding: 0.85rem 1rem;
+  padding: 0.75rem 1rem;
   border: 2px solid var(--primary);
   border-radius: 12px;
   background: var(--white);
@@ -78,10 +78,10 @@ main.auth-container::before {
 .tab-btn.active { background: var(--primary); color: var(--white); }
 
 /* Forms slider */
-.auth-forms-wrapper { position: relative; width: 100%; overflow: hidden; min-height: 620px; }
+.auth-forms-wrapper { position: relative; width: 100%; overflow: hidden; min-height: 600px; }
 .auth-forms { display: flex; width: 200%; transition: transform 0.5s ease-in-out; }
 .auth-forms.show-signup { transform: translateX(-50%); }
-.form { width: 50%; display: flex; flex-direction: column; gap: 1.25rem; }
+.form { width: 50%; display: flex; flex-direction: column; gap: 1.2rem; }
 
 @media (max-width: 768px) {
   .auth-forms { display: block; width: 100%; transform: none !important; }
@@ -92,23 +92,23 @@ main.auth-container::before {
 
 /* Typewriter */
 .typewriter-message {
-  min-height: 1.4em;
-  margin-bottom: 0.5rem;
+  min-height: 1.3em;
+  margin-bottom: 0.4rem;
   color: var(--gray);
   font-weight: 600;
 }
 
 /* Form fields */
 .form-field label {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--navy);
-  margin-bottom: 0.35rem;
+  margin-bottom: 0.3rem;
   display: block;
 }
 .form-field input {
   width: 100%;
-  padding: 1rem 1.1rem;
+  padding: 0.9rem 1rem;
   border-radius: 12px;
   border: 1px solid #d1d5db;
   font-size: var(--input-font);
@@ -123,7 +123,7 @@ main.auth-container::before {
 
 /* Password toggle */
 .input-with-toggle { position: relative; }
-.input-with-toggle input { padding-right: 2.5rem; }
+.input-with-toggle input { padding-right: 2.3rem; }
 .toggle-password {
   position: absolute;
   right: 0.7rem;
@@ -138,13 +138,13 @@ main.auth-container::before {
 /* Buttons */
 .submit-btn {
   width: 100%;
-  padding: 1rem;
+  padding: 0.9rem;
   background: var(--primary);
   color: var(--white);
   border: none;
   border-radius: 12px;
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: background 0.2s, transform 0.15s;
 }
@@ -156,12 +156,12 @@ main.auth-container::before {
   justify-content: center;
   gap: 0.6rem;
   width: 100%;
-  padding: 0.95rem 1rem;
+  padding: 0.9rem 1rem;
   background: var(--white);
   color: var(--gray);
   border: 1px solid #d1d5db;
   border-radius: 12px;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.2s, transform 0.15s;
