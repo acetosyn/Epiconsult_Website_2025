@@ -168,3 +168,21 @@ main.auth-container::before {
 }
 .google-btn img { width: 20px; height: 20px; }
 .google-btn:hover { background: #f3f4f6; transform: translateY(-1px); }
+
+
+.flash-message {
+  background: #4caf50; /* green success */
+  color: white;
+  padding: 12px 20px;
+  text-align: center;
+  font-weight: 600;
+  border-radius: 6px;
+  margin: 10px auto;
+  max-width: 500px;
+  animation: fadein 0.5s;
+}
+
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

@@ -42,26 +42,10 @@ def home():
 
 
 # ...
-
 @app.route("/login")
 def login():
-    next_page = request.args.get("next")
+    next_page = request.args.get("next") or url_for("home")
     return render_template("login.html", next_page=next_page)
-
-
-
-@app.route("/google-login")
-def google_login():
-    return redirect(url_for("login", next="home"))
-
-@app.route("/register", methods=["POST"])
-def register():
-    # For now, just redirect back to login page
-    # Later you’ll implement user creation logic
-    return redirect(url_for("login", next="home"))
-
-
-
 
 
 
