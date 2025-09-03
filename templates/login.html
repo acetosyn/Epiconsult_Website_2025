@@ -1,21 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login & Register | Epiconsult Diagnostics</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
+{% extends "base.html" %}
 
-  <main class="auth-container">
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<main class="auth-container">
+  <div class="auth-box" role="region" aria-label="Authentication card">
     <!-- Logo Header -->
     <div class="logo-header">
-      <a href="{{ url_for('home') }}" class="brand">
-        <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Epiconsult Logo" class="logo-img">
+      <a href="{{ url_for('home') }}" class="brand" aria-label="Back to home">
+        <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Epiconsult Logo" class="logo-img" />
         <div>
-          <h1><span class="text-red">Epiconsult</span> <span class="text-navy">Diagnostics</span></h1>
+          <h1>
+            <span class="text-red">Epiconsult</span> <span class="text-navy">Diagnostics</span>
+          </h1>
           <p class="tagline">WITH YOU FOR LIFE</p>
         </div>
       </a>
@@ -28,82 +28,107 @@
     </div>
 
     <!-- Tab Switch -->
-    <div class="tab-buttons">
-      <button id="loginTab" class="tab-btn active">Sign In</button>
-      <button id="signupTab" class="tab-btn">Sign Up</button>
+    <div class="tab-buttons" role="tablist" aria-label="Choose Sign In or Sign Up">
+      <button id="loginTab" class="tab-btn active" role="tab" aria-selected="true" aria-controls="loginForm">Sign In</button>
+      <button id="signupTab" class="tab-btn" role="tab" aria-selected="false" aria-controls="signupForm">Sign Up</button>
     </div>
 
-    <!-- Forms wrapper for sliding -->
+    <!-- Forms wrapper -->
     <div class="auth-forms-wrapper">
       <div class="auth-forms" id="formsSlider">
 
         <!-- Login Form -->
-        <form method="POST" action="{{ url_for('login') }}" id="loginForm" class="form active">
-          <div class="typewriter-message">
+        <form method="POST" action="{{ url_for('login') }}" id="loginForm" class="form active" role="tabpanel" aria-labelledby="loginTab">
+          <div class="typewriter-message" aria-live="polite">
             <span id="login-typewriter"></span>
           </div>
 
-          <label>Email
-            <input type="email" name="email" required>
-          </label>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="form-field">
+              <label>Email</label>
+              <input type="email" name="email" placeholder="Enter your email" autocomplete="username" required>
+            </div>
 
-          <label>Password
-            <input type="password" name="password" required>
-          </label>
+            <div class="form-field">
+              <label>Password</label>
+              <div class="input-with-toggle">
+                <input type="password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
+                <button type="button" class="toggle-password" aria-label="Toggle password visibility">👁️</button>
+              </div>
+            </div>
+          </div>
 
           <button class="submit-btn" type="submit">Sign In</button>
-          
+
           <button type="button" class="google-btn" onclick="window.location.href='{{ url_for('google_login') }}'">
-            <img src="{{ url_for('static', filename='images/google-icon.png') }}" alt="Google"> Sign in with Google
+            <img src="{{ url_for('static', filename='images/google-icon.svg') }}" alt="" aria-hidden="true">
+            <span>Sign in with Google</span>
           </button>
         </form>
 
         <!-- Signup Form -->
-        <form method="POST" action="{{ url_for('register') }}" id="signupForm" class="form">
-          <div class="typewriter-message">
+        <form method="POST" action="{{ url_for('register') }}" id="signupForm" class="form" role="tabpanel" aria-labelledby="signupTab">
+          <div class="typewriter-message" aria-live="polite">
             <span id="signup-typewriter"></span>
           </div>
 
-          <label>First Name
-            <input type="text" name="first_name" required>
-          </label>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="form-field">
+              <label>First Name</label>
+              <input type="text" name="first_name" placeholder="Enter your first name" autocomplete="given-name" required>
+            </div>
 
-          <label>Middle Name
-            <input type="text" name="middle_name">
-          </label>
+            <div class="form-field">
+              <label>Middle Name</label>
+              <input type="text" name="middle_name" placeholder="Enter your middle name (optional)" autocomplete="additional-name">
+            </div>
 
-          <label>Last Name
-            <input type="text" name="last_name" required>
-          </label>
+            <div class="form-field">
+              <label>Last Name</label>
+              <input type="text" name="last_name" placeholder="Enter your last name" autocomplete="family-name" required>
+            </div>
 
-          <label>Email
-            <input type="email" name="email" required>
-          </label>
+            <div class="form-field">
+              <label>Email</label>
+              <input type="email" name="email" placeholder="Enter your email" autocomplete="email" required>
+            </div>
 
-          <label>Password
-            <input type="password" name="password" required>
-          </label>
+            <div class="form-field">
+              <label>Password</label>
+              <div class="input-with-toggle">
+                <input type="password" name="password" placeholder="Create a password" autocomplete="new-password" required>
+                <button type="button" class="toggle-password" aria-label="Toggle password visibility">👁️</button>
+              </div>
+            </div>
 
-          <label>Confirm Password
-            <input type="password" name="confirm_password" required>
-          </label>
+            <div class="form-field">
+              <label>Confirm Password</label>
+              <div class="input-with-toggle">
+                <input type="password" name="confirm_password" placeholder="Re-enter your password" autocomplete="new-password" required>
+                <button type="button" class="toggle-password" aria-label="Toggle password visibility">👁️</button>
+              </div>
+            </div>
+          </div>
 
           <button class="submit-btn" type="submit">Create Account</button>
 
           <button type="button" class="google-btn" onclick="window.location.href='{{ url_for('google_login') }}'">
-            <img src="{{ url_for('static', filename='images/google-icon.png') }}" alt="Google"> Sign up with Google
+            <img src="{{ url_for('static', filename='images/google-icon.svg') }}" alt="" aria-hidden="true">
+            <span>Sign up with Google</span>
           </button>
         </form>
       </div>
     </div>
-  </main>
+  </div>
+</main>
 
-  <!-- Flash messages -->
-  <script type="application/json" id="flashed-messages">
-    {{ get_flashed_messages() | tojson | safe }}
-  </script>
+<!-- Flash messages -->
+<script type="application/json" id="flashed-messages">
+  {{ get_flashed_messages() | tojson | safe }}
+</script>
 
-  <!-- JS for tabs & sliding -->
-  <script src="{{ url_for('static', filename='js/login.js') }}"></script>
-</body>
-</html>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+{% endblock %}

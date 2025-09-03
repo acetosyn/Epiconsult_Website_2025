@@ -1,69 +1,102 @@
 // ==============================
-// 🌐 Login & Register Scripts
+// 🌐 Login & Register Scripts (Hardened)
 // ==============================
 
 // Tab buttons & forms
 const loginTab = document.getElementById("loginTab");
 const signupTab = document.getElementById("signupTab");
 const formsWrapper = document.querySelector(".auth-forms");
+const loginForm = document.getElementById("loginForm");
+const signupForm = document.getElementById("signupForm");
 
-// Switch to Login
-loginTab.addEventListener("click", () => {
-  loginTab.classList.add("active");
-  signupTab.classList.remove("active");
+// Helper: switch tabs safely
+function switchTab(target) {
+  if (target === "login") {
+    loginTab.classList.add("active");
+    signupTab.classList.remove("active");
+    loginTab.setAttribute("aria-selected", "true");
+    signupTab.setAttribute("aria-selected", "false");
 
-  // Desktop: slide to login
-  formsWrapper.classList.remove("show-signup");
+    formsWrapper.classList.remove("show-signup");
+    loginForm.classList.add("active");
+    signupForm.classList.remove("active");
+  } else {
+    signupTab.classList.add("active");
+    loginTab.classList.remove("active");
+    signupTab.setAttribute("aria-selected", "true");
+    loginTab.setAttribute("aria-selected", "false");
 
-  // Mobile: toggle forms
-  document.getElementById("loginForm").classList.add("active");
-  document.getElementById("signupForm").classList.remove("active");
-});
+    formsWrapper.classList.add("show-signup");
+    signupForm.classList.add("active");
+    loginForm.classList.remove("active");
+  }
+}
 
-// Switch to Signup
-signupTab.addEventListener("click", () => {
-  signupTab.classList.add("active");
-  loginTab.classList.remove("active");
+// Attach tab events (debounced)
+let tabCooldown = false;
+function handleTabClick(tab) {
+  if (tabCooldown) return;
+  tabCooldown = true;
+  switchTab(tab);
+  setTimeout(() => (tabCooldown = false), 300); // prevent spam clicks
+}
 
-  // Desktop: slide to signup
-  formsWrapper.classList.add("show-signup");
-
-  // Mobile: toggle forms
-  document.getElementById("signupForm").classList.add("active");
-  document.getElementById("loginForm").classList.remove("active");
-});
+loginTab.addEventListener("click", () => handleTabClick("login"));
+signupTab.addEventListener("click", () => handleTabClick("signup"));
 
 // ==============================
-// ⌨️ Typewriter effect
+// ⌨️ Typewriter effect (optimized)
 // ==============================
 function typeWriter(elementId, messages, speed = 80, delay = 2500) {
-  let i = 0;
-  let j = 0;
-  let currentMessage = "";
   const element = document.getElementById(elementId);
+  if (!element) return;
+
+  let i = 0, j = 0;
+  let currentMessage = "";
+  let timeoutId = null;
+  let isPaused = document.hidden;
+
+  function clearTimer() {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      timeoutId = null;
+    }
+  }
 
   function type() {
-    if (!element) return; // safety guard
+    if (!element || isPaused) return;
 
     if (j < messages[i].length) {
       currentMessage += messages[i].charAt(j);
       element.textContent = currentMessage;
       j++;
-      setTimeout(type, speed);
+      timeoutId = setTimeout(type, speed);
     } else {
-      setTimeout(() => {
+      timeoutId = setTimeout(() => {
         currentMessage = "";
         element.textContent = "";
         j = 0;
         i = (i + 1) % messages.length;
-        setTimeout(type, speed);
+        type();
       }, delay);
     }
   }
+
+  // Handle tab visibility changes
+  document.addEventListener("visibilitychange", () => {
+    isPaused = document.hidden;
+    if (!isPaused && !timeoutId) {
+      // restart typing if resumed
+      type();
+    } else {
+      clearTimer();
+    }
+  });
+
   type();
 }
 
-// Typewriter texts
+// Init typewriters
 typeWriter("login-typewriter", [
   "Sign in to access your dashboard.",
   "Secure, fast, and reliable."
@@ -80,12 +113,11 @@ typeWriter("signup-typewriter", [
 document.querySelectorAll(".toggle-password").forEach(toggle => {
   toggle.addEventListener("click", () => {
     const input = toggle.previousElementSibling;
-    if (input.type === "password") {
-      input.type = "text";
-      toggle.textContent = "🙈";
-    } else {
-      input.type = "password";
-      toggle.textContent = "👁️";
-    }
+    const isHidden = input.type === "password";
+    input.type = isHidden ? "text" : "password";
+
+    // Update button text + state
+    toggle.textContent = isHidden ? "🙈" : "👁️";
+    toggle.setAttribute("aria-pressed", String(isHidden));
   });
 });

@@ -151,6 +151,9 @@ def blog():
 def patient_portal():
     return "<h1>Patient Portal Coming Soon</h1>"
 
+@app.route("/forgot-password")
+def forgot_password():
+    return "<h1>Forgot Password Page Coming Soon</h1>"
 
 
 
