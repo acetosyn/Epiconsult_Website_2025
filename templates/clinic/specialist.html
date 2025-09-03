@@ -40,34 +40,36 @@
 
     <div class="grid md:grid-cols-2 gap-10">
 
-<!-- Medicine Card -->
-<div class="special-card zoom-effect bg-[rgb(0,47,94)] text-white p-8 rounded-2xl shadow-lg">
-  <div class="text-6xl mb-6 service-icon">⚕️</div>
-  <h3 class="text-2xl font-bold mb-4">MEDICINE</h3>
-  <p class="mb-6">World-class medical specialists offering consultations in diverse fields.</p>
-  <button onclick="openCategory('medicine')" 
-          class="bg-white text-navy font-semibold px-6 py-3 rounded-lg transition hover:bg-navy hover:text-white">
-    Select
-  </button>
-</div>
+      <!-- Medicine Card -->
+      <div class="special-card zoom-effect bg-[rgb(0,47,94)] text-white p-8 rounded-2xl shadow-lg">
+        <div class="text-6xl mb-6 service-icon">⚕️</div>
+        <h3 class="text-2xl font-bold mb-4">MEDICINE</h3>
+        <p class="mb-6">World-class medical specialists offering consultations in diverse fields.</p>
+        <button id="medicineBtn"
+                class="bg-white text-navy font-semibold px-6 py-3 rounded-lg transition hover:bg-navy hover:text-white">
+          Select
+        </button>
+      </div>
 
-<!-- Surgery Card -->
-<div class="special-card zoom-effect bg-red-600 text-white p-8 rounded-2xl shadow-lg">
-  <div class="text-6xl mb-6 service-icon">🩺</div>
-  <h3 class="text-2xl font-bold mb-4">SURGERY</h3>
-  <p class="mb-6">Expert surgical care across multiple specialties for comprehensive treatment.</p>
-  <button onclick="openCategory('surgery')" 
-          class="bg-white text-red-600 font-semibold px-6 py-3 rounded-lg transition hover:bg-red-700 hover:text-white">
-    Select
-  </button>
-</div>
-
+      <!-- Surgery Card -->
+      <div class="special-card zoom-effect bg-red-600 text-white p-8 rounded-2xl shadow-lg">
+        <div class="text-6xl mb-6 service-icon">🩺</div>
+        <h3 class="text-2xl font-bold mb-4">SURGERY</h3>
+        <p class="mb-6">Expert surgical care across multiple specialties for comprehensive treatment.</p>
+        <button id="surgeryBtn"
+                class="bg-white text-red-600 font-semibold px-6 py-3 rounded-lg transition hover:bg-red-700 hover:text-white">
+          Select
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- Service Modal -->
 <div id="serviceModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
   <div class="modal-content rounded-2xl shadow-2xl w-full md:w-3/4 lg:w-1/2 p-8 opacity-0 scale-95 transition-all duration-300">
     <h3 id="modalTitle" class="text-2xl font-bold mb-6"></h3>
-    <div id="serviceList" class="grid grid-cols-2 md:grid-cols-3 gap-6"></div>
+    <div id="serviceList" class="space-y-4"></div>
     <div class="mt-6 flex justify-end">
       <button id="closeModalBtn"
               class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition">
@@ -100,10 +102,9 @@
   </div>
 </div>
 
-
-
 {% endblock %}
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/specialist.js') }}"></script>
+<script src="{{ url_for('static', filename='js/specialist-collapse.js') }}"></script>
 {% endblock %}
