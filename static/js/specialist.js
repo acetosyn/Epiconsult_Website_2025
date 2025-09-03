@@ -3,7 +3,7 @@ const services = {
   surgery: [
     "Neuro-surgery", "Urology", "Anesthesiology", "General Surgery",
     "Plastic Surgery", "Orthopedic Surgery", "Gynecology",
-    "Spine Surgery", "Bariatrics"
+    "Spine Surgery", "Bariatric Surgery, "
   ],
   medicine: [
     "Cardiology", "Neurology", "Pediatrics", "Endocrinology",

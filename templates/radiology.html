@@ -2,7 +2,7 @@
 
 {% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/specialist.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/imaging.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/radiology.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -32,7 +32,7 @@
       <div class="container mx-auto px-6">
         <div class="max-w-2xl text-white imaging-hero-text animate-fadeInUp">
           <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight drop-shadow-lg">
-            Advanced <span class="text-red-500">Imaging</span> Services
+            Advanced <span class="text-red-500">Radiology</span> Services
           </h1>
           <p class="text-xl mb-8 leading-relaxed text-gray-100 drop-shadow-md">
             State-of-the-art diagnostic imaging for <span class="font-bold text-blue-400">accurate diagnosis</span> 
@@ -58,7 +58,7 @@
 <section class="py-20 bg-gray-50">
   <div class="max-w-7xl mx-auto px-6 lg:px-12 text-center">
     <h2 class="text-4xl font-bold text-navy mb-12">
-      Why Choose Our <span class="text-red-600">Imaging</span> Services?
+      Why Choose Our <span class="text-red-600">Radiology</span> Services?
     </h2>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
       <div class="special-card zoom-effect bg-navy text-white p-8 rounded-2xl shadow">
@@ -84,7 +84,7 @@
 <section class="pt-8 pb-20 bg-gradient-to-r from-blue-50 to-white">
   <div class="max-w-7xl mx-auto px-6 lg:px-12 text-center">
     <h2 class="text-4xl font-bold text-navy mb-12">
-      Our <span class="text-red-600">Imaging</span> Services
+      Our <span class="text-red-600">Radiology</span> Services
     </h2>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
       {% set services = [
@@ -115,10 +115,10 @@
     <div class="bg-white rounded-2xl p-10 shadow-2xl text-navy">
       <div class="text-center mb-8">
         <h2 class="text-3xl md:text-4xl font-bold mb-3">
-          Book Your <span class="text-red-600">Imaging</span> Appointment
+          Book Your <span class="text-red-600">Radiology</span> Appointment
         </h2>
         <p class="text-gray-600 text-base md:text-lg">
-          Select your preferred imaging service and schedule your appointment easily.
+          Select your preferred radiology service and schedule your appointment easily.
         </p>
       </div>
       <form method="POST" action="#" class="space-y-6">
@@ -167,6 +167,6 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='js/imaging_hero.js') }}"></script>
-<script src="{{ url_for('static', filename='js/imaging.js') }}"></script>
+<script src="{{ url_for('static', filename='js/radiology_hero.js') }}"></script>
+<script src="{{ url_for('static', filename='js/radiology.js') }}"></script>
 {% endblock %}

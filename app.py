@@ -90,9 +90,9 @@ def get_faqs():
 # -------------------------------
 # 🔬 DIAGNOSTICS ROUTES
 # -------------------------------
-@app.route("/diagnostics/imaging")
-def imaging():
-    return render_template("imaging.html")
+@app.route("/diagnostics/radiology")
+def radiology():
+    return render_template("radiology.html")
 
 
 @app.route("/diagnostics/laboratory")

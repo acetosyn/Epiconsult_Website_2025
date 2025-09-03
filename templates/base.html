@@ -131,7 +131,7 @@
             </svg>
           </a>
           <div class="dropdown-card w-72">
-            <a href="{{ url_for('imaging') }}" class="dropdown-link">Imaging</a>
+            <a href="{{ url_for('imaging') }}" class="dropdown-link">Radiology</a>
             <a href="{{ url_for('laboratory') }}" class="dropdown-link">Laboratory</a>
           </div>
         </div>
@@ -211,7 +211,7 @@
         <div>
           <span class="block text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">DIAGNOSTICS</span>
           <div class="ml-4 space-y-2">
-            <a href="{{ url_for('imaging') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Imaging</a>
+            <a href="{{ url_for('radiology') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Radiology</a>
             <a href="{{ url_for('laboratory') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Laboratory</a>
           </div>
         </div>
@@ -380,7 +380,7 @@
     <li><a href="{{ url_for('general') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">General Consultation</a></li>
     <li><a href="{{ url_for('sickle_cell') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Sickle Cell</a></li>
     <li><a href="{{ url_for('specialist') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Specialist</a></li>
-    <li><a href="{{ url_for('imaging') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Imaging</a></li>
+    <li><a href="{{ url_for('radiology') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Radiology</a></li>
     <li><a href="{{ url_for('laboratory') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Laboratory</a></li>
     <li><a href="{{ url_for('teleconsultation') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Teleconsultation</a></li>
     <li><a href="{{ url_for('patient_portal') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Patient Portal</a></li>
@@ -400,7 +400,7 @@
 
     <!-- Diagnostics -->
     <li class="pt-4"><span class="text-yellow-400 font-semibold">Diagnostics</span></li>
-    <li><a href="{{ url_for('imaging') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Medical Imaging (X-ray, MRI, CT)</a></li>
+    <li><a href="{{ url_for('radiology') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Radiology (X-ray, MRI, CT)</a></li>
     <li><a href="{{ url_for('laboratory') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Laboratory Tests</a></li>
   </ul>
 </div>
@@ -564,9 +564,9 @@
          class="chat-quick-btn bg-gradient-to-r from-indigo-500 to-blue-600 text-white px-4 py-1.5 rounded-full text-xs shadow hover:scale-105 transition">
         👨‍⚕️ Specialist
       </button>
-      <button data-message="Show me Imaging services"
+      <button data-message="Show me Radiology services"
          class="chat-quick-btn bg-gradient-to-r from-pink-500 to-rose-600 text-white px-4 py-1.5 rounded-full text-xs shadow hover:scale-105 transition">
-        🩻 Imaging
+        🩻 Radiology
       </button>
       <button data-message="What Laboratory tests do you offer?"
          class="chat-quick-btn bg-gradient-to-r from-yellow-500 to-orange-600 text-white px-4 py-1.5 rounded-full text-xs shadow hover:scale-105 transition">
