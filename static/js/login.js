@@ -31,7 +31,7 @@ loginTab.addEventListener("click", () => switchTab("login"));
 signupTab.addEventListener("click", () => switchTab("signup"));
 
 // ==============================
-// Typewriter effect
+// Typewriter
 // ==============================
 function typeWriter(elementId, messages, speed = 80, delay = 2500) {
   const element = document.getElementById(elementId);
@@ -60,7 +60,7 @@ typeWriter("login-typewriter", [
   "Secure, fast, and reliable.",
 ]);
 typeWriter("signup-typewriter", [
-  "Create an account to get started.",
+  "Create an account with us to get started.",
   "Join Epiconsult Diagnostics today!",
 ]);
 
@@ -77,20 +77,45 @@ document.querySelectorAll(".toggle-password").forEach((toggle) => {
 });
 
 // ==============================
-// Firebase Auth Handling
+// Helpers
 // ==============================
+const AUTH_FLASH_KEY = "auth:flash";
+
 function getNextUrl() {
   const params = new URLSearchParams(window.location.search);
   return params.get("next") || "/";
 }
 
+function resetLoginButton() {
+  const btn = document.getElementById("login-submit-btn");
+  if (btn) {
+    btn.disabled = false;
+    btn.textContent = "Sign In";
+  }
+}
+
+// On back/forward cache restore or normal load, reset any stale UI
+window.addEventListener("pageshow", resetLoginButton);
+window.addEventListener("DOMContentLoaded", () => {
+  resetLoginButton();
+  // Nuke any non-auth flash messages that might have leaked in
+  sessionStorage.removeItem("authMessage"); // older key used elsewhere
+});
+
+// ==============================
+// Firebase Auth Handling
+// ==============================
 // Login
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
+  // stop other global listeners (e.g., booking) from hijacking this submit
+  e.stopPropagation();
+  e.stopImmediatePropagation();
+
   const email = document.getElementById("login-email").value;
   const password = document.getElementById("login-password").value;
   const errorBox = document.getElementById("login-error");
-  const submitBtn = loginForm.querySelector(".submit-btn");
+  const submitBtn = document.getElementById("login-submit-btn");
 
   errorBox.textContent = "";
   submitBtn.disabled = true;
@@ -98,7 +123,7 @@ loginForm.addEventListener("submit", async (e) => {
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    sessionStorage.setItem("authMessage", "Login successful 🎉");
+    sessionStorage.setItem(AUTH_FLASH_KEY, "Login successful 🎉");
     window.location.href = getNextUrl();
   } catch (error) {
     errorBox.textContent = error.message;
@@ -110,10 +135,15 @@ loginForm.addEventListener("submit", async (e) => {
 // Signup
 signupForm.addEventListener("submit", async (e) => {
   e.preventDefault();
+  e.stopPropagation();
+  e.stopImmediatePropagation();
+
   const email = document.getElementById("signup-email").value;
   const password = document.getElementById("signup-password").value;
   const confirmPassword = document.getElementById("signup-confirm-password").value;
   const errorBox = document.getElementById("signup-error");
+  const submitBtn = document.getElementById("signup-submit-btn");
+
   errorBox.textContent = "";
 
   if (password !== confirmPassword) {
@@ -122,11 +152,15 @@ signupForm.addEventListener("submit", async (e) => {
   }
 
   try {
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Creating account...";
     await createUserWithEmailAndPassword(auth, email, password);
-    sessionStorage.setItem("authMessage", "Account created successfully 🎉 Please log in.");
+    sessionStorage.setItem(AUTH_FLASH_KEY, "Account created successfully 🎉 Please log in.");
     window.location.href = "/login";
   } catch (error) {
     errorBox.textContent = error.message;
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Create Account";
   }
 });
 
@@ -138,7 +172,7 @@ const googleProvider = new GoogleAuthProvider();
 document.getElementById("googleLoginBtnSignin")?.addEventListener("click", () => {
   signInWithPopup(auth, googleProvider)
     .then(() => {
-      sessionStorage.setItem("authMessage", "Login successful 🎉");
+      sessionStorage.setItem(AUTH_FLASH_KEY, "Login successful 🎉");
       window.location.href = getNextUrl();
     })
     .catch((error) => {
@@ -146,10 +180,10 @@ document.getElementById("googleLoginBtnSignin")?.addEventListener("click", () =>
     });
 });
 
-document.getElementById("googleLoginBtn")?.addEventListener("click", () => {
+document.getElementById("googleLoginBtnSignup")?.addEventListener("click", () => {
   signInWithPopup(auth, googleProvider)
     .then(() => {
-      sessionStorage.setItem("authMessage", "Account created successfully 🎉 Please log in.");
+      sessionStorage.setItem(AUTH_FLASH_KEY, "Account created successfully 🎉 Please log in.");
       window.location.href = "/login";
     })
     .catch((error) => {
@@ -158,17 +192,19 @@ document.getElementById("googleLoginBtn")?.addEventListener("click", () => {
 });
 
 // ==============================
-// Flash Message
+// Auth Flash Message (namespaced)
 // ==============================
 window.addEventListener("DOMContentLoaded", () => {
-  const message = sessionStorage.getItem("authMessage");
+  const message = sessionStorage.getItem(AUTH_FLASH_KEY);
   if (message) {
     const box = document.createElement("div");
-    box.className = "flash-message fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-4 py-2 rounded shadow";
+    box.className = box.className =
+  "flash-message fixed top-36 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-4 py-2 rounded shadow-lg z-[9999]";
+
     box.textContent = message;
     document.body.prepend(box);
 
     setTimeout(() => box.remove(), 3000);
-    sessionStorage.removeItem("authMessage");
+    sessionStorage.removeItem(AUTH_FLASH_KEY);
   }
 });

@@ -17,6 +17,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 
+// ✅ Shared flash key
+const AUTH_FLASH_KEY = "auth:flash";
+
 // ✅ UI elements
 const loginLink = document.getElementById("login-link");
 const loginLinkMobile = document.getElementById("login-link-mobile");
@@ -29,34 +32,44 @@ const userSectionMobile = document.getElementById("user-section-mobile");
 const welcomeMsgMobile = document.getElementById("welcome-msg-mobile");
 const logoutBtnMobile = document.getElementById("logout-btn-mobile");
 
+// ✅ Helpers: fade show/hide (no layout jump)
+function showEl(el) {
+  if (!el) return;
+  el.classList.remove("opacity-0", "pointer-events-none");
+}
+function hideEl(el) {
+  if (!el) return;
+  el.classList.add("opacity-0", "pointer-events-none");
+}
+
 // ✅ Listen for auth state
 onAuthStateChanged(auth, (user) => {
   if (user) {
     const name = user.displayName || user.email.split("@")[0];
 
-    if (loginLink) loginLink.classList.add("hidden");
-    if (loginLinkMobile) loginLinkMobile.classList.add("hidden");
+    hideEl(loginLink);
+    hideEl(loginLinkMobile);
 
-    if (userSection) userSection.classList.remove("hidden");
+    showEl(userSection);
     if (welcomeMsg) welcomeMsg.textContent = `Welcome, ${name}`;
 
-    if (userSectionMobile) userSectionMobile.classList.remove("hidden");
+    showEl(userSectionMobile);
     if (welcomeMsgMobile) welcomeMsgMobile.textContent = `Welcome, ${name}`;
   } else {
-    if (loginLink) loginLink.classList.remove("hidden");
-    if (loginLinkMobile) loginLinkMobile.classList.remove("hidden");
+    showEl(loginLink);
+    showEl(loginLinkMobile);
 
-    if (userSection) userSection.classList.add("hidden");
-    if (userSectionMobile) userSectionMobile.classList.add("hidden");
+    hideEl(userSection);
+    hideEl(userSectionMobile);
   }
 });
 
-// ✅ Logout
-logoutBtn?.addEventListener("click", async () => {
+// ✅ Logout handlers
+async function handleLogout() {
   await signOut(auth);
+  sessionStorage.setItem(AUTH_FLASH_KEY, "Logout successful ✅");
   window.location.href = "/login";
-});
-logoutBtnMobile?.addEventListener("click", async () => {
-  await signOut(auth);
-  window.location.href = "/login";
-});
+}
+
+logoutBtn?.addEventListener("click", handleLogout);
+logoutBtnMobile?.addEventListener("click", handleLogout);

@@ -1,0 +1,45 @@
+/* Reserve space for user menu so navbar doesn’t jump */
+#user-section {
+  position: relative;
+  width: 160px;  /* adjust to your design */
+  height: 48px;  /* matches button/avatar height */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  transition: opacity 0.2s ease;
+}
+
+/* Hidden state (keeps space but invisible) */
+.opacity-0 {
+  opacity: 0 !important;
+}
+.pointer-events-none {
+  pointer-events: none !important;
+}
+
+/* Dropdown styling */
+#user-dropdown {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.2s ease;
+  z-index: 1000;
+}
+
+#user-dropdown.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  display: block;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #374151;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+.dropdown-item:hover {
+  background: #f3f4f6;
+  color: #111827;
+}

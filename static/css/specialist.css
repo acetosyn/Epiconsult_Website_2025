@@ -3,87 +3,135 @@
   border-radius: 1rem;
   padding: 2rem;
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-  transition: transform 0.3s, box-shadow 0.3s;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 .special-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  transform: scale(1.08);
+  box-shadow: 0 22px 45px rgba(0,0,0,0.28);
 }
 
 /* ===== Service Items ===== */
 .service-item {
   font-weight: 500;
   border-radius: 0.75rem;
-  transition: transform 0.3s ease, background 0.3s ease;
+  margin-bottom: 0.5rem;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.3s ease;
 }
+.service-item { will-change: transform; transform-origin: center; }
 .service-item:hover {
+  transform: scale(1.12);
+  z-index: 10;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+/* Expandable */
+.service-item.has-sub {
+  background: rgba(255, 255, 255, 0.12);
+  border: 2px solid rgba(225, 29, 72, 0.6);
+  cursor: pointer;
+}
+.service-item.has-sub:hover {
+  background: rgba(225, 29, 72, 0.15);
+}
+.service-item.has-sub.open {
+  background: rgba(34, 197, 94, 0.15);
+  border-color: rgba(34, 197, 94, 0.6);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.3);
+}
+
+/* ===== Collapse & Toggle ===== */
+.toggle-icon {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: #e11d48;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+.service-item.open > .flex .toggle-icon {
+  color: #16a34a;
+}
+
+/* ===== Sub-list Styling ===== */
+.sub-list {
+  padding-left: 0.75rem;
+  border-left: 2px dashed rgba(255, 255, 255, 0.2);
+}
+.sub-item {
+  font-size: 0.95rem;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(255,255,255,0.08);
+  transition: transform 0.35s ease, background 0.3s ease, box-shadow 0.35s ease;
+}
+.sub-item:hover {
+  transform: translateX(6px) scale(1.05);
+  background: rgba(255,255,255,0.2);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+/* ===== Pagination ===== */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  gap: 0.25rem;
+}
+.pagination-controls button {
+  font-weight: 500;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+.pagination-controls button:hover {
   transform: scale(1.08);
 }
 
 /* ===== Modal Animation ===== */
 .modal-content {
   opacity: 0;
-  transform: translateY(30px) scale(0.95);
+  transform: translateY(30px) scale(0.9);
 }
 .modal-content.show {
   opacity: 1 !important;
   transform: translateY(0) scale(1) !important;
-  transition: all 0.3s ease-out;
+  transition: all 0.35s ease-out;
 }
 
 /* ===== Dynamic Modal Themes ===== */
 .modal-navy {
-  background: rgb(0, 47, 94); /* deep navy */
+  background: rgb(0, 47, 94);
   color: white;
 }
-.modal-navy h3 {
-  color: #ffffff;
-}
+.modal-navy h3 { color: #ffffff; }
 .modal-navy .service-item {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.2);
 }
-.modal-navy .service-item:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
+.modal-navy .service-item:hover { background: rgba(255,255,255,0.15); }
 
-/* Red-themed modal with white base + red accents */
 .modal-red {
-  background: #ffffff; /* clean white background */
-  color: #333333; /* dark text for readability */
+  background: #ffffff;
+  color: #333333;
 }
-.modal-red h3 {
-  color: #b91c1c; /* Tailwind red-700 */
-}
+.modal-red h3 { color: #b91c1c; }
 .modal-red .service-item {
-  background: #fef2f2; /* subtle red-tinted background */
-  border: 1px solid #fecaca; /* light red border */
-  color: #991b1b; /* red-800 text */
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
 }
-.modal-red .service-item:hover {
-  background: #fee2e2; /* hover: slightly deeper red tint */
-}
+.modal-red .service-item:hover { background: #fee2e2; }
 
 /* ===== Service Card Icons ===== */
 .service-icon {
-  display: inline-block;
   font-size: 3.5rem;
-  line-height: 1;
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition: transform 0.35s ease;
 }
 .special-card:hover .service-icon {
-  transform: scale(1.15) rotate(-5deg);
+  transform: scale(1.2) rotate(-6deg);
 }
-
-/* Icons adapt inside modal themes */
-.modal-navy .service-icon {
-  color: #ffffff; /* white tint */
-}
-.modal-red .service-icon {
-  color: #b91c1c; /* red-700 accent */
-}
-
-
+.modal-navy .service-icon { color: #ffffff; }
+.modal-red .service-icon { color: #b91c1c; }
 
 /* ===== Book Now Button ===== */
 .book-btn {
@@ -91,12 +139,9 @@
   border-radius: 0.5rem;
   padding: 0.75rem 1.5rem;
   border: 2px solid transparent;
-  transition: all 0.3s ease;
+  transition: all 0.35s ease;
   cursor: pointer;
 }
-
-/* Medicine (navy theme) */
-/* Medicine (navy theme) */
 .modal-navy .book-btn {
   background: #ffffff;
   color: #003366;
@@ -106,11 +151,9 @@
   background: #003366;
   color: #ffffff;
   border-color: #003366;
-  transform: scale(1.05);
-  box-shadow: 0 0 12px rgba(0, 51, 102, 0.4);
+  transform: scale(1.08);
+  box-shadow: 0 0 12px rgba(0,51,102,0.4);
 }
-
-/* Surgery (red theme) */
 .modal-red .book-btn {
   background: transparent;
   color: #b91c1c;
@@ -119,6 +162,23 @@
 .modal-red .book-btn:hover {
   background: #b91c1c;
   color: #ffffff;
-  transform: scale(1.05);
-  box-shadow: 0 0 12px rgba(185, 28, 28, 0.4);
+  transform: scale(1.08);
+  box-shadow: 0 0 12px rgba(185,28,28,0.4);
+}
+
+/* ===== Scrollbar Styling ===== */
+#serviceList {
+  max-height: 60vh;  /* keeps pagination fixed */
+  overflow-y: auto;
+  padding-bottom: 0.5rem;
+}
+#serviceList::-webkit-scrollbar {
+  width: 8px;
+}
+#serviceList::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.25);
+  border-radius: 4px;
+}
+#serviceList::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.4);
 }
