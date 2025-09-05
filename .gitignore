@@ -18,3 +18,4 @@ firebase_config.html
 # Ignore project data folders
 new_database/
 dataset/
+generate.py

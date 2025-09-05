@@ -1,15 +1,29 @@
-/* Reserve space for user menu so navbar doesn’t jump */
-#user-section {
+/* =====================
+   User Section Wrapper
+   (reserve space so navbar doesn’t jump)
+===================== */
+#user-section,
+#user-section-mobile {
   position: relative;
-  width: 160px;  /* adjust to your design */
-  height: 48px;  /* matches button/avatar height */
   display: flex;
   align-items: center;
   justify-content: flex-end;
   transition: opacity 0.2s ease;
 }
 
-/* Hidden state (keeps space but invisible) */
+/* Desktop fixed width (prevents layout shift) */
+#user-section {
+  width: 160px;   /* adjust as needed */
+  height: 48px;   /* matches avatar/button */
+}
+
+/* Mobile full width */
+#user-section-mobile {
+  width: 100%;
+  min-height: 56px;
+}
+
+/* Keep space reserved, but hide visually */
 .opacity-0 {
   opacity: 0 !important;
 }
@@ -17,19 +31,36 @@
   pointer-events: none !important;
 }
 
-/* Dropdown styling */
-#user-dropdown {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.2s ease;
+/* =====================
+   Dropdown Styling
+===================== */
+#user-dropdown,
+#user-dropdown-mobile {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 200px;
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 0;
   z-index: 1000;
+
+  /* Start hidden */
+  opacity: 0;
+  transform: translateY(-10px);
+  visibility: hidden;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
 }
 
-#user-dropdown.show {
+#user-dropdown.show,
+#user-dropdown-mobile.show {
   opacity: 1;
   transform: translateY(0);
+  visibility: visible;
 }
 
+/* Dropdown Items */
 .dropdown-item {
   display: block;
   padding: 0.75rem 1rem;
@@ -39,6 +70,7 @@
   border-radius: 0.5rem;
   transition: all 0.2s ease;
 }
+
 .dropdown-item:hover {
   background: #f3f4f6;
   color: #111827;
