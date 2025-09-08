@@ -1,165 +1,110 @@
 import os
-from flask import Flask, render_template, request, url_for, redirect
-from engine import get_test_data, get_department_info
-from flask import jsonify
-import json
-from lab import load_lab_categories   # 👈 import our helper
+from datetime import timedelta
+from flask import Flask, url_for, session, request, jsonify, g
+
+# Firebase admin
+from firebase_admin_init import firebase_auth, firebase_db
+
+# Import blueprints
+from blueprints.main import main_bp
+from blueprints.clinic import clinic_bp
+from blueprints.diagnostics import diagnostics_bp
+from blueprints.info import info_bp
+from blueprints.api_endpoints import api_bp
+
+# Shared JSON data loader
+from services import data_loader
 
 
+# -------------------------------
+# APP CONFIG
+# -------------------------------
 app = Flask(__name__)
+app.secret_key = os.environ.get("SECRET_KEY", "supersecret")
+app.permanent_session_lifetime = timedelta(days=7)
 
 
-# 🔹 Load JSON files from /static
-with open(os.path.join(app.root_path, "static", "data", "tips.json"), "r", encoding="utf-8") as f:
-    tips = json.load(f)
+# -------------------------------
+# LOAD STATIC JSON DATA
+# -------------------------------
+data_loader.tips = data_loader.load_json(app.root_path, "tips.json")
+data_loader.faqs = data_loader.load_json(app.root_path, "faqs.json")
 
-with open(os.path.join(app.root_path, "static", "faqs.json"), "r", encoding="utf-8") as f:
-    faqs = json.load(f)
 
-# 🔹 Cache-busting helper
+# -------------------------------
+# AUTH SESSION ROUTES
+# -------------------------------
+@app.route("/sessionLogin", methods=["POST"])
+def session_login():
+    id_token = request.json.get("idToken")
+    if not id_token:
+        return {"error": "Missing ID token"}, 400
+
+    try:
+        decoded_token = firebase_auth.verify_id_token(id_token)
+        uid = decoded_token["uid"]
+
+        # Persist into Flask session
+        session["user"] = {
+            "uid": uid,
+            "email": decoded_token.get("email"),
+            "name": decoded_token.get("name") or decoded_token["email"].split("@")[0],
+        }
+        return {"message": "Session established"}
+    except Exception as e:
+        return {"error": f"Invalid token: {str(e)}"}, 401
+
+
+@app.route("/sessionLogout", methods=["POST"])
+def session_logout():
+    session.clear()
+    return {"message": "Logged out"}
+
+
+# -------------------------------
+# CONTEXT PROCESSORS
+# -------------------------------
 @app.context_processor
-def override_url_for():
-    return dict(url_for=dated_url_for)
-
-def dated_url_for(endpoint, **values):
-    if endpoint == 'static':
-        filename = values.get('filename', None)
-        if filename:
-            file_path = os.path.join(app.root_path, endpoint, filename)
-            if os.path.isfile(file_path):
-                values['v'] = int(os.stat(file_path).st_mtime)  # use file's last modified time
-    return url_for(endpoint, **values)
-
-
-# --- Routes ---
-@app.route("/")
-def root():
-    return render_template("index.html")
-
-@app.route("/home")
-def home():
-    return render_template("index.html")
-
-
-# ...
-@app.route("/login")
-def login():
-    next_page = request.args.get("next") or url_for("home")
-    return render_template("login.html", next_page=next_page)
-
-
-
-# -------------------------------
-# 🏥 CLINIC ROUTES
-# -------------------------------
-@app.route("/clinic/general")
-def general():
-    return render_template("clinic/general.html")
-
-@app.route("/teleconsultation")
-def teleconsultation():
-    return render_template("teleconsultation.html")
-
-@app.route("/clinic/sickle-cell")
-def sickle_cell():
-    return render_template("clinic/sickle_cell.html")
-
-@app.route("/clinic/specialist")
-def specialist():
-    return render_template("clinic/specialist.html")
-
-
-
-
-# -------------------------------
-# 🏥 JSON FILES
-# -------------------------------
-
-# ✅ JSON endpoints
-@app.route("/get-daily-tips")
-def get_daily_tips():
-    return jsonify(tips)
-
-@app.route("/faqs")
-def get_faqs():
-    return jsonify(faqs)
-
-
-
-
-# -------------------------------
-# 🔬 DIAGNOSTICS ROUTES
-# -------------------------------
-@app.route("/diagnostics/radiology")
-def radiology():
-    return render_template("radiology.html")
-
-
-@app.route("/diagnostics/laboratory")
-def laboratory():
-    test_data = get_test_data()
-    categories = load_lab_categories()
-    return render_template(
-        "laboratory.html",
-        lab_services=test_data.get("Laboratory", {}),
-        lab_categories=categories
+def inject_user():
+    """
+    Expose current_user to all templates.
+    Priority:
+    1. g.user (from verify_token-protected APIs)
+    2. session["user"] (from cookie-based login)
+    """
+    return dict(
+        current_user=getattr(g, "user", None) or session.get("user")
     )
 
 
+@app.context_processor
+def override_url_for():
+    """Cache-busting for static files."""
+    return dict(url_for=dated_url_for)
+
+
+def dated_url_for(endpoint, **values):
+    if endpoint == "static":
+        filename = values.get("filename")
+        if filename:
+            file_path = os.path.join(app.root_path, endpoint, filename)
+            if os.path.isfile(file_path):
+                values["v"] = int(os.stat(file_path).st_mtime)
+    return url_for(endpoint, **values)
 
 
 # -------------------------------
-# OTHER MAIN ROUTES
+# REGISTER BLUEPRINTS
 # -------------------------------
-
-@app.route("/book-appointment")
-def book_appointment():
-    test_data = get_test_data()
-    return render_template("appointment.html", test_data=test_data)
-
-
-
-@app.route("/contact")
-def contact():
-    return render_template("contact.html")
-
-@app.route("/about")
-def about():
-    return render_template("about.html")
-
-@app.route("/blog")
-def blog():
-    return "<h1>Blog Page Coming Soon</h1>"
-
-@app.route("/patient-portal")
-def patient_portal():
-    return "<h1>Patient Portal Coming Soon</h1>"
-
-@app.route("/forgot-password")
-def forgot_password():
-    return "<h1>Forgot Password Page Coming Soon</h1>"
-
+app.register_blueprint(main_bp)
+app.register_blueprint(clinic_bp, url_prefix="/clinic")
+app.register_blueprint(diagnostics_bp, url_prefix="/diagnostics")
+app.register_blueprint(info_bp)
+app.register_blueprint(api_bp, url_prefix="/api")   # ✅ keep API routes separate
 
 
 # -------------------------------
-# INFO / LEGAL ROUTES
+# ENTRYPOINT
 # -------------------------------
-@app.route("/privacy-policy")
-def privacy_policy():
-    return "<h1>Privacy Policy Page Coming Soon</h1>"
-
-@app.route("/terms-of-service")
-def terms_of_service():
-    return "<h1>Terms of Service Page Coming Soon</h1>"
-
-@app.route("/cookie-policy")
-def cookie_policy():
-    return "<h1>Cookie Policy Page Coming Soon</h1>"
-
-@app.route("/accessibility")
-def accessibility():
-    return "<h1>Accessibility Page Coming Soon</h1>"
-
-
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)

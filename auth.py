@@ -1,8 +1,9 @@
 # auth.py
 from functools import wraps
-from flask import request, jsonify
-from firebase_admin import auth, firestore  # <-- add firestore
-from database import db   # import your Firestore client
+from flask import request, jsonify, g
+from firebase_admin import auth, firestore
+from firebase_admin_init import firebase_db   # ✅ use shared Firestore client
+
 
 def verify_token(f):
     @wraps(f)
@@ -17,21 +18,24 @@ def verify_token(f):
             uid = decoded_token["uid"]
 
             # Ensure user exists in Firestore (first-time login)
-            user_ref = db.collection("users").document(uid)
+            user_ref = firebase_db.collection("users").document(uid)
             if not user_ref.get().exists:
                 user_data = {
                     "uid": uid,
                     "email": decoded_token.get("email"),
                     "name": decoded_token.get("name"),
                     "provider": decoded_token.get("firebase", {}).get("sign_in_provider"),
-                    "created_at": firestore.SERVER_TIMESTAMP
+                    "created_at": firestore.SERVER_TIMESTAMP,
                 }
                 user_ref.set(user_data)
 
-            request.user = decoded_token  # attach user info for route
+            # Attach user info to Flask global context
+            g.user = decoded_token
+
         except Exception as e:
             return jsonify({"error": f"Invalid token: {str(e)}"}), 401
 
         return f(*args, **kwargs)
 
     return decorated_function
+print("✅ Auth module loaded")
