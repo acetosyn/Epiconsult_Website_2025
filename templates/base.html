@@ -115,7 +115,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </a>
-          <div class="dropdown-card w-72">
+          <div class="absolute hidden group-hover:block mt-2 w-72 bg-white rounded-xl shadow-lg border border-gray-200 z-50">
             <a href="{{ url_for('clinic.general') }}" class="dropdown-link">General Consultation</a>
             <a href="{{ url_for('clinic.sickle_cell') }}" class="dropdown-link">Sickle Cell Clinic</a>
             <a href="{{ url_for('clinic.specialist') }}" class="dropdown-link">Specialist Clinic</a>
@@ -130,7 +130,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </a>
-          <div class="dropdown-card w-72">
+          <div class="absolute hidden group-hover:block mt-2 w-72 bg-white rounded-xl shadow-lg border border-gray-200 z-50">
             <a href="{{ url_for('diagnostics.radiology') }}" class="dropdown-link">Radiology</a>
             <a href="{{ url_for('diagnostics.laboratory') }}" class="dropdown-link">Laboratory</a>
           </div>
@@ -140,7 +140,7 @@
         <a href="{{ url_for('main.about') }}" class="nav-link">ABOUT</a>
         <a href="{{ url_for('main.contact') }}" class="nav-link">CONTACT</a>
 
-        <!-- Login + Patient Portal -->
+        <!-- Login + Patient Portal (Desktop) -->
         <a href="{{ url_for('main.login') }}" 
            id="login-link"
            class="btn-primary flex items-center space-x-1 px-3 py-1 text-sm">
@@ -153,6 +153,31 @@
           <span>🔒</span>
           <span class="font-medium">Patient Portal</span>
         </a>
+
+        <!-- User Section (Desktop) -->
+        <div id="user-section" class="relative opacity-0 pointer-events-none">
+          <button
+            id="user-menu-btn"
+            class="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-100 transition"
+          >
+            <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+              </svg>
+            </div>
+            <span id="welcome-msg" class="hidden sm:inline font-medium text-gray-800"></span>
+            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          <!-- Dropdown -->
+          <div id="user-dropdown"
+               class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200">
+            <a href="/profile" class="dropdown-item">Profile</a>
+            <a href="#" id="logout-btn" class="dropdown-item text-red-600">Logout</a>
+          </div>
+        </div>
       </div>
 
       <!-- Mobile Menu Button -->
@@ -219,9 +244,6 @@
             text-white py-2 rounded-full font-medium mt-2 shadow transition">
       <span>🔒</span><span>Patient Portal</span>
     </a>
-  </div>
-</div>
-
 
     <!-- User Section (Mobile) -->
     <div id="user-section-mobile" class="relative opacity-0 pointer-events-none mt-3">
@@ -251,6 +273,7 @@
     </div>
   </div>
 </div>
+
 
 
 
@@ -554,12 +577,14 @@
 <script src="{{ url_for('static', filename='js/chat2.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chat-extras.js') }}"></script>
 
-<!-- Firebase auth & UI -->
-<script type="module" src="{{ url_for('static', filename='js/firebase.js') }}"></script>
+<!-- Firebase auth & protection -->
+<script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/auth-protect.js') }}"></script>
 <script src="{{ url_for('static', filename='js/user_dropdown.js') }}"></script>
 
-<!-- Mobile menu extra toggle (if still needed) -->
+<!-- Mobile menu toggle -->
 <script src="{{ url_for('static', filename='js/mobile_toggle.js') }}"></script>
+
 {% block scripts %}{% endblock %}
 </body>
 </html>

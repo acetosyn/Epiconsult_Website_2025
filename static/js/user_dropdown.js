@@ -33,15 +33,15 @@ toggleDropdown(userMenuBtnMobile, userDropdownMobile);
 // =============================
 function showUserMenu(userName) {
   // Desktop
-  document.getElementById("login-link")?.classList.add("hidden");
-  document.getElementById("user-section")?.classList.remove("opacity-0", "pointer-events-none");
+  document.getElementById("login-link")?.classList.remove("visible");
+  document.getElementById("user-section")?.classList.add("visible");
   if (document.getElementById("welcome-msg")) {
     document.getElementById("welcome-msg").textContent = `Hi, ${userName}`;
   }
 
   // Mobile
-  document.getElementById("login-link-mobile")?.classList.add("hidden");
-  document.getElementById("user-section-mobile")?.classList.remove("opacity-0", "pointer-events-none");
+  document.getElementById("login-link-mobile")?.classList.remove("visible");
+  document.getElementById("user-section-mobile")?.classList.add("visible");
   if (document.getElementById("welcome-msg-mobile")) {
     document.getElementById("welcome-msg-mobile").textContent = `Hi, ${userName}`;
   }
@@ -49,15 +49,15 @@ function showUserMenu(userName) {
 
 function logoutUser() {
   // Desktop
-  document.getElementById("login-link")?.classList.remove("hidden");
-  document.getElementById("user-section")?.classList.add("opacity-0", "pointer-events-none");
+  document.getElementById("login-link")?.classList.add("visible");
+  document.getElementById("user-section")?.classList.remove("visible");
   if (document.getElementById("welcome-msg")) {
     document.getElementById("welcome-msg").textContent = "";
   }
 
   // Mobile
-  document.getElementById("login-link-mobile")?.classList.remove("hidden");
-  document.getElementById("user-section-mobile")?.classList.add("opacity-0", "pointer-events-none");
+  document.getElementById("login-link-mobile")?.classList.add("visible");
+  document.getElementById("user-section-mobile")?.classList.remove("visible");
   if (document.getElementById("welcome-msg-mobile")) {
     document.getElementById("welcome-msg-mobile").textContent = "";
   }
