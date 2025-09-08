@@ -1,6 +1,6 @@
 import os
 from datetime import timedelta
-from flask import Flask, url_for, session, request, jsonify, g
+from flask import Flask, url_for, session, request, g, redirect
 
 # Firebase admin
 from firebase_admin_init import firebase_auth, firebase_db
@@ -66,12 +66,7 @@ def session_logout():
 # -------------------------------
 @app.context_processor
 def inject_user():
-    """
-    Expose current_user to all templates.
-    Priority:
-    1. g.user (from verify_token-protected APIs)
-    2. session["user"] (from cookie-based login)
-    """
+    """Expose current_user to all templates."""
     return dict(
         current_user=getattr(g, "user", None) or session.get("user")
     )
@@ -104,7 +99,36 @@ app.register_blueprint(api_bp, url_prefix="/api")   # ✅ keep API routes separa
 
 
 # -------------------------------
+# GLOBAL ALIASES for FRONTEND
+# -------------------------------
+@app.route("/", endpoint="home")
+def home_alias():
+    return redirect(url_for("main.home"))
+
+@app.route("/login", endpoint="login")
+def login_alias():
+    return redirect(url_for("main.login"))
+
+@app.route("/book-appointment", endpoint="book_appointment")
+def book_appointment_alias():
+    return redirect(url_for("main.book_appointment"))
+
+@app.route("/contact", endpoint="contact")
+def contact_alias():
+    return redirect(url_for("main.contact"))
+
+@app.route("/about", endpoint="about")
+def about_alias():
+    return redirect(url_for("main.about"))
+
+
+# -------------------------------
 # ENTRYPOINT
 # -------------------------------
+print("Registered routes:")
+for rule in app.url_map.iter_rules():
+    print(rule.endpoint, rule.rule)
+
+
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
