@@ -88,7 +88,7 @@
   <div class="container mx-auto px-4">
     <div class="flex justify-between items-center py-4">
       
-      <!-- Logo + Brand (Clickable to Home) -->
+      <!-- Logo + Brand -->
       <a href="{{ url_for('main.home') }}" class="flex items-center space-x-3">
         <img src="{{ url_for('static', filename='images/logo.jpeg') }}" 
              alt="Epiconsult Logo" 
@@ -140,42 +140,46 @@
         <a href="{{ url_for('main.about') }}" class="nav-link">ABOUT</a>
         <a href="{{ url_for('main.contact') }}" class="nav-link">CONTACT</a>
 
-        <!-- Login + Patient Portal (Desktop) -->
-        <a href="{{ url_for('main.login') }}" 
-           id="login-link"
-           class="btn-primary flex items-center space-x-1 px-3 py-1 text-sm">
-          <span>🔑</span>
-          <span class="font-medium">Login</span>
-        </a>
-
+        <!-- Patient Portal (always visible) -->
         <a href="{{ url_for('main.patient_portal') }}" 
            class="btn-primary flex items-center space-x-1 px-3 py-1 text-sm">
           <span>🔒</span>
           <span class="font-medium">Patient Portal</span>
         </a>
 
-        <!-- User Section (Desktop) -->
-        <div id="user-section" class="relative opacity-0 pointer-events-none">
-          <button
-            id="user-menu-btn"
-            class="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-100 transition"
-          >
-            <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
-              </svg>
-            </div>
-            <span id="welcome-msg" class="hidden sm:inline font-medium text-gray-800"></span>
-            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
+        <!-- ✅ Auth Slot (Login OR User Section) -->
+        <div id="auth-slot" class="flex items-center justify-end w-[180px] h-[48px]">
+          
+          <!-- Login Link -->
+          <a id="login-link" 
+             href="{{ url_for('main.login') }}" 
+             class="btn-primary flex items-center space-x-1 px-3 py-1 text-sm">
+            <span>🔑</span>
+            <span class="font-medium">Login</span>
+          </a>
 
-          <!-- Dropdown -->
-          <div id="user-dropdown"
-               class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg border border-gray-200">
-            <a href="/profile" class="dropdown-item">Profile</a>
-            <a href="#" id="logout-btn" class="dropdown-item text-red-600">Logout</a>
+          <!-- User Section -->
+          <div id="user-section" class="hidden-user flex items-center gap-2">
+            <button
+              id="user-menu-btn"
+              class="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-100 transition"
+            >
+              <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+                </svg>
+              </div>
+              <span id="welcome-msg" class="hidden sm:inline font-medium text-gray-800"></span>
+              <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            <!-- Dropdown -->
+            <div id="user-dropdown">
+              <a href="/profile" class="dropdown-item">Profile</a>
+              <a href="#" id="logout-btn" class="dropdown-item text-red-600">Logout</a>
+            </div>
           </div>
         </div>
       </div>
@@ -246,7 +250,7 @@
     </a>
 
     <!-- User Section (Mobile) -->
-    <div id="user-section-mobile" class="relative opacity-0 pointer-events-none mt-3">
+    <div id="user-section-mobile" class="hidden-user mt-3">
       <button
         id="user-menu-btn-mobile"
         class="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-100 transition w-full justify-between"
@@ -265,8 +269,7 @@
       </button>
 
       <!-- Dropdown -->
-      <div id="user-dropdown-mobile"
-           class="mt-2 w-full bg-white rounded-xl shadow-lg border border-gray-200">
+      <div id="user-dropdown-mobile">
         <a href="/profile" class="dropdown-item block">Profile</a>
         <a href="#" id="logout-btn-mobile" class="dropdown-item text-red-600 block">Logout</a>
       </div>
@@ -566,6 +569,30 @@
 </div>
 
 
+<!-- Inject user info from Flask -->
+<script>
+  window.__USER__ = {
+    isLoggedIn: {{ 'true' if current_user else 'false' }},
+    username: "{{ current_user.name if current_user else '' }}"
+  };
+</script>
+
+
+<!-- Firebase core & session sync -->
+<script type="module" src="{{ url_for('static', filename='js/firebase.js') }}"></script>
+
+<!-- Route protection -->
+<script type="module" src="{{ url_for('static', filename='js/auth-protect.js') }}"></script>
+
+<!-- Auth UI (show/hide login vs user-section) -->
+<script src="{{ url_for('static', filename='js/auth-ui.js') }}"></script>
+
+<!-- User dropdown toggle -->
+<script src="{{ url_for('static', filename='js/user_dropdown.js') }}"></script>
+
+<!-- Mobile menu toggle -->
+<script src="{{ url_for('static', filename='js/mobile_toggle.js') }}"></script>
+
 <!-- Core scripts -->
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 <script src="{{ url_for('static', filename='js/base.js') }}"></script>
@@ -577,13 +604,6 @@
 <script src="{{ url_for('static', filename='js/chat2.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chat-extras.js') }}"></script>
 
-<!-- Firebase auth & protection -->
-<script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script>
-<script type="module" src="{{ url_for('static', filename='js/auth-protect.js') }}"></script>
-<script src="{{ url_for('static', filename='js/user_dropdown.js') }}"></script>
-
-<!-- Mobile menu toggle -->
-<script src="{{ url_for('static', filename='js/mobile_toggle.js') }}"></script>
 
 {% block scripts %}{% endblock %}
 </body>

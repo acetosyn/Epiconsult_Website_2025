@@ -223,10 +223,4 @@ textarea:focus {
   }
 }
 
-/* Prevent flicker — everything hidden until Firebase decides */
-#login-link,
-#login-link-mobile,
-#user-section,
-#user-section-mobile {
-  display: none;
-}
+

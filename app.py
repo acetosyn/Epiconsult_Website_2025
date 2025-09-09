@@ -89,6 +89,15 @@ def dated_url_for(endpoint, **values):
 
 
 # -------------------------------
+# NO-CACHE HEADERS (fix stale navbar)
+# -------------------------------
+@app.after_request
+def add_no_cache(response):
+    response.headers["Cache-Control"] = "no-store"
+    return response
+
+
+# -------------------------------
 # REGISTER BLUEPRINTS
 # -------------------------------
 app.register_blueprint(main_bp)

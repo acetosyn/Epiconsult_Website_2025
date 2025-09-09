@@ -1,77 +1,30 @@
 // static/js/user_dropdown.js
+// Handles dropdown toggle only (desktop + mobile)
 
-// =============================
-// Dropdown Toggles (Desktop + Mobile)
-// =============================
-const userMenuBtn = document.getElementById("user-menu-btn");
-const userDropdown = document.getElementById("user-dropdown");
+document.addEventListener("DOMContentLoaded", () => {
+  function setupDropdown(buttonId, dropdownId) {
+    const button = document.getElementById(buttonId);
+    const dropdown = document.getElementById(dropdownId);
 
-const userMenuBtnMobile = document.getElementById("user-menu-btn-mobile");
-const userDropdownMobile = document.getElementById("user-dropdown-mobile");
+    if (!button || !dropdown) return;
 
-function toggleDropdown(button, dropdown) {
-  if (!button || !dropdown) return;
+    // Toggle dropdown
+    button.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const isOpen = dropdown.classList.toggle("show");
+      button.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
 
-  button.addEventListener("click", (e) => {
-    e.stopPropagation();
-    dropdown.classList.toggle("show"); // controlled by user_icon.css
-  });
-
-  // Close when clicking outside
-  document.addEventListener("click", (e) => {
-    if (!dropdown.contains(e.target) && !button.contains(e.target)) {
-      dropdown.classList.remove("show");
-    }
-  });
-}
-
-toggleDropdown(userMenuBtn, userDropdown);
-toggleDropdown(userMenuBtnMobile, userDropdownMobile);
-
-// =============================
-// Login / Logout Visibility Logic
-// =============================
-function showUserMenu(userName) {
-  // Desktop
-  document.getElementById("login-link")?.classList.remove("visible");
-  document.getElementById("user-section")?.classList.add("visible");
-  if (document.getElementById("welcome-msg")) {
-    document.getElementById("welcome-msg").textContent = `Hi, ${userName}`;
+    // Close on outside click
+    document.addEventListener("click", (e) => {
+      if (!dropdown.contains(e.target) && !button.contains(e.target)) {
+        dropdown.classList.remove("show");
+        button.setAttribute("aria-expanded", "false");
+      }
+    });
   }
 
-  // Mobile
-  document.getElementById("login-link-mobile")?.classList.remove("visible");
-  document.getElementById("user-section-mobile")?.classList.add("visible");
-  if (document.getElementById("welcome-msg-mobile")) {
-    document.getElementById("welcome-msg-mobile").textContent = `Hi, ${userName}`;
-  }
-}
-
-function logoutUser() {
-  // Desktop
-  document.getElementById("login-link")?.classList.add("visible");
-  document.getElementById("user-section")?.classList.remove("visible");
-  if (document.getElementById("welcome-msg")) {
-    document.getElementById("welcome-msg").textContent = "";
-  }
-
-  // Mobile
-  document.getElementById("login-link-mobile")?.classList.add("visible");
-  document.getElementById("user-section-mobile")?.classList.remove("visible");
-  if (document.getElementById("welcome-msg-mobile")) {
-    document.getElementById("welcome-msg-mobile").textContent = "";
-  }
-}
-
-// =============================
-// Logout Button Hooks
-// =============================
-document.getElementById("logout-btn")?.addEventListener("click", (e) => {
-  e.preventDefault();
-  logoutUser();
-});
-
-document.getElementById("logout-btn-mobile")?.addEventListener("click", (e) => {
-  e.preventDefault();
-  logoutUser();
+  // Init desktop + mobile
+  setupDropdown("user-menu-btn", "user-dropdown");
+  setupDropdown("user-menu-btn-mobile", "user-dropdown-mobile");
 });

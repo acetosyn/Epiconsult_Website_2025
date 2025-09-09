@@ -1,5 +1,5 @@
 // static/js/auth-protect.js
-import { auth } from "./auth.js";  // reuse the already initialized Firebase auth
+import { auth } from "./firebase.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("[data-protected]").forEach(link => {
@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const user = auth.currentUser;
       if (!user) {
         e.preventDefault();
-        // Redirect to login with ?next param
         window.location.href = "/login?next=" + encodeURIComponent(link.getAttribute("href"));
       }
     });
