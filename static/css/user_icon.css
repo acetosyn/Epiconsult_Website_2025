@@ -8,12 +8,12 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
 /* Desktop fixed width (prevents layout shift) */
 #user-section {
-  width: 160px;   /* adjust as needed */
+  width: 180px;   /* enough space for avatar + text */
   height: 48px;   /* matches avatar/button */
 }
 
@@ -23,12 +23,12 @@
   min-height: 56px;
 }
 
-/* Keep space reserved, but hide visually */
-.opacity-0 {
-  opacity: 0 !important;
-}
-.pointer-events-none {
-  pointer-events: none !important;
+/* Hide but keep reserved space */
+.hidden-user {
+  opacity: 0;
+  visibility: hidden;   /* ensures text/images are fully hidden */
+  pointer-events: none; /* prevent accidental clicks */
+  transition: opacity 0.25s ease, visibility 0.25s ease;
 }
 
 /* =====================
@@ -48,7 +48,7 @@
 
   /* Start hidden */
   opacity: 0;
-  transform: translateY(-10px);
+  transform: translateY(-8px);
   visibility: hidden;
   transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
 }
@@ -68,10 +68,36 @@
   font-weight: 500;
   color: #374151;
   border-radius: 0.5rem;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .dropdown-item:hover {
   background: #f3f4f6;
   color: #111827;
+  transform: translateX(4px); /* subtle modern hover shift */
+}
+
+/* =====================
+   Avatar / Button Tweaks
+===================== */
+#user-menu-btn,
+#user-menu-btn-mobile {
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+#user-menu-btn:hover,
+#user-menu-btn-mobile:hover {
+  background: #f9fafb;
+  transform: scale(1.02); /* subtle hover feedback */
+}
+
+#user-menu-btn svg,
+#user-menu-btn-mobile svg {
+  transition: transform 0.25s ease;
+}
+
+#user-menu-btn[aria-expanded="true"] svg:last-child,
+#user-menu-btn-mobile[aria-expanded="true"] svg:last-child {
+  transform: rotate(180deg); /* rotate chevron when open */
 }
