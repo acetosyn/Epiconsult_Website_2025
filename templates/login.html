@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<main class="auth-container" data-page="login">
+  <div class="auth-box" role="region" aria-label="Authentication card">
+    <!-- Logo Header -->
+    <div class="logo-header">
+      <a href="{{ url_for('home') }}" class="brand" aria-label="Back to home">
+        <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Epiconsult Logo" class="logo-img" />
+        <div>
+          <h1>
+            <span class="text-red">Epiconsult</span> <span class="text-navy">Diagnostics</span>
+          </h1>
+          <p class="tagline">WITH YOU FOR LIFE</p>
+        </div>
+      </a>
+    </div>
+
+    <!-- Auth Header -->
+    <div class="auth-header">
+      <h1>Welcome to Epiconsult</h1>
+      <p>Your trusted diagnostics partner</p>
+    </div>
+
+    <!-- Tab Switch -->
+    <div class="tab-buttons" role="tablist" aria-label="Choose Sign In or Sign Up">
+      <button id="loginTab" class="tab-btn active" role="tab" aria-selected="true" aria-controls="loginForm">Sign In</button>
+      <button id="signupTab" class="tab-btn" role="tab" aria-selected="false" aria-controls="signupForm">Sign Up</button>
+    </div>
+
+    <!-- Forms wrapper -->
+    <div class="auth-forms-wrapper">
+      <div class="auth-forms" id="formsSlider">
+
+        <!-- Login Form -->
+        <form id="loginForm" class="form active" role="tabpanel" aria-labelledby="loginTab" novalidate>
+          <div class="typewriter-message" aria-live="polite">
+            <span id="login-typewriter"></span>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="form-field">
+              <label for="login-email">Email</label>
+              <input type="email" id="login-email" placeholder="Enter your email" autocomplete="username" required>
+            </div>
+
+            <div class="form-field">
+              <label for="login-password">Password</label>
+              <div class="input-with-toggle">
+                <input type="password" id="login-password" placeholder="Enter your password" autocomplete="current-password" required>
+                <button type="button" class="toggle-password" aria-label="Toggle password visibility">👁️</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="login-error" class="error-message" aria-live="assertive"></div>
+
+          <!-- NOTE: class is now auth-submit-btn (not generic .submit-btn) -->
+          <button class="auth-submit-btn" type="submit" id="login-submit-btn">Sign In</button>
+
+          <button type="button" class="google-btn" id="googleLoginBtnSignin">
+            <img src="{{ url_for('static', filename='images/google_icon.png') }}" alt="Google Icon">
+            <span>Sign in with Google</span>
+          </button>
+        </form>
+
+        <!-- Signup Form -->
+        <form id="signupForm" class="form" role="tabpanel" aria-labelledby="signupTab" novalidate>
+          <div class="typewriter-message" aria-live="polite">
+            <span id="signup-typewriter"></span>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="form-field">
+              <label for="signup-first-name">First Name</label>
+              <input type="text" id="signup-first-name" placeholder="Enter your first name" autocomplete="given-name" required>
+            </div>
+
+            <div class="form-field">
+              <label for="signup-middle-name">Middle Name</label>
+              <input type="text" id="signup-middle-name" placeholder="Enter your middle name (optional)" autocomplete="additional-name">
+            </div>
+
+            <div class="form-field">
+              <label for="signup-last-name">Last Name</label>
+              <input type="text" id="signup-last-name" placeholder="Enter your last name" autocomplete="family-name" required>
+            </div>
+
+            <div class="form-field">
+              <label for="signup-email">Email</label>
+              <input type="email" id="signup-email" placeholder="Enter your email" autocomplete="email" required>
+            </div>
+
+            <div class="form-field">
+              <label for="signup-password">Password</label>
+              <div class="input-with-toggle">
+                <input type="password" id="signup-password" placeholder="Create a password" autocomplete="new-password" required>
+                <button type="button" class="toggle-password" aria-label="Toggle password visibility">👁️</button>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label for="signup-confirm-password">Confirm Password</label>
+              <div class="input-with-toggle">
+                <input type="password" id="signup-confirm-password" placeholder="Re-enter your password" autocomplete="new-password" required>
+                <button type="button" class="toggle-password" aria-label="Toggle password visibility">👁️</button>
+              </div>
+            </div>
+          </div>
+
+          <div id="signup-error" class="error-message" aria-live="assertive"></div>
+
+          <button class="auth-submit-btn" type="submit" id="signup-submit-btn">Create Account</button>
+
+          <button type="button" class="google-btn" id="googleLoginBtnSignup">
+            <img src="{{ url_for('static', filename='images/google_icon.png') }}" alt="Google Icon">
+            <span>Sign up with Google</span>
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script type="module" src="{{ url_for('static', filename='js/login.js') }}"></script>
+{% endblock %}

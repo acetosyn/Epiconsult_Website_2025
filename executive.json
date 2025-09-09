@@ -1,0 +1,158 @@
+{
+  "consultation": {
+    "category": "DOCTOR CONSULTATION",
+    "tests": [
+      "General Consultation",
+      "BMI",
+      "Testicular Examination & Instruction of Self Examination",
+      "Dietary Advice",
+      "Spirometry",
+      "Abdomino\u2013Pelvic Ultrasound Scan"
+    ]
+  },
+  "blood": {
+    "category": "COMPREHENSIVE BLOOD ANALYSIS",
+    "tests": [
+      "Full Blood Count",
+      "Malaria Parasite",
+      "ESR",
+      "Blood Group",
+      "Genotype",
+      "Peripheral Blood Film"
+    ]
+  },
+  "diabetic": {
+    "category": "DIABETIC PROFILE",
+    "tests": [
+      "Fasting Blood Sugar",
+      "Random Blood Sugar",
+      "HbA1c",
+      "2HPP",
+      "OGTT",
+      "Urinalysis",
+      "Microalbumin Urine",
+      "Fasting Insulin",
+      "C-Peptide"
+    ]
+  },
+  "kidney": {
+    "category": "KIDNEY FUNCTION TEST",
+    "tests": [
+      "Serum Electrolytes/Urea/Creatinine (S/E/U/Cr)",
+      "eGFR",
+      "Uric Acid",
+      "Serum Corrected Calcium",
+      "Phosphate"
+    ]
+  },
+  "cardiac": {
+    "category": "CARDIAC MARKER TEST",
+    "tests": [
+      "Fasting Lipid Profile (FLP)",
+      "D-Dimer",
+      "Troponin T",
+      "Troponin I",
+      "CK (NAC)",
+      "CK-MB (Mass)",
+      "Myoglobin",
+      "Homocysteine",
+      "Pro BNP",
+      "Echocardiogram",
+      "Resting ECG",
+      "Anti Diuretic Hormone (ADH)",
+      "LDH \u2013 Lactate Dehydrogenase"
+    ]
+  },
+  "immune": {
+    "category": "INFLAMMATION & IMMUNE SCREENING",
+    "tests": [
+      "Rheumatoid Factor",
+      "ASO Titre",
+      "ESR",
+      "CRP",
+      "Procalcitonin"
+    ]
+  },
+  "liver": {
+    "category": "LIVER FUNCTION TEST",
+    "tests": [
+      "Serum Bilirubin",
+      "ALP",
+      "GGT",
+      "AST",
+      "ALT",
+      "AFP",
+      "LDH"
+    ]
+  },
+  "pancreatic": {
+    "category": "PANCREATIC FUNCTION TEST",
+    "tests": [
+      "Amylase",
+      "Lipase",
+      "CA 19-9"
+    ]
+  },
+  "infection": {
+    "category": "INFECTION & CULTURE",
+    "tests": [
+      "Urinalysis",
+      "Urine MCS",
+      "Urethral Swab MCS",
+      "Semen Analysis",
+      "Serum MCS",
+      "Stool Analysis",
+      "Stool MCS"
+    ]
+  },
+  "cancer": {
+    "category": "CANCER SCREENING",
+    "tests": [
+      "PSA (>45 Years)",
+      "CEA",
+      "Prostate Ultrasound Scan",
+      "Testicular Ultrasound Scan"
+    ]
+  },
+  "endocrine": {
+    "category": "ENDOCRINE SCREENING",
+    "tests": [
+      "Thyroid Function Test",
+      "Free Testosterone",
+      "Total Testosterone"
+    ]
+  },
+  "bone": {
+    "category": "BONE PROFILE",
+    "tests": [
+      "25 Hydroxyl Vitamin D3",
+      "Serum Corrected Calcium",
+      "Magnesium",
+      "Phosphate",
+      "Calcitonin"
+    ]
+  },
+  "allergy": {
+    "category": "ALLERGY PANEL",
+    "tests": [
+      "IgE",
+      "Comprehensive Adult Allergy Panel",
+      "Food Allergy Panel",
+      "Inhalation Allergy Panel"
+    ]
+  },
+  "fertility": {
+    "category": "FERTILITY PROFILE",
+    "tests": [
+      "Semen Analysis",
+      "Testosterone"
+    ]
+  },
+  "vaccination": {
+    "category": "VACCINATION",
+    "tests": [
+      "Hepatitis B Vaccine",
+      "Typhoid Fever Vaccine"
+    ]
+  }
+}

@@ -1,46 +1,105 @@
 {% extends "clinic/base_clinic.html" %}
 
-{% block clinic_cards %}
-<div class="grid md:grid-cols-2 gap-10">
+{% block content %}
+  <!-- Hero Slider -->
+  {% include "partials/hero.html" %}
 
-  <!-- In-House Doctor Consultation -->
-  <div class="glass-card relative overflow-hidden">
-    <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-red-500/20 to-transparent rounded-bl-full"></div>
-    <div class="text-5xl mb-6 text-red-600">👨‍⚕️</div>
-    <h2 class="text-2xl font-semibold mb-4">Doctor Connect</h2>
-    <p class="text-gray-600 mb-6">
-      Need medical advice? Instantly connect with our in-house doctors for expert guidance.  
-      Book a session and let our team walk with you on your health journey.
-    </p>
-    <button onclick="confirmConsultation('doctor')" 
-            class="btn-primary">
-      💬 Book Consultation
+  <!-- Consultation Options Section -->
+  <section class="pt-20 pb-12 bg-gray-50"> <!-- reduced bottom padding -->
+    <div class="max-w-4xl mx-auto px-6 lg:px-8 text-center mb-12">
+      <h2 class="text-4xl font-bold text-navy">
+        Choose Your <span class="text-red-600">Consultation</span>
+      </h2>
+      <p class="mt-4 text-gray-600">
+        Select between in-house or telemedicine consultation.  
+        Modern care, tailored to your needs.
+      </p>
+    </div>
+
+    <!-- 🔹 Flex container with slight gap -->
+    <div class="max-w-4xl mx-auto flex flex-wrap justify-center gap-12">
+
+
+      <!-- In-House Doctor Consultation -->
+      <div class="general-card bg-navy text-white zoom-effect">
+        <div class="text-6xl mb-6 service-icon">👨‍⚕️</div>
+        <h2 class="text-2xl font-bold mb-4">In-House Doctor Consultation</h2>
+        <p class="mb-6 text-gray-200">
+          Consult directly with our in-house doctors for trusted care.  
+          Book your appointment and get confirmation instantly.
+        </p>
+
+        <form id="doctorForm" class="space-y-4">
+          <input type="text" name="fullName" placeholder="Full Name *" class="form-input" required>
+          <input type="email" name="email" placeholder="Email *" class="form-input" required>
+          <input type="date" name="date" class="form-input" required>
+          <select name="time" class="form-input" required>
+            <option value="">-- Select Time --</option>
+            <option>Morning (9AM - 12PM)</option>
+            <option>Afternoon (12PM - 5PM)</option>
+          </select>
+          <button type="submit" class="book-btn w-full">💬 Book Appointment</button>
+        </form>
+      </div>
+
+      <!-- TeleConsultation -->
+      <div class="general-card zoom-effect bg-red-600 text-white relative">
+        <div class="absolute top-4 right-4 bg-white/80 text-red-700 px-3 py-1 rounded-full text-xs font-semibold shadow">
+          ₦20,000
+        </div>
+        <div class="text-6xl mb-6 service-icon">💻</div>
+        <h2 class="text-2xl font-bold mb-4">Telemedicine Consultation</h2>
+        <p class="mb-6 text-gray-100">
+          Secure video consultation with our doctors. Accessible from anywhere, at your convenience.  
+          Book now and pay online to confirm your session.
+        </p>
+        <button id="teleBtn" class="book-btn w-full bg-white text-red-600 hover:bg-red-700 hover:text-white transition">
+          🎥 Video Consultation
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ / Guide Section -->
+  <section class="pt-8 pb-16 bg-gray-50"> <!-- reduced top padding -->
+    <div class="max-w-6xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 gap-6 justify-center">
+      
+      <!-- Consultation Guide -->
+      <div class="general-card bg-white shadow-lg p-8 rounded-2xl zoom-effect">
+        <h3 class="text-2xl font-bold text-navy mb-6">ℹ️ Consultation Guide</h3>
+        <ul class="space-y-4 text-gray-700">
+          <li>✅ Book your slot early to secure preferred times.</li>
+          <li>✅ Ensure valid contact details for appointment updates.</li>
+          <li>✅ Teleconsultations require advance payment of ₦20,000.</li>
+          <li>✅ Join teleconsultation from a quiet, well-lit location.</li>
+        </ul>
+      </div>
+
+      <!-- Extra Card (balances layout) -->
+      <div class="general-card bg-navy text-white shadow-lg p-8 rounded-2xl zoom-effect">
+        <h3 class="text-2xl font-bold mb-6">💡 Patient Support</h3>
+        <p class="text-gray-200">
+          Need help with booking, payments, or joining your teleconsultation?  
+          Our support team is always available to guide you.
+        </p>
+        <button class="book-btn bg-white text-navy hover:bg-navy hover:text-white transition mt-6 w-full">
+          📞 Contact Support
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Dynamic Slide-up Confirmation -->
+  <div id="confirmationCard" class="hidden fixed bottom-6 right-6 w-96 bg-white shadow-2xl rounded-2xl p-6 border border-gray-200 animate-slideUp">
+    <h3 class="text-xl font-semibold text-navy mb-3">✅ Appointment Confirmed!</h3>
+    <p class="text-gray-600" id="confirmationMessage"></p>
+    <button onclick="closeConfirmation()" class="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
+      Close
     </button>
   </div>
 
-  <!-- TeleConsultation -->
-  <div class="glass-card relative overflow-hidden">
-    <div class="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-yellow-400/20 to-transparent rounded-tr-full"></div>
-    <div class="text-5xl mb-6 text-yellow-500">💻</div>
-    <h2 class="text-2xl font-semibold mb-4">TeleConsultation</h2>
-    <p class="text-gray-600 mb-6">
-      Prefer virtual care? Book a video consultation with our doctors from anywhere.  
-      Secure, private, and professional healthcare—right from your device.
-    </p>
-    <button onclick="confirmConsultation('tele')" 
-            class="btn-primary">
-      🎥 Video Consultation
-    </button>
-  </div>
-</div>
-
-<!-- Dynamic Slide-up Confirmation -->
-<div id="confirmationCard" class="hidden fixed bottom-6 right-6 w-96 bg-white shadow-2xl rounded-2xl p-6 border border-gray-200 animate-slideUp">
-  <h3 class="text-xl font-semibold text-navy mb-3">✅ Consultation Booked!</h3>
-  <p class="text-gray-600" id="confirmationMessage"></p>
-  <button onclick="closeConfirmation()" 
-          class="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">
-    Close
-  </button>
-</div>
+  <!-- External Styles & Scripts -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/general_consultation.css') }}">
+  <script src="{{ url_for('static', filename='js/general_consultation.js') }}"></script>
 {% endblock %}

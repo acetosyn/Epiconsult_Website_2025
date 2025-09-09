@@ -35,7 +35,9 @@
     
 <!-- Global CSS -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user_icon.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
 
   {% block styles %}{% endblock %}
 </head>
@@ -63,31 +65,35 @@
   <div class="flex animate-scroll-fast">
     <div class="flex-shrink-0 flex items-center space-x-8 px-8">
       <span class="font-semibold">📢 ANNOUNCEMENT:</span>
-      <span>New Teleconsultation Services Now Available 24/7</span>
+
+      <span>Our Dedicated Sickle Cell Clinic is now open every Wednesday & Saturday, 10AM – 5PM for comprehensive specialist consultations.</span>
       <span class="mx-8">•</span>
-      <span>Advanced MRI Imaging Services Now Open</span>
+
+      <span>Visit our Clinic for prompt and reliable General Consultations —For an inhouse Doctor or Telemedicine.</span>
       <span class="mx-8">•</span>
-      <span>Free Health Screening Campaign - Book Now</span>
+
+      <span>Meet with our Specialists: Expert consultations in SURGERY & MEDICINE. Meet with a Specialist today.</span>
       <span class="mx-8">•</span>
-      <span>COVID-19 Testing Available - Same Day Results</span>
+
+      <span>Visit our Diagnostic Lab to search, select, and book any lab test — accurate diagnostics across Blood, Urine, Stool, Virology, Endocrine, and more.</span>
       <span class="mx-8">•</span>
     </div>
   </div>
 </div>
 
+
+<!-- Main Navigation -->
 <!-- Main Navigation -->
 <nav class="bg-white shadow-lg sticky top-[48px] z-50">
   <div class="container mx-auto px-4">
     <div class="flex justify-between items-center py-4">
       
-      <!-- Logo + Brand (Clickable to Home) -->
-      <a href="/" class="flex items-center space-x-3">
-        <!-- Logo -->
+      <!-- Logo + Brand -->
+      <a href="{{ url_for('main.home') }}" class="flex items-center space-x-3">
         <img src="{{ url_for('static', filename='images/logo.jpeg') }}" 
              alt="Epiconsult Logo" 
              class="h-12 w-auto object-contain">
 
-        <!-- Brand Text -->
         <div>
           <h1 class="font-bold text-2xl md:text-3xl">
             <span class="text-red-600">Epiconsult</span>
@@ -97,110 +103,185 @@
         </div>
       </a>
 
-        <!-- Desktop Nav -->
-        <div class="hidden lg:flex items-center space-x-10">
-          <a href="{{ url_for('home') }}" class="nav-link">HOME</a>
+      <!-- Desktop Nav -->
+      <div class="hidden lg:flex items-center space-x-10">
+        <a href="{{ url_for('main.home') }}" class="nav-link">HOME</a>
 
-          <!-- CLINIC Dropdown -->
-          <div class="relative group">
-            <a href="#" class="nav-link flex items-center">
-              CLINIC
-              <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-              </svg>
-            </a>
-            <div class="dropdown-card w-72">
-              <a href="{{ url_for('general') }}" class="dropdown-link">General Consultation</a>
-              <a href="{{ url_for('sickle_cell') }}" class="dropdown-link">Sickle Cell</a>
-              <a href="{{ url_for('specialist') }}" class="dropdown-link">Specialist</a>
-            </div>
-          </div>
-
-          <!-- DIAGNOSTICS Dropdown -->
-          <div class="relative group">
-            <a href="#" class="nav-link flex items-center">
-              DIAGNOSTICS
-              <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-              </svg>
-            </a>
-            <div class="dropdown-card w-72">
-              <a href="{{ url_for('imaging') }}" class="dropdown-link">Imaging</a>
-              <a href="{{ url_for('laboratory') }}" class="dropdown-link">Laboratory</a>
-            </div>
-          </div>
-
-          <a href="{{ url_for('teleconsultation') }}" class="nav-link">TELECONSULTATION</a>
-          <a href="{{ url_for('about') }}" class="nav-link">ABOUT</a>
-          <a href="{{ url_for('contact') }}" class="nav-link">CONTACT</a>
-
-          <a href="{{ url_for('patient_portal') }}" class="btn-primary">
-            🔒 Patient Portal
+        <!-- CLINIC Dropdown -->
+        <div class="relative group">
+          <a href="#" class="nav-link flex items-center">
+            CLINIC
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
           </a>
+          <div class="absolute hidden group-hover:block mt-2 w-72 bg-white rounded-xl shadow-lg border border-gray-200 z-50">
+            <a href="{{ url_for('clinic.general') }}" class="dropdown-link">General Consultation</a>
+            <a href="{{ url_for('clinic.sickle_cell') }}" class="dropdown-link">Sickle Cell Clinic</a>
+            <a href="{{ url_for('clinic.specialist') }}" class="dropdown-link">Specialist Clinic</a>
+          </div>
         </div>
 
-<!-- Mobile Menu Button -->
-<button id="mobile-menu-button" class="lg:hidden text-navy focus:outline-none z-50 relative">
-  <!-- Hamburger Icon -->
-  <svg id="icon-hamburger" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-          d="M4 6h16M4 12h16M4 18h16"></path>
-  </svg>
-  <!-- Close (X) Icon -->
-  <svg id="icon-close" class="w-7 h-7 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M6 18L18 6M6 6l12 12"></path>
-  </svg>
-</button>
-</div>
+        <!-- DIAGNOSTICS Dropdown -->
+        <div class="relative group">
+          <a href="#" class="nav-link flex items-center">
+            DIAGNOSTICS
+            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </a>
+          <div class="absolute hidden group-hover:block mt-2 w-72 bg-white rounded-xl shadow-lg border border-gray-200 z-50">
+            <a href="{{ url_for('diagnostics.radiology') }}" class="dropdown-link">Radiology</a>
+            <a href="{{ url_for('diagnostics.laboratory') }}" class="dropdown-link">Laboratory</a>
+          </div>
+        </div>
 
-<!-- Dark Overlay -->
-<div id="mobile-overlay" class="fixed inset-0 bg-black/40 hidden z-30"></div>
+        <a href="{{ url_for('clinic.teleconsultation') }}" class="nav-link">TELECONSULTATION</a>
+        <a href="{{ url_for('main.about') }}" class="nav-link">ABOUT</a>
+        <a href="{{ url_for('main.contact') }}" class="nav-link">CONTACT</a>
+
+        <!-- Patient Portal (always visible) -->
+        <a href="{{ url_for('main.patient_portal') }}" 
+           class="btn-primary flex items-center space-x-1 px-3 py-1 text-sm">
+          <span>🔒</span>
+          <span class="font-medium">Patient Portal</span>
+        </a>
+
+        <!-- ✅ Auth Slot (Login OR User Section) -->
+        <div id="auth-slot" class="flex items-center justify-end w-[180px] h-[48px]">
+          
+          <!-- Login Link -->
+          <a id="login-link" 
+             href="{{ url_for('main.login') }}" 
+             class="btn-primary flex items-center space-x-1 px-3 py-1 text-sm">
+            <span>🔑</span>
+            <span class="font-medium">Login</span>
+          </a>
+
+          <!-- User Section -->
+          <div id="user-section" class="hidden-user flex items-center gap-2">
+            <button
+              id="user-menu-btn"
+              class="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-100 transition"
+            >
+              <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+                </svg>
+              </div>
+              <span id="welcome-msg" class="hidden sm:inline font-medium text-gray-800"></span>
+              <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            <!-- Dropdown -->
+            <div id="user-dropdown">
+              <a href="/profile" class="dropdown-item">Profile</a>
+              <a href="#" id="logout-btn" class="dropdown-item text-red-600">Logout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-button" class="lg:hidden text-navy focus:outline-none z-50 relative">
+        <svg id="icon-hamburger" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+        <svg id="icon-close" class="w-7 h-7 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
 
 <!-- Mobile Menu (Drawer) -->
 <div id="mobile-menu" 
-     class="fixed inset-y-0 right-0 w-3/4 max-w-sm bg-white shadow-lg 
-            transform translate-x-full transition-transform duration-500 ease-in-out z-40">
+    class="fixed inset-y-0 right-0 w-3/4 max-w-sm bg-white shadow-lg 
+          transform translate-x-full transition-transform duration-500 ease-in-out z-40">
   <div class="px-6 py-6 space-y-4 h-full overflow-y-auto">
     
-    <a href="{{ url_for('home') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
+    <a href="{{ url_for('main.home') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
       HOME
     </a>
 
     <div>
       <span class="block text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">CLINIC</span>
       <div class="ml-4 space-y-2">
-        <a href="{{ url_for('general') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">General Consultation</a>
-        <a href="{{ url_for('sickle_cell') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Sickle Cell</a>
-        <a href="{{ url_for('specialist') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Specialist</a>
+        <a href="{{ url_for('clinic.general') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">General Consultation</a>
+        <a href="{{ url_for('clinic.sickle_cell') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Sickle Cell</a>
+        <a href="{{ url_for('clinic.specialist') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Specialist</a>
       </div>
     </div>
 
     <div>
       <span class="block text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">DIAGNOSTICS</span>
       <div class="ml-4 space-y-2">
-        <a href="{{ url_for('imaging') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Imaging</a>
-        <a href="{{ url_for('laboratory') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Laboratory</a>
+        <a href="{{ url_for('diagnostics.radiology') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Radiology</a>
+        <a href="{{ url_for('diagnostics.laboratory') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Laboratory</a>
       </div>
     </div>
 
-    <a href="{{ url_for('teleconsultation') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
+    <a href="{{ url_for('clinic.teleconsultation') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
       TELECONSULTATION
     </a>
-    <a href="{{ url_for('about') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
+    <a href="{{ url_for('main.about') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
       ABOUT
     </a>
-    <a href="{{ url_for('contact') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
+    <a href="{{ url_for('main.contact') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
       CONTACT
     </a>
 
-    <a href="{{ url_for('patient_portal') }}" 
-       class="w-full block text-center bg-red-600 hover:bg-red-700 text-white py-3 rounded-full font-semibold mt-4 shadow-md transition">
-      Patient Portal
+    <a href="{{ url_for('main.login') }}" 
+      id="login-link-mobile"
+      class="w-full flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 
+            text-white py-2 rounded-full font-medium mt-3 shadow transition">
+      <span>🔑</span><span>Login</span>
     </a>
+
+    <a href="{{ url_for('main.patient_portal') }}" 
+      class="w-full flex items-center justify-center space-x-2 bg-red-600 hover:bg-red-700 
+            text-white py-2 rounded-full font-medium mt-2 shadow transition">
+      <span>🔒</span><span>Patient Portal</span>
+    </a>
+
+    <!-- User Section (Mobile) -->
+    <div id="user-section-mobile" class="hidden-user mt-3">
+      <button
+        id="user-menu-btn-mobile"
+        class="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-100 transition w-full justify-between"
+      >
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+            </svg>
+          </div>
+          <span id="welcome-msg-mobile" class="font-medium text-gray-800"></span>
+        </div>
+        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      <!-- Dropdown -->
+      <div id="user-dropdown-mobile">
+        <a href="/profile" class="dropdown-item block">Profile</a>
+        <a href="#" id="logout-btn-mobile" class="dropdown-item text-red-600 block">Logout</a>
+      </div>
+    </div>
   </div>
 </div>
+
+
+
+
 </nav>
+
 
   <main>
     {% block content %}
@@ -316,15 +397,15 @@
 <div>
   <h4 class="font-semibold text-lg mb-6">Quick Links</h4>
   <ul class="space-y-3">
-    <li><a href="{{ url_for('about') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">About Us</a></li>
-    <li><a href="{{ url_for('general') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">General Consultation</a></li>
-    <li><a href="{{ url_for('sickle_cell') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Sickle Cell</a></li>
-    <li><a href="{{ url_for('specialist') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Specialist</a></li>
-    <li><a href="{{ url_for('imaging') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Imaging</a></li>
-    <li><a href="{{ url_for('laboratory') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Laboratory</a></li>
-    <li><a href="{{ url_for('teleconsultation') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Teleconsultation</a></li>
-    <li><a href="{{ url_for('patient_portal') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Patient Portal</a></li>
-    <li><a href="{{ url_for('blog') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Health Blog</a></li>
+    <li><a href="{{ url_for('main.about') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">About Us</a></li>
+    <li><a href="{{ url_for('clinic.general') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">General Consultation</a></li>
+    <li><a href="{{ url_for('clinic.sickle_cell') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Sickle Cell</a></li>
+    <li><a href="{{ url_for('clinic.specialist') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Specialist</a></li>
+    <li><a href="{{ url_for('diagnostics.radiology') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Radiology</a></li>
+    <li><a href="{{ url_for('diagnostics.laboratory') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Laboratory</a></li>
+    <li><a href="{{ url_for('clinic.teleconsultation') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Teleconsultation</a></li>
+    <li><a href="{{ url_for('main.patient_portal') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Patient Portal</a></li>
+    <li><a href="{{ url_for('main.blog') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Health Blog</a></li>
   </ul>
 </div>
 
@@ -334,118 +415,50 @@
   <ul class="space-y-3">
     <!-- Clinic -->
     <li><span class="text-yellow-400 font-semibold">Clinic</span></li>
-    <li><a href="{{ url_for('general') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Outpatient & Preventive Care</a></li>
-    <li><a href="{{ url_for('sickle_cell') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Sickle Cell Management</a></li>
-    <li><a href="{{ url_for('specialist') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Specialist Consultations</a></li>
+    <li><a href="{{ url_for('clinic.general') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Outpatient & Preventive Care</a></li>
+    <li><a href="{{ url_for('clinic.sickle_cell') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Sickle Cell Management</a></li>
+    <li><a href="{{ url_for('clinic.specialist') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Specialist Consultations</a></li>
 
     <!-- Diagnostics -->
     <li class="pt-4"><span class="text-yellow-400 font-semibold">Diagnostics</span></li>
-    <li><a href="{{ url_for('imaging') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Medical Imaging (X-ray, MRI, CT)</a></li>
-    <li><a href="{{ url_for('laboratory') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Laboratory Tests</a></li>
+    <li><a href="{{ url_for('diagnostics.radiology') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Radiology (X-ray, MRI, CT)</a></li>
+    <li><a href="{{ url_for('diagnostics.laboratory') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Laboratory Tests</a></li>
   </ul>
 </div>
 
-
-
-      <!-- Contact Info -->
-      <div>
-        <h4 class="font-semibold text-lg mb-6">Contact Us</h4>
-        <div class="space-y-4">
-          
-          <!-- Address -->
-          <div class="flex items-start space-x-3">
-            <svg class="w-5 h-5 text-yellow-400 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 
-                    01-2.827 0l-4.244-4.243a8 8 0 
-                    1111.314 0z"></path>
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-            </svg>
-            <div>
-              <p class="text-gray-300">33 Abidjan Street, Wuse Zone 3</p>
-              <p class="text-gray-300">Abuja, Nigeria</p>
-            </div>
-          </div>
-
-          <!-- Phone -->
-          <div class="flex items-center space-x-3">
-            <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                    d="M3 5a2 2 0 012-2h3.28a1 1 0 
-                    01.948.684l1.498 4.493a1 1 0 
-                    01-.502 1.21l-2.257 1.13a11.042 
-                    11.042 0 005.516 5.516l1.13-2.257a1 1 0 
-                    011.21-.502l4.493 1.498a1 1 0 
-                    01.684.949V19a2 2 0 01-2 2h-1C9.716 
-                    21 3 14.284 3 6V5z"></path>
-            </svg>
-            <div>
-              <p class="text-gray-300">(234) 7035765000</p>
-              <p class="text-gray-300">(234) 9081862669</p>
-            </div>
-          </div>
-
-          <!-- Email -->
-          <div class="flex items-center space-x-3">
-            <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                    d="M3 8l7.89 4.26a2 2 0 
-                    002.22 0L21 8M5 19h14a2 2 0 
-                    002-2V7a2 2 0 00-2-2H5a2 2 
-                    0 00-2 2v10a2 2 0 002 2z"></path>
-            </svg>
-            <p class="text-gray-300">info@epidiagnostic.com</p>
-          </div>
-
-          <!-- Social Icons -->
-          <div class="flex space-x-4 pt-3">
-            <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full border border-gray-400 hover:bg-yellow-400 hover:text-black transition">
-              <i class="fab fa-twitter"></i>
-            </a>
-            <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full border border-gray-400 hover:bg-yellow-400 hover:text-black transition">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full border border-gray-400 hover:bg-yellow-400 hover:text-black transition">
-              <i class="fab fa-youtube"></i>
-            </a>
-            <a href="#" class="w-9 h-9 flex items-center justify-center rounded-full border border-gray-400 hover:bg-yellow-400 hover:text-black transition">
-              <i class="fab fa-linkedin-in"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-     <!-- Footer Bottom -->
+<!-- Footer Bottom -->
 <div class="border-t border-gray-700 pt-8">
   <div class="flex flex-col md:flex-row justify-between items-center">
     <p class="text-gray-300 text-sm mb-4 md:mb-0">
       © 2024 Epiconsult Diagnostics. All rights reserved.
     </p>
     <div class="flex space-x-6 text-sm">
-      <a href="{{ url_for('privacy_policy') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Privacy Policy</a>
-      <a href="{{ url_for('terms_of_service') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Terms of Service</a>
-      <a href="{{ url_for('cookie_policy') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Cookie Policy</a>
-      <a href="{{ url_for('accessibility') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Accessibility</a>
+      <a href="{{ url_for('info.privacy_policy') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Privacy Policy</a>
+      <a href="{{ url_for('info.terms_of_service') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Terms of Service</a>
+      <a href="{{ url_for('info.cookie_policy') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Cookie Policy</a>
+      <a href="{{ url_for('info.accessibility') }}" class="text-gray-300 hover:text-yellow-400 transition-colors">Accessibility</a>
     </div>
   </div>
 </div>
 
+
 </div>
 </footer>
 
-<!-- Virtual Assistant Toggle Button -->
+<!-- Virtual Assistant Button (Floating Orb v2) -->
 <div class="fixed bottom-6 right-6 z-50">
-  <button id="chatbot-toggle"
-    class="w-20 h-20 bg-gradient-to-tr from-indigo-600 to-purple-600 rounded-full shadow-2xl 
-           flex items-center justify-center 
-           transition-all duration-500 hover:scale-110 hover:shadow-3xl animate-bounce">
-    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <path d="M12 20c4.418 0 8-2.91 8-6.5S16.418 7 12 7s-8 2.91-8 6.5c0 1.61.832 3.06 2.188 4.188L5 20l3.055-1.221A8.955 8.955 0 0 0 12 20z" />
-    </svg>
+  <button id="chatbot-toggle" class="chatbot-btn" aria-label="Open Virtual Assistant">
+    <!-- Dual glowing rings -->
+    <span class="glow-ring pink"></span>
+    <span class="glow-ring cyan"></span>
+
+    <!-- Chatbot Icon (switchable between chatbot.svg / chatbot2.svg) -->
+    <img src="{{ url_for('static', filename='data/chatbot.svg') }}" 
+         alt="Chatbot" class="chatbot-icon" />
   </button>
 </div>
+
+
 
 <!-- Virtual Assistant Panel -->
 <div id="chatbot-panel" 
@@ -501,9 +514,9 @@
          class="chat-quick-btn bg-gradient-to-r from-indigo-500 to-blue-600 text-white px-4 py-1.5 rounded-full text-xs shadow hover:scale-105 transition">
         👨‍⚕️ Specialist
       </button>
-      <button data-message="Show me Imaging services"
+      <button data-message="Show me Radiology services"
          class="chat-quick-btn bg-gradient-to-r from-pink-500 to-rose-600 text-white px-4 py-1.5 rounded-full text-xs shadow hover:scale-105 transition">
-        🩻 Imaging
+        🩻 Radiology
       </button>
       <button data-message="What Laboratory tests do you offer?"
          class="chat-quick-btn bg-gradient-to-r from-yellow-500 to-orange-600 text-white px-4 py-1.5 rounded-full text-xs shadow hover:scale-105 transition">
@@ -556,13 +569,42 @@
 </div>
 
 
-<!-- Scripts -->
+<!-- Inject user info from Flask -->
+<script>
+  window.__USER__ = {
+    isLoggedIn: {{ 'true' if current_user else 'false' }},
+    username: "{{ current_user.name if current_user else '' }}"
+  };
+</script>
+
+
+<!-- Firebase core & session sync -->
+<script type="module" src="{{ url_for('static', filename='js/firebase.js') }}"></script>
+
+<!-- Route protection -->
+<script type="module" src="{{ url_for('static', filename='js/auth-protect.js') }}"></script>
+
+<!-- Auth UI (show/hide login vs user-section) -->
+<script src="{{ url_for('static', filename='js/auth-ui.js') }}"></script>
+
+<!-- User dropdown toggle -->
+<script src="{{ url_for('static', filename='js/user_dropdown.js') }}"></script>
+
+<!-- Mobile menu toggle -->
+<script src="{{ url_for('static', filename='js/mobile_toggle.js') }}"></script>
+
+<!-- Core scripts -->
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="{{ url_for('static', filename='js/base.js') }}"></script>
 <script src="{{ url_for('static', filename='js/scrollAnimation.js') }}"></script>
 <script src="{{ url_for('static', filename='js/hero.js') }}"></script>
+
+<!-- Chat-related -->
 <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chat2.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chat-extras.js') }}"></script>
-<script src="{{ url_for('static', filename='js/mobile_toggle.js') }}"></script>
+
+
+{% block scripts %}{% endblock %}
 </body>
 </html>

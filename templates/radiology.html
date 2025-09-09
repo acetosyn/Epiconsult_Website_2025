@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/specialist.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/radiology.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section with Sliding Images -->
+<section class="relative h-[45vh] md:h-[45vh] overflow-hidden">
+  <div class="imaging-hero-slider relative h-full">
+
+    <!-- Slide 1 -->
+    <div class="imaging-slide absolute inset-0 opacity-100 transition-opacity duration-1000">
+      <img src="{{ url_for('static', filename='images/imaging/1.jpg') }}"
+           alt="Imaging Services"
+           class="absolute inset-0 w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-r from-blue-900/70 via-navy/60 to-transparent"></div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="imaging-slide absolute inset-0 opacity-0 transition-opacity duration-1000">
+      <img src="{{ url_for('static', filename='images/imaging/2.jpg') }}"
+           alt="Advanced Diagnostics"
+           class="absolute inset-0 w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-gradient-to-r from-red-900/70 via-black/50 to-transparent"></div>
+    </div>
+
+    <!-- Text Overlay -->
+    <div class="absolute inset-0 z-10 flex items-center">
+      <div class="container mx-auto px-6">
+        <div class="max-w-2xl text-white imaging-hero-text animate-fadeInUp">
+          <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight drop-shadow-lg">
+            Advanced <span class="text-red-500">Radiology</span> Services
+          </h1>
+          <p class="text-xl mb-8 leading-relaxed text-gray-100 drop-shadow-md">
+            State-of-the-art diagnostic imaging for <span class="font-bold text-blue-400">accurate diagnosis</span> 
+            and better treatment outcomes.
+          </p>
+          <a href="#book-radiology"
+             class="bg-red-600 text-white px-10 py-4 rounded-full font-semibold text-lg shadow-md hover:bg-red-700 hover:scale-105 transition-transform duration-300">
+            📅 Book Radiology Service
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Navigation Dots -->
+  <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
+    <button class="imaging-dot active w-3 h-3 rounded-full bg-blue-500" data-slide="0"></button>
+    <button class="imaging-dot w-3 h-3 rounded-full bg-gray-300" data-slide="1"></button>
+  </div>
+</section>
+
+<!-- Why Choose Our Imaging Services -->
+<section class="py-20 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 text-center">
+    <h2 class="text-4xl font-bold text-navy mb-12">
+      Why Choose Our <span class="text-red-600">Radiology</span> Services?
+    </h2>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+      <div class="special-card zoom-effect bg-navy text-white p-8 rounded-2xl shadow">
+        <div class="text-yellow-400 text-4xl mb-4">📡</div>
+        <h3 class="text-2xl font-semibold mb-3">Cutting-Edge Equipment</h3>
+        <p>Latest diagnostic machines ensuring precision and clarity in results.</p>
+      </div>
+      <div class="special-card zoom-effect bg-red-600 text-white p-8 rounded-2xl shadow">
+        <div class="text-yellow-400 text-4xl mb-4">👨‍⚕️</div>
+        <h3 class="text-2xl font-semibold mb-3">Expert Radiologists</h3>
+        <p>Highly trained professionals interpreting results with unmatched accuracy.</p>
+      </div>
+      <div class="special-card zoom-effect bg-navy text-white p-8 rounded-2xl shadow">
+        <div class="text-yellow-400 text-4xl mb-4">⚡</div>
+        <h3 class="text-2xl font-semibold mb-3">Fast Turnaround</h3>
+        <p>Get your results quickly without compromising quality and reliability.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Radiology Services Grid -->
+<section class="pt-8 pb-20 bg-gradient-to-r from-blue-50 to-white">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 text-center">
+    <h2 class="text-4xl font-bold text-navy mb-12">
+      Our <span class="text-red-600">Radiology</span> Services
+    </h2>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+      {% set services = [
+        ("🩻","X-Ray"), ("🎗️","Mammography (MAMO)"), ("💓","Electrocardiogram (ECG)"),
+        ("🫀","Echocardiography (ECHO)"), ("🧲","MRI / MR"), ("🌀","CT Scan"),
+        ("👩‍🍼","Hysterosalpingogram (HSG)"), ("💧","Intravenous Urography (IVU)")
+      ] %}
+      {% for icon, service in services %}
+      <div class="special-card zoom-effect bg-white p-8 rounded-2xl shadow">
+        <div class="text-5xl mb-6">{{ icon }}</div>
+        <h3 class="text-xl font-bold mb-4">{{ service }}</h3>
+        <button onclick="bookService('{{ service }}')" 
+          class="bg-red-600 text-white px-8 py-3 rounded-full font-semibold text-lg shadow-md hover:bg-red-700 hover:scale-105 transition-transform duration-300">
+          Book Now
+        </button>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- Booking Section -->
+<section id="book-imaging" class="relative py-20 bg-gradient-to-r from-navy to-navy/95 text-white overflow-hidden">
+  <div class="absolute inset-0">
+    <div class="absolute inset-0 bg-[url('{{ url_for('static', filename='images/medical-bg.jpg') }}')] bg-cover bg-center opacity-10"></div>
+  </div>
+  <div class="relative max-w-5xl mx-auto px-6 lg:px-8">
+    <div class="bg-white rounded-2xl p-10 shadow-2xl text-navy">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl md:text-4xl font-bold mb-3">
+          Book Your <span class="text-red-600">Radiology</span> Appointment
+        </h2>
+        <p class="text-gray-600 text-base md:text-lg">
+          Select your preferred radiology service and schedule your appointment easily.
+        </p>
+      </div>
+      <form method="POST" action="#" class="space-y-6">
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label class="block text-sm font-semibold">Full Name</label>
+            <input type="text" name="name" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+          </div>
+          <div class="space-y-2">
+            <label class="block text-sm font-semibold">Email Address</label>
+            <input type="email" name="email" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+          </div>
+        </div>
+        <div class="space-y-2">
+          <label class="block text-sm font-semibold">Select Service</label>
+          <select name="service" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+            <option value="">-- Choose Radiology Service --</option>
+            <option>X-Ray</option>
+            <option>Mammography (MAMO)</option>
+            <option>Electrocardiogram (ECG)</option>
+            <option>Echocardiography (ECHO)</option>
+            <option>MRI / MR</option>
+            <option>CT Scan</option>
+            <option>Hysterosalpingogram (HSG)</option>
+            <option>Intravenous Urography (IVU)</option>
+          </select>
+        </div>
+        <div class="space-y-2">
+          <label class="block text-sm font-semibold">Preferred Date</label>
+          <input type="date" name="date" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+        </div>
+        <div class="pt-4 text-center">
+          <button type="submit" 
+            class="bg-red-600 text-white px-10 py-4 rounded-full font-semibold text-lg shadow-md hover:bg-red-700 hover:scale-105 transition-transform duration-300">
+            Confirm Booking
+          </button>
+          <p class="text-gray-500 text-sm mt-4">
+            A confirmation email will be sent with appointment details.
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/radiology_hero.js') }}"></script>
+<script src="{{ url_for('static', filename='js/radiology.js') }}"></script>
+{% endblock %}

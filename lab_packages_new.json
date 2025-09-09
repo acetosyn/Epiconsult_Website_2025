@@ -1,0 +1,307 @@
+{
+  "blood": {
+    "category": "BLOOD TESTS",
+    "tests": [
+      "Full Blood Count",
+      "Malaria Parasite",
+      "Blood Group",
+      "Genotype",
+      "Peripheral Blood Film",
+      "Lipid Profile",
+      "Liver Function Test",
+      "Kidney Function Test",
+      "Clotting Profile",
+      "Diabetes Profile (FBS, RBS, HbA1c, OGTT, Insulin, C-Peptide)",
+      "Hormonal Profile (FSH, LH, TSH, Cortisol, Testosterone, etc.)",
+      "Tumor Markers (AFP, CEA, PSA, CA-125, CA-15-3, CA 19-9)"
+    ]
+  },
+  "urine": {
+    "category": "URINE TESTS",
+    "tests": [
+      "Urinalysis",
+      "Microalbumin / ACR",
+      "24hr Creatinine Clearance",
+      "24hr Urine Protein",
+      "24hr Urine Uric Acid",
+      "Urine MCS",
+      "Urine Drug Screen"
+    ]
+  },
+  "stool": {
+    "category": "STOOL TESTS",
+    "tests": [
+      "Stool MCS",
+      "Stool Analysis",
+      "Occult Blood (FOB)",
+      "H. Pylori Stool Antigen"
+    ]
+  },
+  "microbiology": {
+    "category": "MICROBIOLOGY & CULTURES",
+    "tests": [
+      "Blood Culture",
+      "Urine MCS",
+      "Stool MCS",
+      "Sputum MCS",
+      "Sputum Genexpert",
+      "High Vaginal Swab (HVS) MCS",
+      "Endocervical Swab (ECS) MCS",
+      "Ear Swab MCS",
+      "Wound Swab MCS",
+      "Mantoux Test",
+      "TB Quantiferon"
+    ]
+  },
+  "histology": {
+    "category": "HISTOLOGY & CYTOLOGY",
+    "tests": [
+      "Pap Smear (Cervical Cytology)",
+      "Biopsy Histology (if extended)"
+    ]
+  },
+  "virology": {
+    "category": "VIROLOGY",
+    "tests": [
+      "HIV",
+      "HBsAg",
+      "Hepatitis B DNA / Profile",
+      "Hepatitis C RNA",
+      "HAV",
+      "HSV",
+      "HPV",
+      "TORCH Panel",
+      "Measles",
+      "Mumps",
+      "Varicella"
+    ]
+  },
+  "immunology": {
+    "category": "IMMUNOLOGY & AUTOIMMUNE",
+    "tests": [
+      "ANA Screening",
+      "ENA Screening",
+      "Anti-dsDNA IgG",
+      "Anti-CCP",
+      "Anti-TPO",
+      "Anti-Phospholipid Antibody",
+      "Rheumatoid Factor",
+      "CRP",
+      "ESR",
+      "Procalcitonin",
+      "ASO Titre"
+    ]
+  },
+  "tumor": {
+    "category": "TUMOR MARKERS",
+    "tests": [
+      "PSA",
+      "Free PSA",
+      "CA-125",
+      "CA-15-3",
+      "CA 19-9",
+      "AFP",
+      "CEA",
+      "B2 Microglobulin",
+      "Bence Jones Protein"
+    ]
+  },
+  "hormonal": {
+    "category": "HORMONAL & ENDOCRINE",
+    "tests": [
+      "Thyroid Function Test (TSH, FT3, FT4)",
+      "Thyroid Antibodies (Anti-TPO, TgAb)",
+      "Parathyroid Hormone",
+      "Growth Hormone",
+      "Cortisol",
+      "ACTH",
+      "Renin",
+      "Aldosterone",
+      "Prolactin",
+      "FSH",
+      "LH",
+      "Oestradiol (E2)",
+      "Progesterone",
+      "Testosterone (Total & Free)",
+      "Anti-Mullerian Hormone (AMH)",
+      "SHBG"
+    ]
+  },
+  "hematology": {
+    "category": "HEMATOLOGY INVESTIGATIONS",
+    "tests": [
+      "Peripheral Blood Film",
+      "ESR",
+      "Sickle Cell Screening",
+      "Clotting Studies (PT, APTT, INR)",
+      "Hemoglobin Electrophoresis"
+    ]
+  },
+  "bloodbank": {
+    "category": "BLOOD BANK SERVICES",
+    "tests": [
+      "Blood Grouping",
+      "Crossmatching",
+      "Antibody Screening",
+      "Whole Blood",
+      "Packed Cells",
+      "Plasma",
+      "Platelets"
+    ]
+  },
+  "allergy": {
+    "category": "ALLERGY PANELS",
+    "tests": [
+      "Total IgE",
+      "Comprehensive Adult Allergy Panel",
+      "Pediatric Allergy Panel",
+      "Food Allergy Panel",
+      "Inhalation Allergy Panel"
+    ]
+  },
+  "diabetic": {
+    "category": "DIABETIC PROFILE",
+    "tests": [
+      "Fasting Blood Sugar",
+      "Random Blood Sugar",
+      "HbA1c",
+      "2 Hours Post Prandial (2HPP)",
+      "Oral Glucose Tolerance Test (OGTT)",
+      "Fasting Insulin",
+      "C-Peptide",
+      "Microalbumin Urine",
+      "Albumin Creatinine Ratio (ACR)"
+    ]
+  },
+  "kidney": {
+    "category": "KIDNEY FUNCTION TEST",
+    "tests": [
+      "Serum Electrolyte/Urea/Creatinine (S/E/U/Cr)",
+      "eGFR",
+      "Uric Acid",
+      "Serum Calcium (Corrected)",
+      "Phosphate",
+      "24hr Urine Calcium/Phosphate",
+      "24hr Creatinine Clearance",
+      "24hr Urine Protein",
+      "24hr Urine Uric Acid",
+      "Lactate Dehydrogenase (LDH)"
+    ]
+  },
+  "cardiac": {
+    "category": "CARDIAC MARKER TEST",
+    "tests": [
+      "Fasting Lipid Profile (FLP)",
+      "D-Dimer",
+      "Troponin I",
+      "Troponin T",
+      "Myoglobin",
+      "Homocysteine",
+      "CK-MB (Mass)",
+      "CK (NAC)",
+      "Pro BNP",
+      "LDH \u2013 Lactate Dehydrogenase",
+      "Anti Diuretic Hormone (ADH)"
+    ]
+  },
+  "liver": {
+    "category": "LIVER FUNCTION TEST",
+    "tests": [
+      "Serum Bilirubin",
+      "Alkaline Phosphatase (ALP)",
+      "Gamma Glutamyl Transferase (GGT)",
+      "Aspartate Transaminase (AST)",
+      "Alanine Transaminase (ALT)",
+      "Lactate Dehydrogenase (LDH)",
+      "Alpha Feto Protein (AFP)"
+    ]
+  },
+  "pancreatic": {
+    "category": "PANCREATIC FUNCTION TEST",
+    "tests": [
+      "Amylase",
+      "Lipase",
+      "CA 19-9"
+    ]
+  },
+  "bone": {
+    "category": "BONE PROFILE",
+    "tests": [
+      "25 Hydroxyl Vitamin D3",
+      "Corrected Calcium",
+      "Magnesium",
+      "Uric Acid",
+      "Phosphate",
+      "Calcitonin"
+    ]
+  },
+  "fertility": {
+    "category": "FERTILITY PROFILE",
+    "tests": [
+      "FSH",
+      "LH",
+      "Prolactin",
+      "Estradiol (E2)",
+      "Progesterone (Day 21 Ovulation)",
+      "Testosterone",
+      "Anti-Mullerian Hormone (AMH)",
+      "Semen Analysis",
+      "Thyroid Function Test"
+    ]
+  },
+  "miscarriage": {
+    "category": "MISCARRIAGE PROFILE",
+    "tests": [
+      "Anticardiolipin Antibody",
+      "Factor V Mutation",
+      "Antithrombin III Activity",
+      "Lupus Anticoagulant",
+      "APTT",
+      "PTT",
+      "B2-Glycoprotein",
+      "Brucella",
+      "Torch Screening",
+      "MTHFR Gene Mutation"
+    ]
+  },
+  "infection": {
+    "category": "INFECTION SCREENING",
+    "tests": [
+      "Urinalysis",
+      "Urine MCS",
+      "Stool MCS",
+      "Stool Analysis",
+      "High Vaginal Swab (HVS) MCS",
+      "Endocervical Swab (ECS) MCS",
+      "Ear Swab MCS",
+      "Wound Swab MCS",
+      "Sputum MCS",
+      "Sputum Genexpert",
+      "Acid Fast Bacilli (AFB)",
+      "Mantoux Test",
+      "HIV",
+      "Hepatitis A Virus (HAV)",
+      "Hepatitis C Virus (HCV)",
+      "Herpes Simplex Virus (HSV)",
+      "Torch Screening",
+      "TB Quantiferon",
+      "Chlamydia Screening Test",
+      "Mumps",
+      "Varicella",
+      "Measles",
+      "VDRL",
+      "Syphilis Serology"
+    ]
+  },
+  "clotting": {
+    "category": "CLOTTING PROFILE",
+    "tests": [
+      "PTT",
+      "APTT",
+      "D-Dimer",
+      "Antithrombin III Activity",
+      "Lupus Anticoagulant",
+      "INR"
+    ]
+  }
+}

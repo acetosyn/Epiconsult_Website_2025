@@ -1,0 +1,35 @@
+/* Existing animation for hero */
+.zoom-in {
+  animation: zoomFade 1s ease forwards;
+}
+
+@keyframes zoomFade {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Prevent text clipping when zoomed */
+.faq-answer p {
+  transform-origin: left top;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.faq-answer p.scale-105 {
+  transform: scale(1.02);
+}
+
+/* ✅ Reusable zoom-in / zoom-out on hover */
+.zoom-effect {
+  transition: transform 0.4s ease, box-shadow 0.4s ease !important;
+}
+
+.zoom-effect:hover {
+  transform: scale(1.05) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
+}

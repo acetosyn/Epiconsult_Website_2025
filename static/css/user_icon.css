@@ -1,0 +1,103 @@
+/* =====================
+   User Section Wrapper
+   (reserve space so navbar doesn’t jump)
+===================== */
+#user-section,
+#user-section-mobile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+/* Desktop fixed width (prevents layout shift) */
+#user-section {
+  width: 180px;   /* enough space for avatar + text */
+  height: 48px;   /* matches avatar/button */
+}
+
+/* Mobile full width */
+#user-section-mobile {
+  width: 100%;
+  min-height: 56px;
+}
+
+/* Hide but keep reserved space */
+.hidden-user {
+  opacity: 0;
+  visibility: hidden;   /* ensures text/images are fully hidden */
+  pointer-events: none; /* prevent accidental clicks */
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+/* =====================
+   Dropdown Styling
+===================== */
+#user-dropdown,
+#user-dropdown-mobile {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  min-width: 200px;
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 0;
+  z-index: 1000;
+
+  /* Start hidden */
+  opacity: 0;
+  transform: translateY(-8px);
+  visibility: hidden;
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+}
+
+#user-dropdown.show,
+#user-dropdown-mobile.show {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+/* Dropdown Items */
+.dropdown-item {
+  display: block;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #374151;
+  border-radius: 0.5rem;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: #f3f4f6;
+  color: #111827;
+  transform: translateX(4px); /* subtle modern hover shift */
+}
+
+/* =====================
+   Avatar / Button Tweaks
+===================== */
+#user-menu-btn,
+#user-menu-btn-mobile {
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+#user-menu-btn:hover,
+#user-menu-btn-mobile:hover {
+  background: #f9fafb;
+  transform: scale(1.02); /* subtle hover feedback */
+}
+
+#user-menu-btn svg,
+#user-menu-btn-mobile svg {
+  transition: transform 0.25s ease;
+}
+
+#user-menu-btn[aria-expanded="true"] svg:last-child,
+#user-menu-btn-mobile[aria-expanded="true"] svg:last-child {
+  transform: rotate(180deg); /* rotate chevron when open */
+}

@@ -62,12 +62,20 @@
             Experience world-class medical diagnostics with cutting-edge technology and expert care. Your health is our priority.
           </p>
           <div class="flex flex-col sm:flex-row gap-4">
-            <a href="{{ url_for('book_appointment') }}" class="bg-red-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-red-700 hover:scale-105 hover:shadow-xl transition-all duration-300">
-              📅 Book Appointment
-            </a>
-            <a href="{{ url_for('teleconsultation') }}" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-navy transition-all duration-300">
-              💻 Teleconsultation
-            </a>
+
+          <a href="{{ url_for('main.book_appointment') }}"
+            data-protected="true"
+            class="bg-red-600 text-white px-8 py-4 rounded-full ...">
+            📅 Book Appointment
+          </a>
+
+          <a href="{{ url_for('clinic.teleconsultation') }}"
+            data-protected="true"
+            class="border-2 border-white text-white px-8 py-4 rounded-full ...">
+            💻 Teleconsultation
+          </a>
+
+
           </div>
         </div>
       </div>
@@ -264,7 +272,7 @@
           <p class="text-gray-600 text-base md:text-lg">Quick and easy — get started below</p>
         </div>
 
-        <form method="POST" action="{{ url_for('book_appointment') }}" class="space-y-6">
+        <form method="POST" action="{{ url_for('main.book_appointment') }}" class="space-y-6">
           <div class="grid md:grid-cols-3 gap-6">
             
             <!-- Service -->
@@ -313,5 +321,9 @@
 
 {% block scripts %}
   {{ super() }}
-  <!-- <script src="{{ url_for('static', filename='js/hero.js') }}"></script> -->
+
+  <!-- External Firebase & Auth Protect -->
+  <script type="module" src="{{ url_for('static', filename='js/firebase.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='js/authentication-protect.js') }}"></script>
 {% endblock %}
+

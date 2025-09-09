@@ -1,0 +1,95 @@
+/* ------------------------------
+   Test Popup (dynamic selector)
+   ------------------------------ */
+#test-popup {
+  animation: slideUp 0.3s ease;
+  border-radius: 0.75rem; /* rounded-xl */
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  background: #fff;
+  overflow: hidden;
+}
+
+/* Slide-up animation */
+@keyframes slideUp {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Search wrapper inside popup */
+#test-popup input {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+}
+
+/* Results container */
+#test-results {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Individual result items */
+#test-results div {
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+#test-results div:last-child {
+  border-bottom: none;
+}
+
+/* Hover effect */
+#test-results div:hover {
+  background: #fee2e2; /* light red */
+  color: #991b1b; /* dark red for text */
+}
+
+/* Highlighted text (from JS <mark>) */
+#test-results mark {
+  background: #fef08a; /* yellow-200 */
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 0.25rem;
+}
+
+
+
+/* ------------------------------
+   Test Result Cards (Unified)
+   ------------------------------ */
+.test-card {
+  background: #fff;
+  border-radius: 0.75rem; /* rounded-xl */
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border: 1px solid #f3f4f6;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.test-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.test-card h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.25rem;
+}
+
+.test-card p {
+  font-size: 0.8rem;
+  color: #6b7280;
+}

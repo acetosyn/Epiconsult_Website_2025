@@ -1,0 +1,77 @@
+/* ===== General Consultation Cards ===== */
+.general-card {
+  border-radius: 1rem;
+  padding: 2rem;
+  flex: 1 1 420px;   /* 🔹 flexible width, cards stay close */
+  max-width: 460px;  /* 🔹 prevents growing too wide */
+  margin: 0 auto;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.general-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+/* ===== Icons ===== */
+.service-icon {
+  display: inline-block;
+  font-size: 3.5rem;
+  line-height: 1;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+.general-card:hover .service-icon {
+  transform: scale(1.15) rotate(-5deg);
+}
+
+/* ===== Form Inputs ===== */
+.form-input {
+  width: 94%;
+  margin: 0 auto;
+  display: block;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.form-input:focus {
+  outline: none;
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+}
+
+/* ===== Book Buttons ===== */
+.book-btn {
+  width: 94%;
+  margin: 0 auto;
+  display: block;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid transparent;
+  background: #ffffff;
+  color: #003366;
+  border: 2px solid #ffffff;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.book-btn:hover {
+  background: #003366;
+  color: #ffffff;
+  border-color: #003366;
+  transform: scale(1.05);
+  box-shadow: 0 0 12px rgba(0, 51, 102, 0.4);
+}
+
+/* ===== Zoom Effect ===== */
+.zoom-effect {
+  transition: transform 0.4s ease, box-shadow 0.4s ease !important;
+  will-change: transform;
+}
+.zoom-effect:hover {
+  transform: scale(1.08) !important;
+  box-shadow: 0 0 35px rgba(255, 0, 128, 0.5),
+              0 0 65px rgba(0, 255, 255, 0.4) !important;
+}

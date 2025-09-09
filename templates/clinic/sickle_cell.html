@@ -12,33 +12,27 @@
 
     <!-- Slide 1 -->
     <div class="sickle-hero-slide absolute inset-0 opacity-100 transition-opacity duration-1000">
-      <img src="{{ url_for('static', filename='images/sickle/1.jpg') }}" 
+      <img src="{{ url_for('static', filename='images/sickle/2.jpg') }}" 
            alt="Sickle Cell Care" 
            class="absolute inset-0 w-full h-full object-cover" />
-      <div class="absolute inset-0 bg-gradient-to-r from-teal-900/90 via-teal-700/60 to-transparent"></div>
-    </div>
-
-    <!-- Slide 2 -->
-    <div class="sickle-hero-slide absolute inset-0 opacity-0 transition-opacity duration-1000">
-      <img src="{{ url_for('static', filename='images/sickle/2.jpg') }}" 
-           alt="Specialist Consultation" 
-           class="absolute inset-0 w-full h-full object-cover" />
-      <div class="absolute inset-0 bg-gradient-to-r from-teal-900/90 via-teal-700/60 to-transparent"></div>
+      <!-- 🔹 Red + Blue Gradient Overlay -->
+      <div class="absolute inset-0 bg-gradient-to-r from-red-800/70 via-blue-900/50 to-transparent"></div>
     </div>
 
     <!-- Text Overlay -->
     <div class="absolute inset-0 z-10 flex items-center">
-      <div class="container mx-auto px-4">
-        <div class="max-w-2xl text-white sickle-hero-text opacity-0 translate-y-10 z-20">
-
-          <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-            Advanced <span class="text-red-500">Sickle Cell Care</span>
+      <div class="container mx-auto px-6">
+        <div class="max-w-2xl text-white sickle-hero-text animate-fadeInUp">
+          <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight drop-shadow-lg">
+            Advanced <span class="text-yellow-400">Sickle Cell</span> Care
           </h1>
-          <p class="text-xl mb-8 leading-relaxed">
+
+          <p class="text-xl mb-8 leading-relaxed text-gray-100 drop-shadow-md">
             Dedicated clinic open 
-            <span class="font-semibold text-teal-400">Wednesdays & Saturdays, 10AM – 5PM</span> 
+            <span class="font-bold text-yellow-300">Wednesdays & Saturdays, 10AM – 5PM</span>  
             for comprehensive specialist consultations.
           </p>
+
           <a href="#book-consultation" 
              class="bg-red-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-red-700 hover:scale-105 hover:shadow-xl transition-all duration-300">
             📅 Book Consultation
@@ -50,33 +44,32 @@
 
   <!-- Hero Navigation Dots -->
   <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
-    <button class="sickle-hero-dot active w-3 h-3 rounded-full bg-teal-500" data-slide="0"></button>
-    <button class="sickle-hero-dot w-3 h-3 rounded-full bg-teal-500/50" data-slide="1"></button>
+    <button class="sickle-hero-dot active w-3 h-3 rounded-full bg-red-500" data-slide="0"></button>
+    <button class="sickle-hero-dot w-3 h-3 rounded-full bg-blue-500/50" data-slide="1"></button>
   </div>
 </section>
 
-
 <!-- Why Choose Our Sickle Cell Clinic -->
-<section class="py-20 bg-gray-50">
+<section class="py-16 bg-gray-50"> <!-- reduced spacing -->
   <div class="max-w-7xl mx-auto px-6 lg:px-12 text-center">
     <h2 class="text-4xl font-bold text-navy mb-12">
       Why Choose Our <span class="text-red-600">Sickle Cell Clinic</span>?
     </h2>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
 
-      <div class="bg-navy text-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+      <div class="special-card zoom-effect bg-navy text-white p-8 rounded-2xl shadow">
         <div class="text-red-400 text-4xl mb-4">🧬</div>
         <h3 class="text-2xl font-semibold mb-3">Specialist Care</h3>
         <p>Dedicated haematologists offering expert management of sickle cell conditions.</p>
       </div>
 
-      <div class="bg-navy text-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+      <div class="special-card zoom-effect bg-red-600 text-white p-8 rounded-2xl shadow">
         <div class="text-red-400 text-4xl mb-4">⚕️</div>
         <h3 class="text-2xl font-semibold mb-3">Comprehensive Support</h3>
         <p>From pain management to preventive care, we walk with you every step.</p>
       </div>
 
-      <div class="bg-navy text-white p-8 rounded-2xl shadow hover:shadow-lg transition">
+      <div class="special-card zoom-effect bg-navy text-white p-8 rounded-2xl shadow">
         <div class="text-red-400 text-4xl mb-4">❤️</div>
         <h3 class="text-2xl font-semibold mb-3">Patient-Centered</h3>
         <p>Personalized and compassionate healthcare tailored to individual needs.</p>
@@ -84,7 +77,6 @@
     </div>
   </div>
 </section>
-
 
 <!-- Book Consultation Section -->
 <section id="book-consultation" class="relative py-20 bg-gradient-to-r from-navy to-navy/95 text-white overflow-hidden">
@@ -99,12 +91,12 @@
           Book Your <span class="text-red-600">Consultation</span>
         </h2>
         <p class="text-gray-600 text-base md:text-lg">
-          Available <span class="font-semibold text-navy">Wednesdays & Saturdays</span> • 10AM – 5PM
+          Available <span class="font-semibold text-navy">Wednesdays & Saturdays</span> • 
+          <span class="font-bold text-gray-900 text-lg md:text-xl">10AM – 5PM</span>
         </p>
       </div>
 
       <form method="POST" action="#" class="space-y-6">
-
         <div class="grid md:grid-cols-2 gap-6">
           <div class="space-y-2">
             <label class="block text-sm font-semibold">Full Name</label>
@@ -136,20 +128,27 @@
   </div>
 </section>
 
-
 <!-- Daily Tips -->
 <section id="daily-tips" class="py-20 bg-gradient-to-r from-teal-50 to-white">
-  <div class="max-w-4xl mx-auto text-center">
-    <h3 class="text-3xl font-bold text-navy mb-8">💡 Daily Health Tips</h3>
-    <ul id="tips-container" class="text-lg text-gray-700 font-medium h-20 flex items-center justify-center"></ul>
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 text-center">
+    <h3 class="text-3xl font-bold text-navy mb-12">💡 Daily Health Tips</h3>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10"
+         id="tips-container"
+         data-url="{{ url_for('static', filename='data/tips.json') }}">
+      <!-- Tips injected dynamically -->
+    </div>
   </div>
 </section>
 
 <!-- FAQs -->
 <section id="faqs" class="py-20 bg-gray-100">
-  <div class="max-w-4xl mx-auto">
-    <h3 class="text-3xl font-bold text-navy mb-10 text-center">❓ Frequently Asked Questions</h3>
-    <div class="faq-container space-y-4"></div>
+  <div class="max-w-6xl mx-auto">
+    <h3 class="text-3xl font-bold text-navy mb-10 text-center">
+      ❓ Frequently Asked Questions
+    </h3>
+    <div class="faq-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Each FAQ injected dynamically -->
+    </div>
   </div>
 </section>
 
@@ -157,7 +156,7 @@
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/sickle_cell_hero.js') }}"></script>
-
-<script src="{{ url_for('static', filename='js/tips.js') }}"></script>
 <script src="{{ url_for('static', filename='js/faqs.js') }}"></script>
+<script src="{{ url_for('static', filename='js/tips.js') }}"></script>
+<script src="{{ url_for('static', filename='js/sickle_cell_sections.js') }}"></script>
 {% endblock %}

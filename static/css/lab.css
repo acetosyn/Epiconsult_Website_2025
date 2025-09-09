@@ -1,0 +1,191 @@
+/* ------------------------------
+   Laboratory Page Styles (Updated)
+   ------------------------------ */
+
+/* Fade-in animation for hero text */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fadeInUp {
+  animation: fadeInUp 1s ease forwards;
+}
+
+/* Zoom hover for category/service cards */
+.zoom-effect {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.zoom-effect:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Category & service cards */
+.special-card {
+  transition: all 0.3s ease;
+}
+.special-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+}
+
+/* Buttons (Explore, Book Now, Schedule Pickup, etc.) */
+.book-btn {
+  background-color: rgb(220 38 38 / 1);
+  color: white;
+  font-weight: 600;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+.book-btn:hover {
+  background-color: rgb(185 28 28 / 1);
+  transform: translateY(-2px);
+}
+
+/* ------------------------------
+   Modals
+   ------------------------------ */
+#serviceModal .modal-content,
+#bookingModal .modal-content {
+  transform-origin: center;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.3s ease;
+}
+
+/* Show state (when .show is added directly to modal-content) */
+#serviceModal .modal-content.show,
+#bookingModal .modal-content.show {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+}
+
+/* Modal content general styles */
+#serviceModal .modal-content,
+#bookingModal .modal-content {
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Service Modal Grid Layout */
+#serviceModal #serviceList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Individual test card inside modal */
+#serviceModal #serviceList .special-card {
+  padding: 1.25rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+#serviceModal #serviceList .special-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* ------------------------------
+   Booking Progress Steps
+   ------------------------------ */
+.step {
+  text-align: center;
+  position: relative;
+  flex-shrink: 0;
+}
+.circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin: auto;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Active step (highlighted red) */
+.step.active .circle {
+  background: rgb(220 38 38 / 1);
+  color: #fff;
+  border: 2px solid rgb(220 38 38 / 1);
+}
+
+/* Completed step with checkmark */
+.step.completed .circle {
+  background: rgb(220 38 38 / 1);
+  color: #fff;
+  font-size: 0;
+}
+.step.completed .circle::after {
+  content: "✔";
+  font-size: 18px;
+  animation: popIn 0.3s ease;
+}
+
+/* Progress connector line */
+.line {
+  flex: 1;
+  height: 4px;
+  background: #e5e7eb;
+  margin: 0 10px;
+  position: relative;
+  top: -20px;
+  transition: background 0.3s ease;
+}
+.step.completed ~ .line,
+.step.active ~ .line {
+  background: rgb(220 38 38 / 1);
+}
+
+/* Checkmark pop animation */
+@keyframes popIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ------------------------------
+   Booking Form
+   ------------------------------ */
+#lab-booking-form input,
+#lab-booking-form select {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+#lab-booking-form input:focus,
+#lab-booking-form select:focus {
+  border-color: rgb(220 38 38 / 1);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2);
+  outline: none;
+}
+
+/* Date input icon alignment fix */
+#lab-booking-form .relative span {
+  pointer-events: none;
+}
+
+/* ------------------------------
+   Booking Summary
+   ------------------------------ */
+.summary-card {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+.summary-card:hover {
+  transform: translateY(-4px);
+}

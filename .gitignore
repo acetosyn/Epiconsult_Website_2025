@@ -2,11 +2,20 @@
 epiconsult_assets/
 jaiz_assets/
 fhc_assets/
+
+# Ignore file types
 *.pdf
 *.xlsx
 *.ipynb
 *.csv
-.env
-new_database/
 *.docx
+
+# Environment and sensitive files
+.env
+ServiceAccountKey.json
+firebase_config.html
+
+# Ignore project data folders
+new_database/
 dataset/
+generate.py
