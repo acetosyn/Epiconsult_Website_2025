@@ -1,62 +1,42 @@
-/* =====================
-   Animations (Ticker + Hero)
-===================== */
+/* ==================================================
+   1. Animations (Ticker, Hero, Chatbot, Pulse)
+================================================== */
 @keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
-
 @keyframes scroll-fast {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
 }
-
 .animate-scroll {
   animation: scroll 30s linear infinite;
 }
-
 .animate-scroll-fast {
   animation: scroll-fast 20s linear infinite;
 }
 
-/* Hero Slider Transitions */
 .hero-slide {
   transition: opacity 1s ease-in-out;
 }
 .hero-slide.active {
   opacity: 1 !important;
 }
-
-/* Hero text animation */
 .hero-text {
   transition: all 1s ease-out;
 }
 
-/* Chatbot Animation */
 #chatbot-toggle {
   animation: pulse 2s infinite;
 }
 @keyframes pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.05);
-  }
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 
-/* =====================
-   Navigation Links
-===================== */
+/* ==================================================
+   2. Navigation (Links + Dropdowns)
+================================================== */
 .nav-link {
   position: relative;
   font-size: 1rem;
@@ -81,7 +61,7 @@
   width: 100%;
 }
 
-/* Dropdown Card */
+/* --- Dropdown Fix --- */
 .dropdown-card {
   position: absolute;
   top: 100%;
@@ -98,12 +78,16 @@
   visibility: hidden;
   transition: all 0.35s ease;
   z-index: 50;
+  pointer-events: none; /* prevents flicker */
 }
-.group:hover .dropdown-card {
+.group:hover .dropdown-card,
+.group:focus-within .dropdown-card {
   transform: translateY(0);
   opacity: 1;
   visibility: visible;
+  pointer-events: auto; /* re-enable when visible */
 }
+
 .dropdown-link {
   display: block;
   width: 100%;
@@ -121,7 +105,9 @@
   transform: translateX(5px);
 }
 
-/* Buttons */
+/* ==================================================
+   3. Buttons
+================================================== */
 .btn-primary {
   background: #dc2626;
   color: #fff;
@@ -136,7 +122,9 @@
   box-shadow: 0 6px 15px rgba(220, 38, 38, 0.3);
 }
 
-/* Mobile Nav */
+/* ==================================================
+   4. Mobile Navigation
+================================================== */
 .mobile-link {
   display: block;
   padding: 0.5rem 0;
@@ -165,9 +153,9 @@
   padding-left: 0.25rem;
 }
 
-/* =====================
-   Global / Misc
-===================== */
+/* ==================================================
+   5. Global / Misc Utilities
+================================================== */
 .feature-card:hover {
   transform: translateY(-8px);
 }
@@ -184,7 +172,9 @@ textarea:focus {
   box-shadow: 0 0 0 3px rgba(242, 101, 34, 0.1);
 }
 
-/* Responsive Adjustments */
+/* ==================================================
+   6. Responsive Adjustments
+================================================== */
 @media (max-width: 768px) {
   .hero-slide h1 {
     font-size: 2.5rem;
@@ -194,13 +184,15 @@ textarea:focus {
   }
 }
 
-/* Loading States */
+/* ==================================================
+   7. States (Loading, Accessibility, Print)
+================================================== */
 .loading {
   opacity: 0.7;
   pointer-events: none;
 }
 
-/* Accessibility */
+/* Accessibility (reduced motion) */
 @media (prefers-reduced-motion: reduce) {
   .animate-scroll,
   .animate-scroll-fast,
@@ -222,5 +214,3 @@ textarea:focus {
     display: none !important;
   }
 }
-
-

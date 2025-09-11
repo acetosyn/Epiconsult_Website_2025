@@ -107,34 +107,35 @@
       <div class="hidden lg:flex items-center space-x-10">
         <a href="{{ url_for('main.home') }}" class="nav-link">HOME</a>
 
-        <!-- CLINIC Dropdown -->
-        <div class="relative group">
-          <a href="#" class="nav-link flex items-center">
-            CLINIC
-            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </a>
-          <div class="absolute hidden group-hover:block mt-2 w-72 bg-white rounded-xl shadow-lg border border-gray-200 z-50">
-            <a href="{{ url_for('clinic.general') }}" class="dropdown-link">General Consultation</a>
-            <a href="{{ url_for('clinic.sickle_cell') }}" class="dropdown-link">Sickle Cell Clinic</a>
-            <a href="{{ url_for('clinic.specialist') }}" class="dropdown-link">Specialist Clinic</a>
-          </div>
-        </div>
+ <!-- CLINIC Dropdown -->
+<div class="relative group">
+  <a href="#" class="nav-link flex items-center">
+    CLINIC
+    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+    </svg>
+  </a>
+  <div class="dropdown-card">
+    <a href="{{ url_for('clinic.general') }}" class="dropdown-link">General Consultation</a>
+    <a href="{{ url_for('clinic.sickle_cell') }}" class="dropdown-link">Sickle Cell Clinic</a>
+    <a href="{{ url_for('clinic.specialist') }}" class="dropdown-link">Specialist Clinic</a>
+  </div>
+</div>
 
-        <!-- DIAGNOSTICS Dropdown -->
-        <div class="relative group">
-          <a href="#" class="nav-link flex items-center">
-            DIAGNOSTICS
-            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </a>
-          <div class="absolute hidden group-hover:block mt-2 w-72 bg-white rounded-xl shadow-lg border border-gray-200 z-50">
-            <a href="{{ url_for('diagnostics.radiology') }}" class="dropdown-link">Radiology</a>
-            <a href="{{ url_for('diagnostics.laboratory') }}" class="dropdown-link">Laboratory</a>
-          </div>
-        </div>
+<!-- DIAGNOSTICS Dropdown -->
+<div class="relative group">
+  <a href="#" class="nav-link flex items-center">
+    DIAGNOSTICS
+    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+    </svg>
+  </a>
+  <div class="dropdown-card">
+    <a href="{{ url_for('diagnostics.radiology') }}" class="dropdown-link">Radiology</a>
+    <a href="{{ url_for('diagnostics.laboratory') }}" class="dropdown-link">Laboratory</a>
+  </div>
+</div>
+
 
         <a href="{{ url_for('clinic.teleconsultation') }}" class="nav-link">TELECONSULTATION</a>
         <a href="{{ url_for('main.about') }}" class="nav-link">ABOUT</a>
@@ -594,7 +595,7 @@
 <script src="{{ url_for('static', filename='js/mobile_toggle.js') }}"></script>
 
 <!-- Core scripts -->
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<!-- <script src="{{ url_for('static', filename='js/main.js') }}"></script> -->
 <script src="{{ url_for('static', filename='js/base.js') }}"></script>
 <script src="{{ url_for('static', filename='js/scrollAnimation.js') }}"></script>
 <script src="{{ url_for('static', filename='js/hero.js') }}"></script>

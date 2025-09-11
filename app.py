@@ -130,7 +130,6 @@ def contact_alias():
 def about_alias():
     return redirect(url_for("main.about"))
 
-
 # -------------------------------
 # ENTRYPOINT
 # -------------------------------
