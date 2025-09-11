@@ -33,12 +33,15 @@
             Experience world-class medical diagnostics with cutting-edge technology and expert care. Your health is our priority.
           </p>
           <div class="flex flex-col sm:flex-row gap-4">
-            <a href="{{ url_for('book_appointment') }}" class="bg-red-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-red-700 hover:scale-105 hover:shadow-xl transition-all duration-300">
-              📅 Book Appointment
-            </a>
-            <a href="{{ url_for('teleconsultation') }}" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-navy transition-all duration-300">
-              💻 Teleconsultation
-            </a>
+      <a href="{{ url_for('book_appointment') }}" 
+        class="bg-red-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-red-700 hover:scale-105 hover:shadow-xl transition-all duration-300">
+        📅 Book Appointment
+      </a>
+      <a href="{{ url_for('clinic.teleconsultation') }}" 
+        class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold hover:bg-white hover:text-navy transition-all duration-300">
+        💻 Teleconsultation
+      </a>
+
           </div>
         </div>
       </div>
