@@ -130,13 +130,12 @@ def contact_alias():
 def about_alias():
     return redirect(url_for("main.about"))
 
-
 # -------------------------------
 # ENTRYPOINT
 # -------------------------------
-print("Registered routes:")
-for rule in app.url_map.iter_rules():
-    print(rule.endpoint, rule.rule)
+# print("Registered routes:")
+# for rule in app.url_map.iter_rules():
+#     print(rule.endpoint, rule.rule)
 
 
 if __name__ == "__main__":
