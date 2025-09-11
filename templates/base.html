@@ -88,20 +88,27 @@
   <div class="container mx-auto px-4">
     <div class="flex justify-between items-center py-4">
       
-      <!-- Logo + Brand -->
-      <a href="{{ url_for('main.home') }}" class="flex items-center space-x-3">
-        <img src="{{ url_for('static', filename='images/logo.jpeg') }}" 
-             alt="Epiconsult Logo" 
-             class="h-12 w-auto object-contain">
+    <!-- Logo + Brand -->
+    <a href="{{ url_for('main.home') }}" class="flex items-center space-x-3">
+      <img src="{{ url_for('static', filename='images/logo.jpeg') }}" 
+          alt="Epiconsult Logo" 
+          class="h-12 w-auto object-contain">
 
-        <div>
-          <h1 class="font-bold text-2xl md:text-3xl">
-            <span class="text-red-600">Epiconsult</span>
-            <span class="text-[#002F5E]">Diagnostics</span>
-          </h1>
-          <p class="text-gray-600 text-xs md:text-sm">WITH YOU FOR LIFE</p>
-        </div>
-      </a>
+      <div class="leading-tight">
+        <!-- Brand Name -->
+        <h1 class="font-bold text-2xl md:text-3xl text-red-600">
+          Epiconsult
+        </h1>
+        <h2 class="font-semibold text-base md:text-lg text-[#002F5E]">
+          Clinic & Diagnostics
+        </h2>
+        <!-- Tagline -->
+        <p class="text-gray-600 italic text-xs md:text-sm">
+          ...a reference point in diagnostics
+        </p>
+      </div>
+    </a>
+
 
       <!-- Desktop Nav -->
       <div class="hidden lg:flex items-center space-x-10">

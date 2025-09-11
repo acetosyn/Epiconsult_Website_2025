@@ -214,3 +214,30 @@ textarea:focus {
     display: none !important;
   }
 }
+
+
+
+
+/* Logo Text Adjustments */
+.logo-block h1 {
+  line-height: 1.1;
+}
+.logo-block h2 {
+  margin-top: -0.1rem;
+}
+.logo-block p {
+  margin-top: 0.15rem;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .logo-block h1 {
+    font-size: 1.5rem;
+  }
+  .logo-block h2 {
+    font-size: 0.95rem;
+  }
+  .logo-block p {
+    font-size: 0.7rem;
+  }
+}
