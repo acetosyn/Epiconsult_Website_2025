@@ -8,18 +8,18 @@
 {% block content %}
 <main class="auth-container" data-page="login">
   <div class="auth-box" role="region" aria-label="Authentication card">
-    <!-- Logo Header -->
-    <div class="logo-header">
-      <a href="{{ url_for('home') }}" class="brand" aria-label="Back to home">
-        <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Epiconsult Logo" class="logo-img" />
-        <div>
-          <h1>
-            <span class="text-red">Epiconsult</span> <span class="text-navy">Diagnostics</span>
-          </h1>
-          <p class="tagline">WITH YOU FOR LIFE</p>
-        </div>
-      </a>
-    </div>
+    
+  <!-- Logo Header -->
+  <div class="logo-header">
+    <a href="{{ url_for('home') }}" class="brand" aria-label="Back to home">
+      <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Epiconsult Logo" class="logo-img" />
+      <div class="logo-text">
+        <h1 class="text-red">Epiconsult</h1>
+        <h2 class="text-navy">Clinic & Diagnostics</h2>
+        <p class="tagline italic">...a reference point in diagnostics</p>
+      </div>
+    </a>
+  </div>
 
     <!-- Auth Header -->
     <div class="auth-header">

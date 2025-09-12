@@ -50,7 +50,9 @@ def session_login():
             "email": decoded_token.get("email"),
             "name": decoded_token.get("name") or decoded_token["email"].split("@")[0],
         }
-        return {"message": "Session established"}
+
+        # ✅ no flash here — frontend will show login success once
+        return {"status": "ok", "message": "Session established"}
     except Exception as e:
         return {"error": f"Invalid token: {str(e)}"}, 401
 
@@ -58,7 +60,8 @@ def session_login():
 @app.route("/sessionLogout", methods=["POST"])
 def session_logout():
     session.clear()
-    return {"message": "Logged out"}
+    return {"status": "ok", "message": "Logged out"}
+
 
 
 # -------------------------------
