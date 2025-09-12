@@ -215,9 +215,6 @@ textarea:focus {
   }
 }
 
-
-
-
 /* Logo Text Adjustments */
 .logo-block h1 {
   line-height: 1.1;
@@ -241,3 +238,16 @@ textarea:focus {
     font-size: 0.7rem;
   }
 }
+
+/* ==================================================
+   8. Auth Slot Styling (Dynamic Login/User Section)
+================================================== */
+#auth-slot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 180px;   /* reserve consistent space */
+  height: 48px;
+}
+
+/* Dropdown container inherits styling from user_icon.css */
