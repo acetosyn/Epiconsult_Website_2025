@@ -66,44 +66,38 @@
   position: absolute;
   top: 100%;
   left: 0;
-  width: 20rem;
+  width: 22rem;
   background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(12px);
   border-radius: 1rem;
   box-sizing: border-box;
-  padding: 0.5rem;
+  padding: 0.75rem;
   box-shadow: 0 10px 30px rgba(0, 47, 94, 0.15);
-  transform: translateY(10px);
+  transform: translateY(15px);
   opacity: 0;
   visibility: hidden;
   transition: all 0.35s ease;
   z-index: 50;
-  pointer-events: none; /* prevents flicker */
+  pointer-events: auto; /* ✅ allow interaction */
+  max-height: 0;
+  overflow: hidden;
 }
+
 .group:hover .dropdown-card,
 .group:focus-within .dropdown-card {
   transform: translateY(0);
   opacity: 1;
   visibility: visible;
-  pointer-events: auto; /* re-enable when visible */
+  max-height: 600px; /* enough space for nested items */
+  overflow-y: auto;
 }
-
-.dropdown-link {
+/* .dropdown-link {
   display: block;
-  width: 100%;
-  padding: 0.75rem 1rem;
-  font-size: 1.05rem;
-  font-weight: 500;
-  color: #374151;
-  border-radius: 0.5rem;
+  padding: 0.5rem 0;
+  font-weight: 600;
+  color: #002f5e;
   transition: all 0.3s ease;
-  box-sizing: border-box;
-}
-.dropdown-link:hover {
-  background: #fee2e2;
-  color: #dc2626;
-  transform: translateX(5px);
-}
+} */
 
 /* ==================================================
    3. Buttons

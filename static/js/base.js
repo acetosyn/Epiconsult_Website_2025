@@ -1,5 +1,4 @@
 // static/js/base.js
-
 document.addEventListener("DOMContentLoaded", () => {
   // =============================
   // Mobile Menu Toggle (Drawer + Overlay)
@@ -10,23 +9,23 @@ document.addEventListener("DOMContentLoaded", () => {
   const iconHamburger = document.getElementById("icon-hamburger");
   const iconClose = document.getElementById("icon-close");
 
-  if (mobileMenuBtn && mobileMenu && mobileOverlay) {
+  if (mobileMenuBtn && mobileMenu) {
     mobileMenuBtn.addEventListener("click", () => {
       const isOpen = !mobileMenu.classList.contains("translate-x-full");
       if (isOpen) {
         mobileMenu.classList.add("translate-x-full");
-        mobileOverlay.classList.add("hidden");
+        mobileOverlay?.classList.add("hidden");
         iconHamburger?.classList.remove("hidden");
         iconClose?.classList.add("hidden");
       } else {
         mobileMenu.classList.remove("translate-x-full");
-        mobileOverlay.classList.remove("hidden");
+        mobileOverlay?.classList.remove("hidden");
         iconHamburger?.classList.add("hidden");
         iconClose?.classList.remove("hidden");
       }
     });
 
-    mobileOverlay.addEventListener("click", () => {
+    mobileOverlay?.addEventListener("click", () => {
       mobileMenu.classList.add("translate-x-full");
       mobileOverlay.classList.add("hidden");
       iconHamburger?.classList.remove("hidden");
@@ -83,20 +82,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // =============================
   if (typeof heroSlides !== "undefined" && Array.isArray(heroSlides)) {
     console.log("[v2] Hero slider initialized with", heroSlides.length, "slides");
-  } else {
-    console.log("[v2] Hero slider not initialized (no heroSlides found)");
   }
 
-  console.log("[v2] Epiconsult Diagnostics website loaded successfully");
+  console.log("[v2] Epiconsult Diagnostics website loaded successfully (base.js)");
 });
 
 // Error Handling
 window.addEventListener("error", (e) => {
-  console.error("[v2] JavaScript error:", e.error || e.message || e);
+  console.error("[v2] JavaScript error in base.js:", e.error || e.message || e);
 });
 
 // Performance Monitoring
 window.addEventListener("load", () => {
-  console.log("[v2] Page fully loaded");
+  console.log("[v2] Page fully loaded (base.js)");
   document.querySelectorAll(".loading").forEach((el) => el.classList.remove("loading"));
 });

@@ -35,6 +35,7 @@
     
 <!-- Global CSS -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/base2.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/user_icon.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
@@ -86,11 +87,11 @@
 <nav class="bg-white shadow-lg sticky top-[48px] z-50">
   <div class="container mx-auto px-4">
     <div class="flex justify-between items-center py-4">
-      
+
       <!-- Logo + Brand -->
       <a href="{{ url_for('main.home') }}" class="flex items-center space-x-3">
-        <img src="{{ url_for('static', filename='images/logo.jpeg') }}" 
-            alt="Epiconsult Logo" 
+        <img src="{{ url_for('static', filename='images/logo.jpeg') }}"
+            alt="Epiconsult Logo"
             class="h-12 w-auto object-contain">
 
         <div class="leading-tight">
@@ -110,35 +111,32 @@
 
       <!-- Desktop Nav -->
       <div class="hidden lg:flex items-center space-x-10">
+
         <a href="{{ url_for('main.home') }}" class="nav-link">HOME</a>
 
-        <!-- CLINIC Dropdown -->
-        <div class="relative group">
-          <a href="#" class="nav-link flex items-center">
+        <!-- CLINIC Dropdown (populated dynamically) -->
+        <div class="relative group" id="clinic-menu-container" data-json="{{ url_for('clinic.clinic_data') }}">
+          <a href="#" class="nav-link flex items-center" aria-haspopup="true" aria-expanded="false">
             CLINIC
             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </a>
-          <div class="dropdown-card">
-            <a href="{{ url_for('clinic.general') }}" class="dropdown-link">General Consultation</a>
-            <a href="{{ url_for('clinic.sickle_cell') }}" class="dropdown-link">Sickle Cell Clinic</a>
-            <a href="{{ url_for('clinic.specialist') }}" class="dropdown-link">Specialist Clinic</a>
-          </div>
+          <!-- dropdown content will be injected here by JS -->
+          <div class="dropdown-card absolute left-0 mt-3 hidden group-hover:block min-w-[260px] bg-white shadow-xl rounded-md p-4 z-50 transform transition transform-gpu"
+               id="clinic-dropdown-root"></div>
         </div>
 
-        <!-- DIAGNOSTICS Dropdown -->
-        <div class="relative group">
-          <a href="#" class="nav-link flex items-center">
+        <!-- DIAGNOSTICS Dropdown (populated dynamically) -->
+        <div class="relative group" id="diagnostics-menu-container" data-json="{{ url_for('diagnostics.diagnostics_data') }}">
+          <a href="#" class="nav-link flex items-center" aria-haspopup="true" aria-expanded="false">
             DIAGNOSTICS
             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
             </svg>
           </a>
-          <div class="dropdown-card">
-            <a href="{{ url_for('diagnostics.radiology') }}" class="dropdown-link">Radiology</a>
-            <a href="{{ url_for('diagnostics.laboratory') }}" class="dropdown-link">Laboratory</a>
-          </div>
+          <div class="dropdown-card absolute left-0 mt-3 hidden group-hover:block min-w-[220px] bg-white shadow-xl rounded-md p-4 z-50 transform transition transform-gpu"
+               id="diagnostics-dropdown-root"></div>
         </div>
 
         <a href="{{ url_for('clinic.teleconsultation') }}" class="nav-link">TELECONSULTATION</a>
@@ -146,57 +144,53 @@
         <a href="{{ url_for('main.contact') }}" class="nav-link">CONTACT</a>
 
         <!-- Patient Portal -->
-        <a href="{{ url_for('main.patient_portal') }}" 
+        <a href="{{ url_for('main.patient_portal') }}"
            class="btn-primary flex items-center space-x-1 px-3 py-1 text-sm">
           <span>🔒</span>
           <span class="font-medium">Patient Portal</span>
         </a>
 
         <!-- ✅ Auth Slot (desktop, JS will inject login/user here) -->
-<div id="auth-slot" 
-     class="flex items-center justify-end w-[180px] h-[48px]">
-</div>
+        <div id="auth-slot"
+             class="flex items-center justify-end w-[180px] h-[48px]">
+        </div>
 
-      <!-- Mobile Menu Button -->
-      <button id="mobile-menu-button" class="lg:hidden text-navy focus:outline-none z-50 relative">
-        <svg id="icon-hamburger" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
-        <svg id="icon-close" class="w-7 h-7 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"></path>
-        </svg>
-      </button>
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-button" class="lg:hidden text-navy focus:outline-none z-50 relative">
+          <svg id="icon-hamburger" class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+          <svg id="icon-close" class="w-7 h-7 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
 </nav>
 
 <!-- Mobile Menu (Drawer) -->
-<div id="mobile-menu" 
-    class="fixed inset-y-0 right-0 w-3/4 max-w-sm bg-white shadow-lg 
+<div id="mobile-menu"
+    class="fixed inset-y-0 right-0 w-3/4 max-w-sm bg-white shadow-lg
           transform translate-x-full transition-transform duration-500 ease-in-out z-40">
   <div class="px-6 py-6 space-y-4 h-full overflow-y-auto">
-    
+
     <a href="{{ url_for('main.home') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
       HOME
     </a>
 
+    <!-- Mobile Clinic accordion placeholder -->
     <div>
       <span class="block text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">CLINIC</span>
-      <div class="ml-4 space-y-2">
-        <a href="{{ url_for('clinic.general') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">General Consultation</a>
-        <a href="{{ url_for('clinic.sickle_cell') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Sickle Cell</a>
-        <a href="{{ url_for('clinic.specialist') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Specialist</a>
-      </div>
+      <div id="mobile-clinic-root" class="ml-2 space-y-1"></div>
     </div>
 
+    <!-- Mobile Diagnostics accordion placeholder -->
     <div>
       <span class="block text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">DIAGNOSTICS</span>
-      <div class="ml-4 space-y-2">
-        <a href="{{ url_for('diagnostics.radiology') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Radiology</a>
-        <a href="{{ url_for('diagnostics.laboratory') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Laboratory</a>
-      </div>
+      <div id="mobile-diagnostics-root" class="ml-2 space-y-1"></div>
     </div>
 
     <a href="{{ url_for('clinic.teleconsultation') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
@@ -209,19 +203,17 @@
       CONTACT
     </a>
 
-  <!-- ✅ Auth Slot (mobile, JS injects login/user here) -->
-<div id="auth-slot-mobile" class="mt-3"></div>
-
+    <!-- ✅ Auth Slot (mobile, JS injects login/user here) -->
+    <div id="auth-slot-mobile" class="mt-3"></div>
 
     <!-- Patient Portal -->
-    <a href="{{ url_for('main.patient_portal') }}" 
-      class="w-full flex items-center justify-center space-x-2 bg-red-600 hover:bg-red-700 
+    <a href="{{ url_for('main.patient_portal') }}"
+      class="w-full flex items-center justify-center space-x-2 bg-red-600 hover:bg-red-700
             text-white py-2 rounded-full font-medium mt-2 shadow transition">
       <span>🔒</span><span>Patient Portal</span>
     </a>
   </div>
 </div>
-
 
 
 
@@ -526,22 +518,30 @@
 
 <!-- Firebase core & session sync -->
 <script type="module" src="{{ url_for('static', filename='js/firebase.js') }}"></script>
+
 <!-- Route protection -->
 <script type="module" src="{{ url_for('static', filename='js/auth-protect.js') }}"></script>
+
 <!-- Auth UI (show/hide login vs user-section) -->
 <script src="{{ url_for('static', filename='js/auth-ui.js') }}"></script>
+
 <!-- User dropdown toggle -->
 <!-- Mobile menu toggle -->
 <script src="{{ url_for('static', filename='js/mobile_toggle.js') }}"></script>
+
 <!-- Core scripts -->
-<!-- <script src="{{ url_for('static', filename='js/main.js') }}"></script> -->
 <script src="{{ url_for('static', filename='js/base.js') }}"></script>
 <script src="{{ url_for('static', filename='js/scrollAnimation.js') }}"></script>
 <script src="{{ url_for('static', filename='js/hero.js') }}"></script>
+
 <!-- Chat-related -->
 <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chat2.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chat-extras.js') }}"></script>
+
+<!-- Dynamic Dropdown (must come last so it sees DOM + url_for endpoints) -->
+<script src="{{ url_for('static', filename='js/dropdown.js') }}"></script>
+
 
 
 {% block scripts %}{% endblock %}
