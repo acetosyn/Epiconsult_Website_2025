@@ -97,3 +97,4 @@ window.addEventListener("load", () => {
   console.log("[v2] Page fully loaded (base.js)");
   document.querySelectorAll(".loading").forEach((el) => el.classList.remove("loading"));
 });
+
