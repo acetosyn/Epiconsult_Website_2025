@@ -21,12 +21,21 @@ function switchTab(target) {
     loginTab.classList.add("active");
     signupTab.classList.remove("active");
     formsWrapper.classList.remove("show-signup");
+
+    // mobile: toggle active class
+    loginForm.classList.add("active");
+    signupForm.classList.remove("active");
   } else {
     signupTab.classList.add("active");
     loginTab.classList.remove("active");
     formsWrapper.classList.add("show-signup");
+
+    // mobile: toggle active class
+    signupForm.classList.add("active");
+    loginForm.classList.remove("active");
   }
 }
+// Hook up tab buttons
 loginTab.addEventListener("click", () => switchTab("login"));
 signupTab.addEventListener("click", () => switchTab("signup"));
 
