@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/community.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="relative h-[70vh] overflow-hidden">
+  <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover">
+    <source src="{{ url_for('static', filename='videos/community-hero.mp4') }}" type="video/mp4">
+  </video>
+  <div class="absolute inset-0 bg-black/60"></div>
+  <div class="absolute inset-0 flex items-center justify-center text-center text-white px-6">
+    <div class="max-w-4xl animate-fadeInUp">
+      <h1 class="text-5xl md:text-6xl font-bold mb-6">Community Health Impact</h1>
+      <p class="text-xl md:text-2xl text-gray-200 mb-8">
+        Together, we create healthier futures through awareness, education, and action.
+      </p>
+      <a href="#get-involved" class="btn-primary">Join the Movement</a>
+    </div>
+  </div>
+</section>
+
+<!-- Mission / About Section -->
+<section class="py-20 bg-white">
+  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 px-6 lg:px-12 items-center">
+    <div>
+      <img src="{{ url_for('static', filename='images/community/mission.jpg') }}" 
+           alt="Community Mission" class="rounded-xl shadow-lg">
+    </div>
+    <div class="space-y-6">
+      <h2 class="text-4xl font-bold text-navy">🌍 Our Community Mission</h2>
+      <p class="text-lg text-gray-700 leading-relaxed">
+        Epiconsult’s community outreach focuses on **awareness, prevention, and empowerment**. 
+        From rural sensitizations to city-wide health campaigns, we bridge the gap between 
+        healthcare providers and the communities we serve.
+      </p>
+      <ul class="space-y-3 text-gray-700">
+        <li>✅ Early detection and prevention programs</li>
+        <li>✅ Education and sensitization campaigns</li>
+        <li>✅ Collaboration with schools, churches, and NGOs</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Community Services Grid -->
+<section class="py-20 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 text-center">
+    <h2 class="text-4xl font-bold text-navy mb-12">Our <span class="text-red-600">Community Services</span></h2>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10" id="community-services">
+      <!-- Cards dynamically populated via community.js -->
+    </div>
+  </div>
+</section>
+
+<!-- Featured Stories / Testimonials -->
+<section class="py-20 bg-gradient-to-r from-red-600 to-navy text-white">
+  <div class="max-w-6xl mx-auto text-center px-6">
+    <h2 class="text-3xl font-bold mb-12">💬 Stories from the Community</h2>
+    <div class="grid md:grid-cols-2 gap-8" id="community-stories">
+      <!-- Example -->
+      <div class="bg-white/10 p-6 rounded-xl shadow-lg">
+        <p class="italic mb-4">“Thanks to Epiconsult’s awareness campaign, I learned how to manage my sickle cell condition better.”</p>
+        <h4 class="font-bold">– Grace, Abuja</h4>
+      </div>
+      <div class="bg-white/10 p-6 rounded-xl shadow-lg">
+        <p class="italic mb-4">“The cancer screening event saved my mother’s life. We are forever grateful.”</p>
+        <h4 class="font-bold">– Daniel, Lagos</h4>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Event Gallery -->
+<section class="py-20 bg-white">
+  <div class="max-w-6xl mx-auto px-6 text-center">
+    <h2 class="text-3xl font-bold text-navy mb-8">📸 Past & Upcoming Events</h2>
+    <div id="event-gallery" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Event images/videos injected dynamically -->
+    </div>
+  </div>
+</section>
+
+<!-- Health Days Calendar -->
+<section class="py-20 bg-gray-100">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <h2 class="text-3xl font-bold text-navy mb-10 text-center">🗓 Nigerian Health Days</h2>
+    <div id="calendar-cards" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Calendar cards injected dynamically -->
+    </div>
+  </div>
+</section>
+
+<!-- Posters & Videos -->
+<section class="py-20 bg-gradient-to-r from-navy to-navy/95 text-white">
+  <div class="max-w-6xl mx-auto px-6">
+    <h2 class="text-3xl font-bold text-center mb-10">🎨 Posters & Awareness Videos</h2>
+    <div id="poster-cards" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+      <!-- Posters injected dynamically -->
+    </div>
+    <div class="video-section flex justify-center">
+      <video controls autoplay loop class="rounded-xl shadow-lg w-full md:w-3/4">
+        <source src="{{ url_for('static', filename='videos/health-awareness.mp4') }}" type="video/mp4">
+      </video>
+    </div>
+  </div>
+</section>
+
+<!-- Impact Section -->
+<section class="py-20 bg-gray-50">
+  <div class="max-w-6xl mx-auto grid md:grid-cols-3 text-center gap-10">
+    <div><h3 class="text-4xl font-bold text-red-600" id="counter-people">0</h3><p class="mt-2">People Reached</p></div>
+    <div><h3 class="text-4xl font-bold text-navy" id="counter-events">0</h3><p class="mt-2">Events Held</p></div>
+    <div><h3 class="text-4xl font-bold text-green-600" id="counter-cities">0</h3><p class="mt-2">Cities Covered</p></div>
+  </div>
+</section>
+
+<!-- Partners Section -->
+<section class="py-20 bg-white">
+  <div class="max-w-6xl mx-auto text-center">
+    <h2 class="text-3xl font-bold text-navy mb-10">🤝 Our Partners</h2>
+    <div class="flex flex-wrap justify-center gap-8 items-center" id="partners-logos">
+      <img src="{{ url_for('static', filename='images/partners/who.png') }}" class="h-16" alt="WHO">
+      <img src="{{ url_for('static', filename='images/partners/unicef.png') }}" class="h-16" alt="UNICEF">
+      <img src="{{ url_for('static', filename='images/partners/ncdc.png') }}" class="h-16" alt="NCDC">
+    </div>
+  </div>
+</section>
+
+<!-- Get Involved -->
+<section id="get-involved" class="py-20 bg-gradient-to-r from-red-600 to-navy text-white text-center">
+  <h2 class="text-3xl font-bold mb-6">🚀 Get Involved</h2>
+  <p class="mb-8 max-w-2xl mx-auto text-lg">
+    Whether you’re a student, health worker, or community leader, you can make a difference. 
+    Partner with us to bring awareness, support, and healthcare closer to the people who need it most.
+  </p>
+  <div class="flex justify-center gap-6">
+    <a href="#" class="btn-primary">Volunteer</a>
+    <a href="#" class="btn-secondary">Donate</a>
+    <a href="#" class="btn-primary bg-green-600 hover:bg-green-700">Partner With Us</a>
+  </div>
+</section>
+
+<!-- Newsletter -->
+<section class="py-20 bg-gray-100">
+  <div class="max-w-3xl mx-auto text-center">
+    <h2 class="text-3xl font-bold text-navy mb-6">📩 Stay Updated</h2>
+    <p class="mb-6 text-gray-600">Subscribe to our monthly newsletter and never miss upcoming events or health tips.</p>
+    <form class="flex flex-col sm:flex-row gap-4 justify-center">
+      <input type="email" placeholder="Enter your email" class="px-4 py-3 rounded-lg border w-full sm:w-2/3">
+      <button type="submit" class="btn-primary">Subscribe</button>
+    </form>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/community.js') }}"></script>
+{% endblock %}
