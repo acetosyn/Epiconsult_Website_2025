@@ -1,0 +1,59 @@
+/* static/css/community.css */
+
+/* General */
+#community-services div,
+#event-gallery img,
+#calendar-cards div,
+#poster-cards img {
+  transition: all 0.3s ease;
+}
+
+#event-gallery img:hover,
+#poster-cards img:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Hero animation */
+.animate-fadeInUp {
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Buttons */
+.btn-primary {
+  background: #1e3a8a;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #162d6a;
+}
+
+.btn-secondary {
+  border: 2px solid #1e3a8a;
+  color: #1e3a8a;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background: #1e3a8a;
+  color: #fff;
+}

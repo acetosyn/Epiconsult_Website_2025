@@ -21,6 +21,12 @@ def book_appointment():
     test_data = get_test_data()
     return render_template("appointment.html", test_data=test_data)
 
+
+@main_bp.route("/community")
+def community():
+    return render_template("community.html")
+
+
 @main_bp.route("/contact")
 def contact():
     return render_template("contact.html")
