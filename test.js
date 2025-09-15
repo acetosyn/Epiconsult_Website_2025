@@ -2,6 +2,40 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   // =============================
+  // Mobile Menu Toggle (Drawer + Overlay)
+  // =============================
+  const mobileMenuBtn = document.getElementById("mobile-menu-button");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const mobileOverlay = document.getElementById("mobile-overlay");
+  const iconHamburger = document.getElementById("icon-hamburger");
+  const iconClose = document.getElementById("icon-close");
+
+  if (mobileMenuBtn && mobileMenu && mobileOverlay) {
+    mobileMenuBtn.addEventListener("click", () => {
+      const isOpen = !mobileMenu.classList.contains("translate-x-full");
+
+      if (isOpen) {
+        mobileMenu.classList.add("translate-x-full");
+        mobileOverlay.classList.add("hidden");
+        iconHamburger?.classList.remove("hidden");
+        iconClose?.classList.add("hidden");
+      } else {
+        mobileMenu.classList.remove("translate-x-full");
+        mobileOverlay.classList.remove("hidden");
+        iconHamburger?.classList.add("hidden");
+        iconClose?.classList.remove("hidden");
+      }
+    });
+
+    mobileOverlay.addEventListener("click", () => {
+      mobileMenu.classList.add("translate-x-full");
+      mobileOverlay.classList.add("hidden");
+      iconHamburger?.classList.remove("hidden");
+      iconClose?.classList.add("hidden");
+    });
+  }
+
+  // =============================
   // Appointment Form Handling
   // =============================
   const appointmentForm = document.getElementById("appointment-form");
@@ -31,11 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // =============================
   document.querySelectorAll("button").forEach((button) => {
     button.addEventListener("click", function () {
-      if (
-        this.type !== "submit" &&
-        !this.id.includes("chatbot") &&
-        !this.classList.contains("hero-dot")
-      ) {
+      if (this.type !== "submit" && !this.id.includes("chatbot") && !this.classList.contains("hero-dot")) {
         this.style.transform = "scale(0.95)";
         setTimeout(() => (this.style.transform = ""), 150);
       }
@@ -62,10 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const welcomeMsg = document.getElementById("welcome-msg");
   const welcomeMsgMobile = document.getElementById("welcome-msg-mobile");
 
-  const { isLoggedIn, username } = window.__USER__ || {
-    isLoggedIn: false,
-    username: "",
-  };
+  const { isLoggedIn, username } = window.__USER__ || { isLoggedIn: false, username: "" };
 
   if (isLoggedIn) {
     loginLink?.classList.add("hidden");
@@ -109,7 +136,72 @@ window.addEventListener("error", (e) => {
 // =============================
 window.addEventListener("load", () => {
   console.log("[v2] Page fully loaded");
-  document.querySelectorAll(".loading").forEach((el) =>
-    el.classList.remove("loading")
-  );
+  document.querySelectorAll(".loading").forEach((el) => el.classList.remove("loading"));
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// =============================
+// MOBILE TOGGLE.JS
+// =============================
+
+document.addEventListener("DOMContentLoaded", () => {
+  const menuBtn = document.getElementById("mobile-menu-button");
+  const menu = document.getElementById("mobile-menu");
+  const overlay = document.getElementById("mobile-overlay");
+  const iconHamburger = document.getElementById("icon-hamburger");
+  const iconClose = document.getElementById("icon-close");
+
+  function openMenu() {
+    menu.classList.remove("translate-x-full");
+    menu.classList.add("translate-x-0");
+    overlay.classList.remove("hidden");
+    document.body.classList.add("overflow-hidden");
+
+    iconHamburger.classList.add("hidden");
+    iconClose.classList.remove("hidden");
+  }
+
+  function closeMenu() {
+    menu.classList.remove("translate-x-0");
+    menu.classList.add("translate-x-full");
+    overlay.classList.add("hidden");
+    document.body.classList.remove("overflow-hidden");
+
+    iconHamburger.classList.remove("hidden");
+    iconClose.classList.add("hidden");
+  }
+
+  // Toggle button
+  menuBtn.addEventListener("click", () => {
+    const isClosed = menu.classList.contains("translate-x-full");
+    isClosed ? openMenu() : closeMenu();
+  });
+
+  // Close if clicking outside (overlay)
+  overlay.addEventListener("click", closeMenu);
+
+  // Auto-reset on desktop resize
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 1024) {
+      closeMenu();
+    }
+  });
 });
