@@ -105,52 +105,50 @@
   }
 
   // ----------- MOBILE ACCORDION -----------
-  function buildMobileAccordion(rootEl, data, type) {
-    rootEl.innerHTML = "";
-    if (!data) return;
+  // ----------- MOBILE ACCORDION -----------
+// ----------- MOBILE ACCORDION -----------
+function buildMobileAccordion(rootEl, data, type) {
+  rootEl.innerHTML = "";
+  if (!data) return;
 
-    Object.keys(data).forEach((sectionKey) => {
-      const wrapper = document.createElement("div");
-      wrapper.className = "mobile-section";
+  Object.keys(data).forEach((sectionKey) => {
+    const sectionWrapper = document.createElement("div");
+    sectionWrapper.className = "space-y-1";
 
-      const btn = document.createElement("button");
-      btn.className =
-        "w-full flex justify-between items-center py-2 px-3 rounded-md font-medium text-gray-100 hover:text-red-400";
-      btn.innerHTML = `<span>${sectionKey}</span><span class="toggle-icon">▸</span>`;
-      btn.setAttribute("aria-expanded", "false");
+    const items = Array.isArray(data[sectionKey])
+      ? data[sectionKey]
+      : Object.keys(data[sectionKey] || {});
 
-      const panel = document.createElement("div");
-      panel.className =
-        "submenu ml-3 max-h-0 overflow-hidden transition-all duration-300 ease-in-out";
-      wrapper.appendChild(btn);
-      wrapper.appendChild(panel);
+    items.forEach((it) => {
+      const name = typeof it === "string" ? it : it.name || it.title || it.label;
+      const a = document.createElement("a");
+      a.className =
+        "block py-2 pl-4 text-gray-300 hover:text-red-400 transition";
+      a.textContent = name;
 
-      btn.addEventListener("click", () => {
-        const expanded = btn.getAttribute("aria-expanded") === "true";
-        btn.setAttribute("aria-expanded", String(!expanded));
-        btn.querySelector(".toggle-icon").classList.toggle("rotate", !expanded);
+      if (type === "clinic") {
+        a.href = getClinicHref(sectionKey, name);
+      } else {
+        a.href = getDiagnosticsHref(sectionKey, name);
+      }
 
-        if (!expanded) {
-          panel.innerHTML = "";
-          Object.keys(data[sectionKey] || {}).forEach((childKey) => {
-            const a = document.createElement("a");
-            a.className = "block py-1 text-gray-300 hover:text-red-400";
-            a.textContent = childKey;
-            a.href =
-              type === "clinic"
-                ? getClinicHref(sectionKey, childKey)
-                : getDiagnosticsHref(sectionKey, childKey);
-            panel.appendChild(a);
-          });
-          panel.style.maxHeight = panel.scrollHeight + "px";
-        } else {
-          panel.style.maxHeight = "0px";
-        }
-      });
+      sectionWrapper.appendChild(a);
+    });
 
-      rootEl.appendChild(wrapper);
+    rootEl.appendChild(sectionWrapper);
+  });
+
+  // ✅ attach toggle to parent button
+  const parentBtn = document.querySelector(`[data-target="#${rootEl.id}"], [data-target="${rootEl.id}"]`);
+  if (parentBtn) {
+    parentBtn.addEventListener("click", () => {
+      rootEl.classList.toggle("hidden");
+      parentBtn.querySelector(".toggle-icon")?.classList.toggle("rotate");
     });
   }
+}
+
+
 
   // ----------- INITIALIZER -----------
   async function initMenu(jsonUrl, desktopRootId, mobileRootId, type) {
