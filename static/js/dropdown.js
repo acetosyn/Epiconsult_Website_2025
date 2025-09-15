@@ -21,6 +21,7 @@
     }
   }
 
+  // ----------- LINK HELPERS -----------
   function getClinicHref(sectionKey, name) {
     const key = sectionKey.toLowerCase();
     if (key.includes("general")) return "/clinic/general";
@@ -37,109 +38,85 @@
     return "/diagnostics#" + slugify(name);
   }
 
-  // ---------- DESKTOP BUILDER (with nested flyouts) ----------
+  // ----------- DESKTOP DROPDOWN (flyouts) -----------
   function buildDesktopDropdown(rootEl, data, type) {
     rootEl.innerHTML = "";
     if (!data) return;
 
     const container = document.createElement("div");
-    container.className = "mega-grid";
+    container.className = "dropdown-menu";
 
     Object.keys(data).forEach((sectionKey) => {
-      const section = document.createElement("div");
-      section.className = "mega-section";
+      const hasChildren =
+        typeof data[sectionKey] === "object" &&
+        Object.keys(data[sectionKey]).length > 0;
 
-      const headerLink = document.createElement("a");
-      headerLink.className = "mega-header";
-      headerLink.textContent = sectionKey;
+      const item = document.createElement("div");
+      item.className = "dropdown-item";
 
-      headerLink.href =
+      const link = document.createElement("a");
+      link.className = "dropdown-link";
+      link.textContent = sectionKey;
+      link.href =
         type === "clinic"
           ? getClinicHref(sectionKey, sectionKey)
           : getDiagnosticsHref(sectionKey, sectionKey);
 
-      section.appendChild(headerLink);
+      if (hasChildren) {
+        const chevron = document.createElement("span");
+        chevron.className = "chevron";
+        chevron.innerHTML = "▸"; // CSS will rotate this
+        link.appendChild(chevron);
 
-      // Recursive submenu builder
-      function buildList(items, parentSectionKey) {
-        const list = document.createElement("div");
-        list.className = "mega-list";
+        const submenu = document.createElement("div");
+        submenu.className = "submenu";
 
-        items.forEach((it) => {
-          const name =
-            typeof it === "string" ? it : it.name || it.title || it.label;
-
-          if (typeof it === "object" && !Array.isArray(it)) {
-            // Nested submenu
-            const subWrapper = document.createElement("div");
-            subWrapper.className = "submenu-wrapper";
-
-            const link = document.createElement("a");
-            link.className = "mega-link has-submenu";
-            link.textContent = name;
-            link.href =
-              type === "clinic"
-                ? getClinicHref(parentSectionKey, name)
-                : getDiagnosticsHref(parentSectionKey, name);
-
-            const subMenu = buildList(Object.keys(it), name);
-            subMenu.classList.add("submenu");
-
-            subWrapper.appendChild(link);
-            subWrapper.appendChild(subMenu);
-            list.appendChild(subWrapper);
-
-            // Hover toggle
-            subWrapper.addEventListener("mouseenter", () => {
-              subMenu.classList.add("submenu-open");
-            });
-            subWrapper.addEventListener("mouseleave", () => {
-              subMenu.classList.remove("submenu-open");
-            });
-          } else {
-            // Normal link
-            const a = document.createElement("a");
-            a.className = "mega-link";
-            a.textContent = name;
-            a.href =
-              type === "clinic"
-                ? getClinicHref(parentSectionKey, name)
-                : getDiagnosticsHref(parentSectionKey, name);
-            list.appendChild(a);
-          }
+        Object.keys(data[sectionKey]).forEach((childKey) => {
+          const childLink = document.createElement("a");
+          childLink.className = "submenu-link";
+          childLink.textContent = childKey;
+          childLink.href =
+            type === "clinic"
+              ? getClinicHref(sectionKey, childKey)
+              : getDiagnosticsHref(sectionKey, childKey);
+          submenu.appendChild(childLink);
         });
 
-        return list;
+        item.appendChild(link);
+        item.appendChild(submenu);
+
+        // Hover events
+        item.addEventListener("mouseenter", () => {
+          submenu.classList.add("submenu-open");
+          chevron.classList.add("rotate");
+        });
+        item.addEventListener("mouseleave", () => {
+          submenu.classList.remove("submenu-open");
+          chevron.classList.remove("rotate");
+        });
+      } else {
+        item.appendChild(link);
       }
 
-      const items = Array.isArray(data[sectionKey])
-        ? data[sectionKey]
-        : typeof data[sectionKey] === "object"
-        ? Object.keys(data[sectionKey])
-        : [];
-
-      if (items.length > 0) {
-        section.appendChild(buildList(items, sectionKey));
-      }
-
-      container.appendChild(section);
+      container.appendChild(item);
     });
 
     rootEl.appendChild(container);
   }
 
-  // ---------- MOBILE BUILDER (accordion, unchanged) ----------
+  // ----------- MOBILE ACCORDION -----------
   function buildMobileAccordion(rootEl, data, type) {
     rootEl.innerHTML = "";
     if (!data) return;
 
     Object.keys(data).forEach((sectionKey) => {
       const wrapper = document.createElement("div");
+      wrapper.className = "mobile-section";
 
       const btn = document.createElement("button");
       btn.className =
         "w-full flex justify-between items-center py-2 px-3 rounded-md font-medium text-gray-100 hover:text-red-400";
-      btn.innerHTML = `<span>${sectionKey}</span><span class="toggle-icon text-lg font-bold">+</span>`;
+      btn.innerHTML = `<span>${sectionKey}</span><span class="toggle-icon">▸</span>`;
       btn.setAttribute("aria-expanded", "false");
 
       const panel = document.createElement("div");
@@ -151,27 +128,20 @@
       btn.addEventListener("click", () => {
         const expanded = btn.getAttribute("aria-expanded") === "true";
         btn.setAttribute("aria-expanded", String(!expanded));
-        btn.querySelector(".toggle-icon").textContent = expanded ? "+" : "−";
+        btn.querySelector(".toggle-icon").classList.toggle("rotate", !expanded);
 
         if (!expanded) {
           panel.innerHTML = "";
-          const items = Array.isArray(data[sectionKey])
-            ? data[sectionKey]
-            : Object.keys(data[sectionKey] || {});
-
-          items.forEach((it) => {
-            const name =
-              typeof it === "string" ? it : it.name || it.title || it.label;
+          Object.keys(data[sectionKey] || {}).forEach((childKey) => {
             const a = document.createElement("a");
             a.className = "block py-1 text-gray-300 hover:text-red-400";
-            a.textContent = name;
+            a.textContent = childKey;
             a.href =
               type === "clinic"
-                ? getClinicHref(sectionKey, name)
-                : getDiagnosticsHref(sectionKey, name);
+                ? getClinicHref(sectionKey, childKey)
+                : getDiagnosticsHref(sectionKey, childKey);
             panel.appendChild(a);
           });
-
           panel.style.maxHeight = panel.scrollHeight + "px";
         } else {
           panel.style.maxHeight = "0px";
@@ -182,6 +152,7 @@
     });
   }
 
+  // ----------- INITIALIZER -----------
   async function initMenu(jsonUrl, desktopRootId, mobileRootId, type) {
     try {
       const json = await fetchJson(jsonUrl);
@@ -202,6 +173,7 @@
     }
   }
 
+  // ----------- BOOTSTRAP -----------
   document.addEventListener("DOMContentLoaded", () => {
     const clinicUrl =
       document.getElementById("clinic-menu-container")?.dataset.json ||
