@@ -1,39 +1,6 @@
 // static/js/base.js
 document.addEventListener("DOMContentLoaded", () => {
   // =============================
-  // Mobile Menu Toggle (Drawer + Overlay)
-  // =============================
-  const mobileMenuBtn = document.getElementById("mobile-menu-button");
-  const mobileMenu = document.getElementById("mobile-menu");
-  const mobileOverlay = document.getElementById("mobile-overlay");
-  const iconHamburger = document.getElementById("icon-hamburger");
-  const iconClose = document.getElementById("icon-close");
-
-  if (mobileMenuBtn && mobileMenu) {
-    mobileMenuBtn.addEventListener("click", () => {
-      const isOpen = !mobileMenu.classList.contains("translate-x-full");
-      if (isOpen) {
-        mobileMenu.classList.add("translate-x-full");
-        mobileOverlay?.classList.add("hidden");
-        iconHamburger?.classList.remove("hidden");
-        iconClose?.classList.add("hidden");
-      } else {
-        mobileMenu.classList.remove("translate-x-full");
-        mobileOverlay?.classList.remove("hidden");
-        iconHamburger?.classList.add("hidden");
-        iconClose?.classList.remove("hidden");
-      }
-    });
-
-    mobileOverlay?.addEventListener("click", () => {
-      mobileMenu.classList.add("translate-x-full");
-      mobileOverlay.classList.add("hidden");
-      iconHamburger?.classList.remove("hidden");
-      iconClose?.classList.add("hidden");
-    });
-  }
-
-  // =============================
   // Appointment Form Handling
   // =============================
   const appointmentForm = document.getElementById("appointment-form");
@@ -101,4 +68,3 @@ window.addEventListener("load", () => {
   console.log("[v2] Page fully loaded (base.js)");
   document.querySelectorAll(".loading").forEach((el) => el.classList.remove("loading"));
 });
-

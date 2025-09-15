@@ -1,36 +1,30 @@
 /* ==================================================
-   base2.css → extends base.css for dropdown UX
-   - Smooth expand/collapse for submenus
-   - Hover/focus fixes (no flicker)
-   - Adaptive dropdown positioning
-   - Keyboard accessibility support
-   - Zoom-in/out animation
+   base2.css → Tesla/Gucci-style Mega Dropdown
 ================================================== */
 
-/* ---------------------------
-   Dropdown Card Enhancements
----------------------------- */
+/* Dropdown Card (mega menu container) */
 .dropdown-card {
-  min-width: 26rem;
-  max-width: 34rem;
-  max-height: 700px;
-  padding: 1.25rem;
+  min-width: 48rem;          /* wide modern look */
+  max-width: 72rem;
+  max-height: 80vh;
+  padding: 2rem;
   border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.98);
+  background: #fff;
   backdrop-filter: blur(12px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-  overflow-y: auto;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
 
-  /* smooth show/hide */
-  transition: opacity 240ms ease, transform 240ms ease, visibility 240ms ease;
-  transform: translateY(12px) scale(0.98);
+  /* no vertical scroll by default */
+  overflow: visible;
+
+  /* animation */
+  transition: all 250ms ease;
+  transform: translateY(12px) scale(0.97);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   z-index: 100;
 }
 
-/* Hover intent — keep open while hovering parent OR inside */
 .group:hover .dropdown-card,
 .group:focus-within .dropdown-card,
 .dropdown-card:hover {
@@ -40,95 +34,91 @@
   pointer-events: auto;
 }
 
-/* If dropdown is too close to right edge, shift left */
 .dropdown-card[data-align="right"] {
   right: 0;
   left: auto;
 }
 
-/* ---------------------------
-   Submenu Expand/Collapse
----------------------------- */
-.submenu {
-  max-height: 0;
-  overflow: hidden;
-  padding-top: 0;
-  transition: max-height 0.35s ease, padding 0.35s ease;
-}
-.submenu.open {
-  max-height: 500px; /* allow expansion */
-  padding-top: 0.35rem;
+/* Mega Grid Layout */
+.mega-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
 }
 
-/* ---------------------------
-   Toggle Icons (+ / –)
----------------------------- */
+/* Section block */
+.mega-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Top-level clickable header */
+.mega-header {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.5rem;
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+.mega-header:hover { color: #dc2626; }
+
+/* Sub-list */
+.mega-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+/* Sub-links */
+.mega-link {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: #374151;
+  padding: 0.35rem 0.5rem;
+  border-radius: 0.35rem;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+.mega-link:hover {
+  background: #fee2e2;
+  color: #dc2626;
+  transform: translateX(4px);
+}
+
+/* Mobile Accordion Toggle */
 .toggle-icon {
   font-size: 1rem;
   transition: transform 0.3s ease, color 0.3s ease;
 }
 button[aria-expanded="true"] .toggle-icon {
   transform: rotate(180deg);
-  color: #dc2626; /* red when open */
-}
-
-/* ---------------------------
-   Dropdown Links
----------------------------- */
-.dropdown-card a {
-  font-size: 0.95rem;
-  color: #374151;
-  padding: 0.45rem 0.65rem;
-  border-radius: 0.4rem;
-  display: block;
-  transition: all 0.25s ease;
-}
-.dropdown-card a:hover,
-.dropdown-card a:focus {
-  background: #fee2e2;
   color: #dc2626;
-  transform: translateX(5px);
-  outline: none;
 }
 
-/* ---------------------------
-   Scrollbar Styling
----------------------------- */
-.dropdown-card::-webkit-scrollbar {
-  width: 6px;
-}
+/* Scrollbar (for safety if too tall) */
+.dropdown-card::-webkit-scrollbar { width: 6px; }
 .dropdown-card::-webkit-scrollbar-thumb {
   background: #ccc;
   border-radius: 9999px;
 }
-.dropdown-card::-webkit-scrollbar-thumb:hover {
-  background: #999;
-}
+.dropdown-card::-webkit-scrollbar-thumb:hover { background: #999; }
 
-/* ---------------------------
-   Accessibility
----------------------------- */
-button[aria-expanded] {
-  outline: none;
-}
+/* Accessibility */
+button[aria-expanded] { outline: none; }
 button[aria-expanded]:focus {
   box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.35);
   border-radius: 0.5rem;
 }
 
-
-
-/* Scrollable visual hint for dropdowns */
-.dropdown-card {
-  position: relative;
-}
-
+/* Scroll hints */
+.dropdown-card { position: relative; }
 .dropdown-card::before,
 .dropdown-card::after {
   content: "";
   position: sticky;
-  left: 0;
-  right: 0;
+  left: 0; right: 0;
   height: 12px;
   z-index: 2;
   pointer-events: none;
@@ -141,3 +131,44 @@ button[aria-expanded]:focus {
   bottom: 0;
   background: linear-gradient(to top, rgba(0,0,0,0.08), transparent);
 }
+
+
+
+
+
+
+/* Nested Submenu (flyout) */
+.submenu-wrapper {
+  position: relative;
+}
+
+.submenu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  min-width: 14rem;
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 0.75rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(10px);
+  transition: all 250ms ease;
+  z-index: 200;
+}
+
+.submenu-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+/* Parent link with submenu */
+.mega-link.has-submenu::after {
+  content: "›";
+  float: right;
+  color: #9ca3af;
+  font-weight: bold;
+}
+

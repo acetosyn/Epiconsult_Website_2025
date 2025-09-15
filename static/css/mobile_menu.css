@@ -1,0 +1,59 @@
+/* Mobile Drawer Container */
+#mobile-menu {
+  background-color: #111827 !important; /* solid dark */
+  opacity: 1 !important;
+  z-index: 9999 !important;
+}
+
+/* ---------------------------
+   Mobile Top-level Links
+---------------------------- */
+#mobile-menu a,
+#mobile-menu button {
+  color: #f3f4f6;             /* light gray text */
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+#mobile-menu a:hover,
+#mobile-menu button:hover {
+  color: #f87171;             /* red-400 on hover */
+}
+
+/* Make accordion buttons stand out */
+#mobile-menu button {
+  background: #1f2937;        /* dark gray background */
+  border-radius: 0.375rem;    /* rounded-md */
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.75rem;
+}
+
+/* ---------------------------
+   Mobile Submenus
+---------------------------- */
+#mobile-menu .submenu a {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #d1d5db;             /* gray-300 for distinction */
+  margin-left: 1rem;          /* indentation */
+  display: block;
+  padding: 0.25rem 0;
+}
+
+#mobile-menu .submenu a:hover {
+  color: #f87171;             /* red-400 */
+  padding-left: 1.25rem;      /* subtle slide on hover */
+}
+
+/* ---------------------------
+   User Dropdown (Mobile)
+---------------------------- */
+#user-dropdown-mobile .dropdown-item {
+  color: #f3f4f6 !important;
+  font-weight: 500;
+}
+
+#user-dropdown-mobile .dropdown-item:hover {
+  background: #374151 !important; /* gray-700 */
+  color: #ffffff !important;
+}

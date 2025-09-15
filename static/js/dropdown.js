@@ -1,27 +1,5 @@
 // static/js/dropdown.js
-// Architected dynamic dropdowns for Clinic & Diagnostics
-// - JSON-driven menus
-// - Desktop: hover-to-expand
-// - Mobile: tap-to-expand accordion
-// - Laboratory → prefers LaboratoryCategories from JSON
-// - Smooth zoom/scale effect on dropdowns
-// - ARIA + keyboard support
-
 (function () {
-  // fallback in case JSON doesn't contain LaboratoryCategories
-  const LAB_DISPLAY_FALLBACK = [
-    "Haematology",
-    "Biochemistry",
-    "Microbiology",
-    "Immunology",
-    "Cytology / Histology",
-    "Virology",
-    "Tumor Markers",
-    "Endocrinology / Hormones",
-    "Blood Bank",
-    "Others"
-  ];
-
   function slugify(s) {
     return String(s || "")
       .trim()
@@ -43,159 +21,171 @@
     }
   }
 
-  // ---------- Desktop Dropdown ----------
-  function buildDesktopDropdown(rootEl, data, type, labCategories) {
+  function getClinicHref(sectionKey, name) {
+    const key = sectionKey.toLowerCase();
+    if (key.includes("general")) return "/clinic/general";
+    if (key.includes("sickle")) return "/clinic/sickle-cell";
+    if (key.includes("specialist")) return "/clinic/specialist";
+    return "/clinic/" + slugify(name);
+  }
+
+  function getDiagnosticsHref(sectionKey, name) {
+    const key = sectionKey.toLowerCase();
+    if (key.includes("imaging") || key.includes("radiology"))
+      return "/diagnostics/radiology";
+    if (key.includes("laboratory")) return "/diagnostics/laboratory";
+    return "/diagnostics#" + slugify(name);
+  }
+
+  // ---------- DESKTOP BUILDER (with nested flyouts) ----------
+  function buildDesktopDropdown(rootEl, data, type) {
     rootEl.innerHTML = "";
     if (!data) return;
 
     const container = document.createElement("div");
-    container.className = "space-y-4";
+    container.className = "mega-grid";
 
-    const keys = Object.keys(data);
+    Object.keys(data).forEach((sectionKey) => {
+      const section = document.createElement("div");
+      section.className = "mega-section";
 
-    keys.forEach((sectionKey) => {
-      let items = [];
+      const headerLink = document.createElement("a");
+      headerLink.className = "mega-header";
+      headerLink.textContent = sectionKey;
 
-      if (type === "diagnostics") {
-        if (sectionKey.toLowerCase().includes("laboratory")) {
-          items = labCategories;
-        } else {
-          items = Array.isArray(data[sectionKey])
-            ? data[sectionKey]
-            : Object.keys(data[sectionKey] || {});
-        }
-      } else {
-        items = Array.isArray(data[sectionKey])
-          ? data[sectionKey]
-          : Object.keys(data[sectionKey] || {});
+      headerLink.href =
+        type === "clinic"
+          ? getClinicHref(sectionKey, sectionKey)
+          : getDiagnosticsHref(sectionKey, sectionKey);
+
+      section.appendChild(headerLink);
+
+      // Recursive submenu builder
+      function buildList(items, parentSectionKey) {
+        const list = document.createElement("div");
+        list.className = "mega-list";
+
+        items.forEach((it) => {
+          const name =
+            typeof it === "string" ? it : it.name || it.title || it.label;
+
+          if (typeof it === "object" && !Array.isArray(it)) {
+            // Nested submenu
+            const subWrapper = document.createElement("div");
+            subWrapper.className = "submenu-wrapper";
+
+            const link = document.createElement("a");
+            link.className = "mega-link has-submenu";
+            link.textContent = name;
+            link.href =
+              type === "clinic"
+                ? getClinicHref(parentSectionKey, name)
+                : getDiagnosticsHref(parentSectionKey, name);
+
+            const subMenu = buildList(Object.keys(it), name);
+            subMenu.classList.add("submenu");
+
+            subWrapper.appendChild(link);
+            subWrapper.appendChild(subMenu);
+            list.appendChild(subWrapper);
+
+            // Hover toggle
+            subWrapper.addEventListener("mouseenter", () => {
+              subMenu.classList.add("submenu-open");
+            });
+            subWrapper.addEventListener("mouseleave", () => {
+              subMenu.classList.remove("submenu-open");
+            });
+          } else {
+            // Normal link
+            const a = document.createElement("a");
+            a.className = "mega-link";
+            a.textContent = name;
+            a.href =
+              type === "clinic"
+                ? getClinicHref(parentSectionKey, name)
+                : getDiagnosticsHref(parentSectionKey, name);
+            list.appendChild(a);
+          }
+        });
+
+        return list;
       }
 
-      // Section wrapper
-      const section = document.createElement("div");
-      section.className = "submenu-wrapper";
+      const items = Array.isArray(data[sectionKey])
+        ? data[sectionKey]
+        : typeof data[sectionKey] === "object"
+        ? Object.keys(data[sectionKey])
+        : [];
 
-      // Section title
-      const title = document.createElement("div");
-      title.className =
-        "font-semibold text-gray-800 hover:text-red-600 cursor-pointer flex items-center justify-between";
-      title.setAttribute("role", "button");
-      title.setAttribute("tabindex", "0");
-      title.innerHTML = `
-        <span>${sectionKey}</span>
-        <span class="toggle-icon text-sm ml-2">▸</span>
-      `;
-      section.appendChild(title);
+      if (items.length > 0) {
+        section.appendChild(buildList(items, sectionKey));
+      }
 
-      // Submenu
-      const list = document.createElement("div");
-      list.className = "submenu pl-3";
-      list.setAttribute("role", "menu");
-
-      items.forEach((it) => {
-        const name = typeof it === "string" ? it : it.name || it.title || it.label;
-        const a = document.createElement("a");
-        a.className = "dropdown-link";
-        a.setAttribute("role", "menuitem");
-
-        if (type === "clinic") {
-          a.href = typeof it === "object" && it.path ? it.path : "/clinic/" + slugify(name);
-        } else {
-          if (sectionKey.toLowerCase().includes("imaging") || sectionKey.toLowerCase().includes("radiology")) {
-            a.href = "/radiology#" + slugify(name);
-          } else if (sectionKey.toLowerCase().includes("laboratory")) {
-            a.href = "/laboratory#" + slugify(name);
-          } else {
-            a.href = "/diagnostics#" + slugify(name);
-          }
-        }
-        a.textContent = name;
-        list.appendChild(a);
-      });
-
-      section.appendChild(list);
       container.appendChild(section);
-
-      // Hover / keyboard open
-      title.addEventListener("mouseenter", () => list.classList.add("open"));
-      section.addEventListener("mouseleave", () => list.classList.remove("open"));
-      title.addEventListener("focus", () => list.classList.add("open"));
-      title.addEventListener("blur", () => list.classList.remove("open"));
     });
 
     rootEl.appendChild(container);
   }
 
-  // ---------- Mobile Accordion ----------
-  function buildMobileAccordion(rootEl, data, type, labCategories) {
+  // ---------- MOBILE BUILDER (accordion, unchanged) ----------
+  function buildMobileAccordion(rootEl, data, type) {
     rootEl.innerHTML = "";
     if (!data) return;
 
-    const keys = Object.keys(data);
-
-    keys.forEach((sectionKey) => {
+    Object.keys(data).forEach((sectionKey) => {
       const wrapper = document.createElement("div");
 
       const btn = document.createElement("button");
       btn.className =
-        "w-full flex justify-between items-center py-2 px-3 bg-gray-50 rounded-md font-medium text-gray-800";
+        "w-full flex justify-between items-center py-2 px-3 rounded-md font-medium text-gray-100 hover:text-red-400";
+      btn.innerHTML = `<span>${sectionKey}</span><span class="toggle-icon text-lg font-bold">+</span>`;
       btn.setAttribute("aria-expanded", "false");
-      btn.innerHTML = `
-        <span>${sectionKey}</span>
-        <span class="toggle-icon text-lg font-bold">+</span>
-      `;
 
       const panel = document.createElement("div");
-      panel.className = "submenu ml-3";
-      panel.setAttribute("role", "menu");
-
-      let items = Array.isArray(data[sectionKey])
-        ? data[sectionKey]
-        : Object.keys(data[sectionKey] || {});
-      if (type === "diagnostics" && sectionKey.toLowerCase().includes("laboratory")) {
-        items = labCategories;
-      }
-
-      items.forEach((it) => {
-        const name = typeof it === "string" ? it : it.name || it.title || it.label;
-        const a = document.createElement("a");
-        a.className = "block py-1 text-gray-700 hover:text-red-600";
-        a.setAttribute("role", "menuitem");
-
-        if (type === "clinic") {
-          a.href = typeof it === "object" && it.path ? it.path : "/clinic/" + slugify(name);
-        } else {
-          if (sectionKey.toLowerCase().includes("imaging") || sectionKey.toLowerCase().includes("radiology")) {
-            a.href = "/radiology#" + slugify(name);
-          } else if (sectionKey.toLowerCase().includes("laboratory")) {
-            a.href = "/laboratory#" + slugify(name);
-          } else {
-            a.href = "/diagnostics#" + slugify(name);
-          }
-        }
-        a.textContent = name;
-        panel.appendChild(a);
-      });
+      panel.className =
+        "submenu ml-3 max-h-0 overflow-hidden transition-all duration-300 ease-in-out";
+      wrapper.appendChild(btn);
+      wrapper.appendChild(panel);
 
       btn.addEventListener("click", () => {
         const expanded = btn.getAttribute("aria-expanded") === "true";
         btn.setAttribute("aria-expanded", String(!expanded));
-        panel.classList.toggle("open", !expanded);
+        btn.querySelector(".toggle-icon").textContent = expanded ? "+" : "−";
+
+        if (!expanded) {
+          panel.innerHTML = "";
+          const items = Array.isArray(data[sectionKey])
+            ? data[sectionKey]
+            : Object.keys(data[sectionKey] || {});
+
+          items.forEach((it) => {
+            const name =
+              typeof it === "string" ? it : it.name || it.title || it.label;
+            const a = document.createElement("a");
+            a.className = "block py-1 text-gray-300 hover:text-red-400";
+            a.textContent = name;
+            a.href =
+              type === "clinic"
+                ? getClinicHref(sectionKey, name)
+                : getDiagnosticsHref(sectionKey, name);
+            panel.appendChild(a);
+          });
+
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        } else {
+          panel.style.maxHeight = "0px";
+        }
       });
 
-      wrapper.appendChild(btn);
-      wrapper.appendChild(panel);
       rootEl.appendChild(wrapper);
     });
   }
 
-  // ---------- Init ----------
   async function initMenu(jsonUrl, desktopRootId, mobileRootId, type) {
     try {
       const json = await fetchJson(jsonUrl);
       if (!json) return;
-
-      // Pull lab categories if present
-      const labCategories = json.LaboratoryCategories || LAB_DISPLAY_FALLBACK;
 
       let dataRoot = json;
       const topKeys = Object.keys(json);
@@ -205,17 +195,26 @@
 
       const desktopRoot = document.getElementById(desktopRootId);
       const mobileRoot = document.getElementById(mobileRootId);
-      if (desktopRoot) buildDesktopDropdown(desktopRoot, dataRoot, type, labCategories);
-      if (mobileRoot) buildMobileAccordion(mobileRoot, dataRoot, type, labCategories);
+      if (desktopRoot) buildDesktopDropdown(desktopRoot, dataRoot, type);
+      if (mobileRoot) buildMobileAccordion(mobileRoot, dataRoot, type);
     } catch (err) {
       console.error("initMenu error", err);
     }
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-    const clinicUrl = document.getElementById("clinic-menu-container")?.dataset.json || "/dataset/clinic.json";
-    const diagUrl = document.getElementById("diagnostics-menu-container")?.dataset.json || "/dataset/diagnostics.json";
+    const clinicUrl =
+      document.getElementById("clinic-menu-container")?.dataset.json ||
+      "/dataset/clinic.json";
+    const diagUrl =
+      document.getElementById("diagnostics-menu-container")?.dataset.json ||
+      "/dataset/diagnostics.json";
     initMenu(clinicUrl, "clinic-dropdown-root", "mobile-clinic-root", "clinic");
-    initMenu(diagUrl, "diagnostics-dropdown-root", "mobile-diagnostics-root", "diagnostics");
+    initMenu(
+      diagUrl,
+      "diagnostics-dropdown-root",
+      "mobile-diagnostics-root",
+      "diagnostics"
+    );
   });
 })();
