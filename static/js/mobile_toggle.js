@@ -1,3 +1,5 @@
+// static/js/mobile_toggle.js
+
 document.addEventListener("DOMContentLoaded", () => {
   const menuBtn = document.getElementById("mobile-menu-button");
   const menu = document.getElementById("mobile-menu");
@@ -25,19 +27,21 @@ document.addEventListener("DOMContentLoaded", () => {
     iconClose.classList.add("hidden");
   }
 
-  // Toggle button
-  menuBtn.addEventListener("click", () => {
-    const isClosed = menu.classList.contains("translate-x-full");
-    isClosed ? openMenu() : closeMenu();
-  });
+  if (menuBtn && menu && overlay) {
+    // Toggle button
+    menuBtn.addEventListener("click", () => {
+      const isClosed = menu.classList.contains("translate-x-full");
+      isClosed ? openMenu() : closeMenu();
+    });
 
-  // Close if clicking outside (overlay)
-  overlay.addEventListener("click", closeMenu);
+    // Close if clicking overlay
+    overlay.addEventListener("click", closeMenu);
 
-  // Auto-reset on desktop resize
-  window.addEventListener("resize", () => {
-    if (window.innerWidth >= 1024) {
-      closeMenu();
-    }
-  });
+    // Auto-reset on desktop resize
+    window.addEventListener("resize", () => {
+      if (window.innerWidth >= 1024) {
+        closeMenu();
+      }
+    });
+  }
 });

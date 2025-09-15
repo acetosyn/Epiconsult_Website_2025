@@ -60,7 +60,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // =============================
   document.querySelectorAll("button").forEach((button) => {
     button.addEventListener("click", function () {
-      if (this.type !== "submit" && !this.id.includes("chatbot") && !this.classList.contains("hero-dot")) {
+      if (
+        this.type !== "submit" &&
+        !this.id.includes("chatbot") &&
+        !this.classList.contains("hero-dot")
+      ) {
         this.style.transform = "scale(0.95)";
         setTimeout(() => (this.style.transform = ""), 150);
       }

@@ -172,18 +172,31 @@
     <!-- Mobile Clinic accordion -->
     <div>
       <span class="block text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">CLINIC</span>
-      <div id="mobile-clinic-root" class="ml-2 space-y-1"></div>
+      <div class="ml-4 space-y-2">
+        <a href="{{ url_for('clinic.general') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">General Consultation</a>
+        <a href="{{ url_for('clinic.sickle_cell') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Sickle Cell</a>
+        <a href="{{ url_for('clinic.specialist') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Specialist</a>
+      </div>
     </div>
 
     <!-- Mobile Diagnostics accordion -->
     <div>
       <span class="block text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">DIAGNOSTICS</span>
-      <div id="mobile-diagnostics-root" class="ml-2 space-y-1"></div>
+      <div class="ml-4 space-y-2">
+        <a href="{{ url_for('diagnostics.radiology') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Radiology</a>
+        <a href="{{ url_for('diagnostics.laboratory') }}" class="block py-1 text-gray-700 hover:text-red-600 transition-colors">Laboratory</a>
+      </div>
     </div>
 
-    <a href="{{ url_for('clinic.teleconsultation') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">TELECONSULTATION</a>
-    <a href="{{ url_for('main.about') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">ABOUT</a>
-    <a href="{{ url_for('main.contact') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">CONTACT</a>
+    <a href="{{ url_for('clinic.teleconsultation') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
+      TELECONSULTATION
+    </a>
+    <a href="{{ url_for('main.about') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
+      ABOUT
+    </a>
+    <a href="{{ url_for('main.contact') }}" class="block py-2 text-gray-800 font-semibold hover:text-red-600 transition-colors">
+      CONTACT
+    </a>
 
     <!-- ✅ Auth Slot -->
     <div id="auth-slot-mobile" class="mt-3"></div>
@@ -193,6 +206,32 @@
       class="w-full flex items-center justify-center space-x-2 bg-red-600 hover:bg-red-700 text-white py-2 rounded-full font-medium mt-2 shadow transition">
       <span>🔒</span><span>Patient Portal</span>
     </a>
+
+    <!-- User Section (Mobile) -->
+    <div id="user-section-mobile" class="hidden-user mt-3">
+      <button
+        id="user-menu-btn-mobile"
+        class="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-gray-100 transition w-full justify-between"
+      >
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 rounded-full bg-gray-200 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-gray-700" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z"/>
+            </svg>
+          </div>
+          <span id="welcome-msg-mobile" class="font-medium text-gray-800"></span>
+        </div>
+        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      <!-- Dropdown -->
+      <div id="user-dropdown-mobile">
+        <a href="/profile" class="dropdown-item block">Profile</a>
+        <a href="#" id="logout-btn-mobile" class="dropdown-item text-red-600 block">Logout</a>
+      </div>
+    </div>
   </div>
 </div>
 
