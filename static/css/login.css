@@ -8,10 +8,11 @@
   --gray: #6b7280;
   --light: #f9fafb;
   --white: #ffffff;
-  --shadow: 0 10px 40px rgba(0, 47, 94, 0.15);
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
   --radius: 18px;
-  --card-max-w: 650px;
+  --card-max-w: 640px;
   --input-font: 1.05rem;
+  --transition: all 0.25s ease;
 }
 
 /* =========================================================
@@ -25,6 +26,9 @@ html, body {
 }
 body {
   font-family: "Inter", system-ui, sans-serif;
+  background-color: var(--light);
+  color: var(--navy);
+  -webkit-font-smoothing: antialiased;
 }
 
 /* =========================================================
@@ -46,10 +50,10 @@ main.auth-container::before {
   inset: 0;
   background: linear-gradient(
     to bottom right,
-    rgba(255, 255, 255, 0.9),
-    rgba(255, 255, 255, 0.85)
+    rgba(255, 255, 255, 0.92),
+    rgba(255, 255, 255, 0.86)
   );
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(6px);
   z-index: -1;
 }
 
@@ -60,61 +64,66 @@ main.auth-container::before {
   width: 100%;
   max-width: var(--card-max-w);
   background: var(--white);
-  padding: 2.2rem;
+  padding: 2.5rem;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  overflow: hidden;
+  animation: floatUp 0.5s ease forwards;
+}
+
+@keyframes floatUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* =========================================================
-   LOGO HEADER (adjusted spacing closer to logo)
+   LOGO HEADER
 ========================================================= */
 .logo-header {
   text-align: center;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.5rem;
 }
 
 .logo-header .brand {
-  display: flex;              /* inline-flex → flex */
-  align-items: center;        /* align text and logo vertically */
-  justify-content: center;    /* keep centered in the header */
-  gap: 0.2rem;                /* very small spacing */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
   text-decoration: none;
 }
 
 .logo-img {
-  width: 48px;                /* slightly smaller logo */
-  height: 48px;
-  border-radius: 0.5rem;
+  width: 52px;
+  height: 52px;
+  border-radius: 0.75rem;
   object-fit: cover;
-  margin-right: 0.2rem;        /* fine-tune spacing */
 }
 
 .logo-text {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;    /* text starts at top edge of logo */
+  align-items: flex-start;
   line-height: 1.1;
 }
 
-/* Tighter spacing on text block */
 .logo-text h1 {
-  font-size: 1.8rem;
+  font-size: 1.9rem;
   font-weight: 800;
   margin: 0;
-  line-height: 1.05;
 }
 .logo-text h2 {
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  margin: 0;
-  margin-top: -0.05rem;
-  line-height: 1.15;
+  margin: 0.15rem 0 0;
 }
 .logo-text .tagline {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: var(--gray);
-  margin-top: 0.1rem;
   font-style: italic;
 }
 
@@ -125,17 +134,16 @@ main.auth-container::before {
   color: var(--navy);
 }
 
-
 /* =========================================================
    AUTH PAGE TITLE
 ========================================================= */
 .auth-header {
   text-align: center;
-  margin-bottom: 1.3rem;
+  margin-bottom: 1.6rem;
 }
 .auth-header h1 {
-  font-size: 1.3rem;
-  font-weight: 600;
+  font-size: 1.4rem;
+  font-weight: 700;
   color: var(--navy);
 }
 .auth-header p {
@@ -150,23 +158,24 @@ main.auth-container::before {
   display: flex;
   gap: 0.75rem;
   justify-content: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 .tab-btn {
   flex: 1;
-  padding: 0.75rem 1rem;
+  padding: 0.8rem 1rem;
   border: 2px solid var(--primary);
-  border-radius: 12px;
+  border-radius: 14px;
   background: var(--white);
   color: var(--primary);
   font-weight: 700;
   cursor: pointer;
   font-size: 1rem;
-  transition: all 0.2s ease;
+  transition: var(--transition);
 }
 .tab-btn.active {
   background: var(--primary);
   color: var(--white);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
 }
 
 /* =========================================================
@@ -190,7 +199,7 @@ main.auth-container::before {
   width: 50%;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.3rem;
 }
 
 /* Mobile forms behavior */
@@ -208,7 +217,7 @@ main.auth-container::before {
     display: flex;
   }
   .auth-forms-wrapper {
-    min-height: 0;
+    min-height: auto;
   }
 }
 
@@ -216,10 +225,11 @@ main.auth-container::before {
    TYPEWRITER MESSAGE
 ========================================================= */
 .typewriter-message {
-  min-height: 1.3em;
-  margin-bottom: 0.4rem;
+  min-height: 1.4em;
+  margin-bottom: 0.6rem;
   color: var(--gray);
   font-weight: 600;
+  text-align: center;
 }
 
 /* =========================================================
@@ -234,17 +244,17 @@ main.auth-container::before {
 }
 .form-field input {
   width: 100%;
-  padding: 0.9rem 1rem;
-  border-radius: 12px;
+  padding: 1rem 1.1rem;
+  border-radius: 14px;
   border: 1px solid #d1d5db;
   font-size: var(--input-font);
   background: #fff;
-  transition: border 0.2s, box-shadow 0.2s;
+  transition: var(--transition);
 }
 .form-field input:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.12);
 }
 
 /* =========================================================
@@ -254,17 +264,22 @@ main.auth-container::before {
   position: relative;
 }
 .input-with-toggle input {
-  padding-right: 2.3rem;
+  padding-right: 2.5rem;
 }
 .toggle-password {
   position: absolute;
-  right: 0.7rem;
+  right: 0.9rem;
   top: 50%;
   transform: translateY(-50%);
   border: none;
   background: transparent;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  color: var(--gray);
+  transition: color 0.2s;
+}
+.toggle-password:hover {
+  color: var(--primary);
 }
 
 /* =========================================================
@@ -272,45 +287,54 @@ main.auth-container::before {
 ========================================================= */
 .auth-submit-btn {
   width: 100%;
-  padding: 0.9rem;
+  padding: 1rem;
   background: var(--primary);
   color: var(--white);
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.05rem;
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
+  transition: var(--transition);
 }
 .auth-submit-btn:hover {
   background: var(--primary-dark);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
 }
 
+/* Google button (restored + polished) */
 .google-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.6rem;
+  gap: 0.9rem;
   width: 100%;
-  padding: 0.9rem 1rem;
-  background: var(--white);
-  color: var(--gray);
-  border: 1px solid #d1d5db;
-  border-radius: 12px;
-  font-size: 0.95rem;
+  padding: 1rem 1.2rem;
+  background: #ffffff;
+  color: #202124; /* Google standard */
+  border: 1px solid #dadce0;
+  border-radius: 14px;
+  font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
+  transition: background 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
+  box-shadow: 0 1px 3px rgba(60,64,67,0.3), 0 1px 2px rgba(60,64,67,0.15);
 }
+
 .google-btn img {
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
+
 .google-btn:hover {
-  background: #f3f4f6;
+  background: #f8f9fa;
   transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(60,64,67,0.3), 0 2px 4px rgba(60,64,67,0.2);
 }
+
 
 /* =========================================================
    FLASH MESSAGES
@@ -321,19 +345,26 @@ main.auth-container::before {
   padding: 12px 20px;
   text-align: center;
   font-weight: 600;
-  border-radius: 6px;
-  margin: 10px auto;
-  max-width: 500px;
-  animation: fadein 0.5s;
+  border-radius: 8px;
+  margin: 12px auto;
+  max-width: 520px;
+  animation: fadein 0.5s, fadeout 0.5s 3s forwards;
 }
 
 @keyframes fadein {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-12px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+@keyframes fadeout {
+  to {
+    opacity: 0;
+    transform: translateY(-12px);
+    pointer-events: none;
   }
 }
