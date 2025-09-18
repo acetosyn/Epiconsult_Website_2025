@@ -23,13 +23,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =============================
-  // Button Click Feedback
+  // Button Click Feedback (safe)
   // =============================
   document.querySelectorAll("button").forEach((button) => {
     button.addEventListener("click", function () {
+      const id = this.id || "";
       if (
         this.type !== "submit" &&
-        !this.id.includes("chatbot") &&
+        !id.includes("chatbot") &&
         !this.classList.contains("hero-dot")
       ) {
         this.style.transform = "scale(0.95)";
@@ -58,12 +59,16 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("[v2] Epiconsult Diagnostics website loaded successfully (base.js)");
 });
 
+// =============================
 // Error Handling
+// =============================
 window.addEventListener("error", (e) => {
   console.error("[v2] JavaScript error in base.js:", e.error || e.message || e);
 });
 
+// =============================
 // Performance Monitoring
+// =============================
 window.addEventListener("load", () => {
   console.log("[v2] Page fully loaded (base.js)");
   document.querySelectorAll(".loading").forEach((el) => el.classList.remove("loading"));

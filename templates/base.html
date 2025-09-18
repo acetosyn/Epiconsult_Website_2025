@@ -32,6 +32,10 @@
             }
         }
     </script>
+  <!-- ✅ Inject Flask Profile URL for JS -->
+<script>
+  window.__PROFILE_URL__ = "{{ url_for('main.profile') }}";
+</script>
     
 <!-- Global CSS -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
@@ -264,19 +268,13 @@
 
       <!-- Dropdown -->
       <div id="user-dropdown-mobile" class="hidden mt-2 space-y-1 bg-gray-800 rounded-md shadow-md">
-        <a href="/profile" class="block px-4 py-2 text-gray-100 hover:bg-gray-700">Profile</a>
+        <!-- ✅ Now uses injected Flask profile URL -->
+        <a href="{{ url_for('main.profile') }}" class="block px-4 py-2 text-gray-100 hover:bg-gray-700">Profile</a>
         <a href="#" id="logout-btn-mobile" class="block px-4 py-2 text-red-400 hover:bg-gray-700">Logout</a>
       </div>
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
 
 
 
