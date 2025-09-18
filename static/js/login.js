@@ -21,12 +21,21 @@ function switchTab(target) {
     loginTab.classList.add("active");
     signupTab.classList.remove("active");
     formsWrapper.classList.remove("show-signup");
+
+    // mobile: toggle active class
+    loginForm.classList.add("active");
+    signupForm.classList.remove("active");
   } else {
     signupTab.classList.add("active");
     loginTab.classList.remove("active");
     formsWrapper.classList.add("show-signup");
+
+    // mobile: toggle active class
+    signupForm.classList.add("active");
+    loginForm.classList.remove("active");
   }
 }
+// Hook up tab buttons
 loginTab.addEventListener("click", () => switchTab("login"));
 signupTab.addEventListener("click", () => switchTab("signup"));
 
@@ -79,8 +88,6 @@ document.querySelectorAll(".toggle-password").forEach((toggle) => {
 // ==============================
 // Helpers
 // ==============================
-const AUTH_FLASH_KEY = "auth:flash";
-
 function getNextUrl() {
   const params = new URLSearchParams(window.location.search);
   return params.get("next") || "/";
@@ -94,13 +101,8 @@ function resetLoginButton() {
   }
 }
 
-// On back/forward cache restore or normal load, reset any stale UI
 window.addEventListener("pageshow", resetLoginButton);
-window.addEventListener("DOMContentLoaded", () => {
-  resetLoginButton();
-  // Nuke any non-auth flash messages that might have leaked in
-  sessionStorage.removeItem("authMessage"); // older key used elsewhere
-});
+window.addEventListener("DOMContentLoaded", resetLoginButton);
 
 // ==============================
 // Firebase Auth Handling
@@ -108,7 +110,6 @@ window.addEventListener("DOMContentLoaded", () => {
 // Login
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
-  // stop other global listeners (e.g., booking) from hijacking this submit
   e.stopPropagation();
   e.stopImmediatePropagation();
 
@@ -123,7 +124,7 @@ loginForm.addEventListener("submit", async (e) => {
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    sessionStorage.setItem(AUTH_FLASH_KEY, "Login successful 🎉");
+    // ✅ No flash here; handled by auth-ui.js via auth-changed
     window.location.href = getNextUrl();
   } catch (error) {
     errorBox.textContent = error.message;
@@ -155,8 +156,8 @@ signupForm.addEventListener("submit", async (e) => {
     submitBtn.disabled = true;
     submitBtn.textContent = "Creating account...";
     await createUserWithEmailAndPassword(auth, email, password);
-    sessionStorage.setItem(AUTH_FLASH_KEY, "Account created successfully 🎉 Please log in.");
-    window.location.href = "/login";
+    // ✅ Instead of flashing here, just redirect
+    window.location.href = "/login?created=1";
   } catch (error) {
     errorBox.textContent = error.message;
     submitBtn.disabled = false;
@@ -172,7 +173,6 @@ const googleProvider = new GoogleAuthProvider();
 document.getElementById("googleLoginBtnSignin")?.addEventListener("click", () => {
   signInWithPopup(auth, googleProvider)
     .then(() => {
-      sessionStorage.setItem(AUTH_FLASH_KEY, "Login successful 🎉");
       window.location.href = getNextUrl();
     })
     .catch((error) => {
@@ -183,28 +183,9 @@ document.getElementById("googleLoginBtnSignin")?.addEventListener("click", () =>
 document.getElementById("googleLoginBtnSignup")?.addEventListener("click", () => {
   signInWithPopup(auth, googleProvider)
     .then(() => {
-      sessionStorage.setItem(AUTH_FLASH_KEY, "Account created successfully 🎉 Please log in.");
-      window.location.href = "/login";
+      window.location.href = "/login?created=1";
     })
     .catch((error) => {
       document.getElementById("signup-error").textContent = error.message;
     });
-});
-
-// ==============================
-// Auth Flash Message (namespaced)
-// ==============================
-window.addEventListener("DOMContentLoaded", () => {
-  const message = sessionStorage.getItem(AUTH_FLASH_KEY);
-  if (message) {
-    const box = document.createElement("div");
-    box.className = box.className =
-  "flash-message fixed top-36 left-1/2 transform -translate-x-1/2 bg-green-600 text-white px-4 py-2 rounded shadow-lg z-[9999]";
-
-    box.textContent = message;
-    document.body.prepend(box);
-
-    setTimeout(() => box.remove(), 3000);
-    sessionStorage.removeItem(AUTH_FLASH_KEY);
-  }
 });

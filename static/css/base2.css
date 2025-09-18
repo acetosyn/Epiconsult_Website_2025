@@ -1,0 +1,181 @@
+/* ==================================================
+   base2.css → Tesla/Apple Style Dropdown with Flyouts
+   (Scoped per parent, wider cards)
+================================================== */
+
+/* Wrapper ensures each dropdown is independent */
+.dropdown-wrapper,
+.relative.group {
+  position: relative;
+  display: inline-block;
+}
+
+/* Root dropdown container */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0; /* anchor to parent, not nav container */
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+  padding: 0.5rem 0;
+  min-width: 320px;   /* wider */
+  max-width: 480px;   /* wider */
+  overflow: visible;
+  z-index: 100;
+
+  /* hidden by default */
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: all 250ms ease;
+}
+
+/* Show only on hover/focus of its parent */
+.dropdown-wrapper:hover .dropdown-menu,
+.dropdown-wrapper:focus-within .dropdown-menu,
+.relative.group:hover .dropdown-menu,
+.relative.group:focus-within .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Optional alignment helpers */
+.dropdown-menu[data-align="right"] {
+  right: 0;
+  left: auto;
+}
+.dropdown-menu[data-align="center"] {
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+}
+.relative.group:hover .dropdown-menu[data-align="center"] {
+  transform: translateX(-50%) translateY(0);
+}
+
+@keyframes dropdown-fade {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Top-level item */
+.dropdown-item {
+  position: relative;
+}
+
+.dropdown-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #1f2937;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  border-radius: 0.5rem;
+}
+
+.dropdown-link:hover {
+  background: #f9fafb;
+  color: #dc2626; /* red accent */
+}
+
+/* Chevron */
+.chevron {
+  margin-left: 0.5rem;
+  transition: transform 0.2s ease;
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+.chevron.rotate {
+  transform: rotate(90deg);
+  color: #dc2626;
+}
+
+/* Submenu (flyout) */
+.submenu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  min-width: 260px;   /* wider than before */
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+  padding: 0.5rem 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+  z-index: 200;
+}
+
+.submenu-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+/* Submenu links */
+.submenu-link {
+  display: block;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #374151;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+.submenu-link:hover {
+  background: #fee2e2;
+  color: #dc2626;
+  transform: translateX(4px);
+}
+
+/* Mobile Accordion */
+.mobile-section {
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.toggle-icon {
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+.toggle-icon.rotate {
+  transform: rotate(90deg);
+  color: #dc2626;
+}
+
+button[aria-expanded] {
+  outline: none;
+}
+button[aria-expanded]:focus {
+  box-shadow: 0 0 0 2px rgba(220,38,38,0.35);
+  border-radius: 0.5rem;
+}
+
+/* Mobile submenu container */
+.submenu.ml-3 {
+  padding-left: 0.5rem;
+}
+
+/* Scrollbar safety (desktop flyout if tall) */
+.dropdown-menu::-webkit-scrollbar,
+.submenu::-webkit-scrollbar {
+  width: 6px;
+}
+.dropdown-menu::-webkit-scrollbar-thumb,
+.submenu::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 9999px;
+}
+.dropdown-menu::-webkit-scrollbar-thumb:hover,
+.submenu::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}

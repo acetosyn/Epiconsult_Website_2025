@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="profile-wrapper">
+  <!-- Sidebar -->
+  <aside class="profile-sidebar">
+    <div class="avatar-container">
+      <img id="profile-pic" src="{{ url_for('static', filename='images/default-avatar.png') }}" alt="Profile Picture">
+      <label for="upload-pic" class="avatar-overlay">📷</label>
+      <input type="file" id="upload-pic" accept="image/*" hidden>
+    </div>
+    <h2 id="profile-name" class="text-xl font-bold">Loading...</h2>
+    <p id="profile-email" class="muted-text">-</p>
+    <button id="edit-profile-btn" class="btn-primary w-full mt-3">✏️ Edit Profile</button>
+
+    <!-- Nav -->
+    <nav class="profile-nav mt-6">
+      <button class="nav-link active" data-section="info">ℹ️ Personal Info</button>
+      <button class="nav-link" data-section="services">📋 Services</button>
+      <button class="nav-link" data-section="settings">⚙️ Settings</button>
+    </nav>
+  </aside>
+
+  <!-- Content -->
+  <div class="profile-content">
+    <!-- Loader -->
+    <div id="profile-loader" class="loading">Loading profile...</div>
+
+    <!-- Actual Content -->
+    <div id="profile-content" style="display:none;">
+      <!-- Info -->
+      <div class="profile-card section active" id="section-info">
+        <h3>Personal Information</h3>
+        <div class="profile-details">
+          <div><strong>Full Name:</strong> <span id="detail-name">-</span></div>
+          <div><strong>Email:</strong> <span id="detail-email">-</span></div>
+          <div><strong>Phone:</strong> <span id="detail-phone">-</span></div>
+          <div><strong>Address:</strong> <span id="detail-address">-</span></div>
+        </div>
+      </div>
+
+      <!-- Services -->
+      <div class="profile-card section" id="section-services">
+        <h3>Past Booked Services</h3>
+        <ul id="booked-services" class="service-list">
+          <li>No services booked yet.</li>
+        </ul>
+      </div>
+
+      <!-- Settings -->
+      <div class="profile-card section" id="section-settings">
+        <h3>Settings</h3>
+        <p class="muted-text">Change password, notifications, and other settings will appear here.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Edit Modal -->
+<div id="edit-profile-modal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Edit Profile</h3>
+    <form id="edit-form">
+      <label>Name <input type="text" id="edit-name"></label>
+      <label>Email <input type="email" id="edit-email" disabled></label>
+      <label>Phone <input type="tel" id="edit-phone"></label>
+      <label>Address <input type="text" id="edit-address"></label>
+      <div class="modal-actions">
+        <button type="button" id="close-edit-modal" class="btn-secondary">Cancel</button>
+        <button type="button" id="save-profile-btn" class="btn-primary">Save</button>
+      </div>
+    </form>
+    <p id="edit-message" class="mt-2 text-sm"></p>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script type="module" src="{{ url_for('static', filename='js/profile.js') }}"></script>
+{% endblock %}

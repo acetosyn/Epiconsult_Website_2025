@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, send_from_directory, current_app
+import os
 
 clinic_bp = Blueprint("clinic", __name__)
 
@@ -17,3 +18,9 @@ def sickle_cell():
 @clinic_bp.route("/specialist")
 def specialist():
     return render_template("clinic/specialist.html")
+
+# Serve clinic.json from dataset folder
+@clinic_bp.route("/dataset/clinic.json")
+def clinic_data():
+    dataset_dir = os.path.join(current_app.root_path, "dataset")
+    return send_from_directory(dataset_dir, "clinic.json")

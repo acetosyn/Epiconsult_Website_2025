@@ -1,5 +1,4 @@
 // static/js/base.js
-
 document.addEventListener("DOMContentLoaded", () => {
   // =============================
   // Appointment Form Handling
@@ -8,15 +7,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (appointmentForm) {
     appointmentForm.addEventListener("submit", function (e) {
       e.preventDefault();
-
       const formData = new FormData(this);
       const data = Object.fromEntries(formData);
-
       const submitBtn = this.querySelector('button[type="submit"]');
       const originalText = submitBtn.textContent;
       submitBtn.textContent = "Booking...";
       submitBtn.disabled = true;
-
       setTimeout(() => {
         alert("Appointment request submitted! We will contact you shortly to confirm.");
         submitBtn.textContent = originalText;
@@ -27,13 +23,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =============================
-  // Button Click Feedback
+  // Button Click Feedback (safe)
   // =============================
   document.querySelectorAll("button").forEach((button) => {
     button.addEventListener("click", function () {
+<<<<<<< HEAD
       if (
         this.type !== "submit" &&
         !this.id.includes("chatbot") &&
+=======
+      const id = this.id || "";
+      if (
+        this.type !== "submit" &&
+        !id.includes("chatbot") &&
+>>>>>>> staging
         !this.classList.contains("hero-dot")
       ) {
         this.style.transform = "scale(0.95)";
@@ -53,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =============================
+<<<<<<< HEAD
   // Navbar Auth Toggle
   // =============================
   const loginLink = document.getElementById("login-link");
@@ -86,30 +90,35 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =============================
+=======
+>>>>>>> staging
   // Safe HeroSlides Logging
   // =============================
   if (typeof heroSlides !== "undefined" && Array.isArray(heroSlides)) {
     console.log("[v2] Hero slider initialized with", heroSlides.length, "slides");
-  } else {
-    console.log("[v2] Hero slider not initialized (no heroSlides found)");
   }
 
-  console.log("[v2] Epiconsult Diagnostics website loaded successfully");
+  console.log("[v2] Epiconsult Diagnostics website loaded successfully (base.js)");
 });
 
 // =============================
 // Error Handling
 // =============================
 window.addEventListener("error", (e) => {
-  console.error("[v2] JavaScript error:", e.error || e.message);
+  console.error("[v2] JavaScript error in base.js:", e.error || e.message || e);
 });
 
 // =============================
 // Performance Monitoring
 // =============================
 window.addEventListener("load", () => {
+<<<<<<< HEAD
   console.log("[v2] Page fully loaded");
   document.querySelectorAll(".loading").forEach((el) =>
     el.classList.remove("loading")
   );
+=======
+  console.log("[v2] Page fully loaded (base.js)");
+  document.querySelectorAll(".loading").forEach((el) => el.classList.remove("loading"));
+>>>>>>> staging
 });
