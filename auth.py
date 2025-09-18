@@ -1,11 +1,19 @@
-# auth.py
+# services/auth.py
 from functools import wraps
 from flask import request, jsonify, g
 from firebase_admin import auth, firestore
-from firebase_admin_init import firebase_db   # ✅ use shared Firestore client
+from firebase_admin_init import firebase_db   # ✅ shared Firestore client
+from services import user_db                  # ✅ local JSON persistence
 
 
 def verify_token(f):
+    """
+    Middleware decorator:
+    - Verifies Firebase ID token
+    - Ensures user exists in Firestore (cloud persistence)
+    - Syncs user into local JSON DB (safe, not exposed)
+    - Attaches decoded token into Flask global `g.user`
+    """
     @wraps(f)
     def decorated_function(*args, **kwargs):
         id_token = request.headers.get("Authorization")
@@ -14,10 +22,13 @@ def verify_token(f):
             return jsonify({"error": "Authorization token missing"}), 401
 
         try:
+            # ✅ Decode and verify ID token with Firebase Admin
             decoded_token = auth.verify_id_token(id_token)
             uid = decoded_token["uid"]
 
-            # Ensure user exists in Firestore (first-time login)
+            # --------------------------
+            # Ensure Firestore user doc
+            # --------------------------
             user_ref = firebase_db.collection("users").document(uid)
             if not user_ref.get().exists:
                 user_data = {
@@ -29,7 +40,18 @@ def verify_token(f):
                 }
                 user_ref.set(user_data)
 
-            # Attach user info to Flask global context
+            # --------------------------
+            # Mirror user locally (safe copy)
+            # --------------------------
+            local_user = {
+                "uid": uid,
+                "email": decoded_token.get("email"),
+                "name": decoded_token.get("name"),
+                "provider": decoded_token.get("firebase", {}).get("sign_in_provider"),
+            }
+            user_db.update_user(uid, local_user)
+
+            # Attach decoded token to Flask global context
             g.user = decoded_token
 
         except Exception as e:
@@ -38,4 +60,6 @@ def verify_token(f):
         return f(*args, **kwargs)
 
     return decorated_function
-print("✅ Auth module loaded")
+
+
+print("✅ Auth module loaded with Firestore + local JSON sync")
