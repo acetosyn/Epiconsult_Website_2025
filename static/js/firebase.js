@@ -1,10 +1,4 @@
 // static/js/firebase.js
-// Single source-of-truth Firebase module (v12)
-// - Initializes Firebase auth
-// - Syncs session with Flask (/sessionLogin, /sessionLogout)
-// - Emits `auth-changed` CustomEvent whenever auth state updates
-// - Exports `auth` and `doFirebaseLogout()`
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 import {
   getAuth,
@@ -14,9 +8,9 @@ import {
   signOut
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
-// -------------------------------
-// FIREBASE CONFIG
-// -------------------------------
+import { getFirestore } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-storage.js";
+
 const firebaseConfig = {
   apiKey: "AIzaSyCsvPKDajql3Itl7MHz9_WTV28vbhOEatY",
   authDomain: "epiconsult-f6360.firebaseapp.com",
@@ -27,44 +21,33 @@ const firebaseConfig = {
   measurementId: "G-JJY0309NML"
 };
 
-// -------------------------------
-// INIT
-// -------------------------------
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
 
-// -------------------------------
-// PERSISTENCE
-// -------------------------------
 setPersistence(auth, browserLocalPersistence).catch((err) => {
   console.warn("Failed to set persistence:", err);
 });
 
-// Helper to dispatch auth-changed with plain user object (or null)
+// helper broadcast for other modules (keeps existing behavior)
 function broadcastAuthChange(userObj) {
-  // dispatch with plain object (null if logged out)
   document.dispatchEvent(new CustomEvent("auth-changed", { detail: userObj }));
-  // also set global for synchronous reads
   window.__CURRENT_USER__ = userObj;
 }
 
-// -------------------------------
-// AUTH STATE LISTENER (sync with Flask)
-// -------------------------------
 onAuthStateChanged(auth, async (user) => {
-  // normalize user for UI (keep small payload)
   const currentUser = user
     ? {
         name: user.displayName || null,
         email: user.email || null,
-        uid: user.uid || null
+        uid: user.uid || null,
+        photoURL: user.photoURL || null
       }
     : null;
 
-  // notify UI immediately
   broadcastAuthChange(currentUser);
 
-  // Sync with Flask session (best-effort)
   try {
     if (user) {
       const idToken = await user.getIdToken(/* forceRefresh */ false);
@@ -74,7 +57,6 @@ onAuthStateChanged(auth, async (user) => {
         body: JSON.stringify({ idToken })
       });
     } else {
-      // server-side session clear
       await fetch("/sessionLogout", { method: "POST" });
     }
   } catch (err) {
@@ -82,33 +64,19 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-// -------------------------------
-// LOGOUT (clears UI immediately and signs out)
-// -------------------------------
 export async function doFirebaseLogout() {
   try {
-    // Clear UI state immediately (avoid race)
     broadcastAuthChange(null);
-
-    // Sign out from Firebase
     await signOut(auth);
-
-    // Tell server to clear session (if still needed)
     try {
       await fetch("/sessionLogout", { method: "POST" });
     } catch (err) {
-      // non-fatal
       console.warn("Server sessionLogout failed after signOut:", err);
     }
-
-    // Redirect to home (or login) after signout
     window.location.href = "/";
   } catch (err) {
     console.error("Logout failed:", err);
-    // If signOut failed, still clear server and reload to safe state
-    try {
-      await fetch("/sessionLogout", { method: "POST" });
-    } catch (_) {}
+    try { await fetch("/sessionLogout", { method: "POST" }); } catch (_) {}
     window.location.reload();
   }
 }
