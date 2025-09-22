@@ -78,7 +78,7 @@
   }
 
   function renderUserDropdown(user) {
-    const profileUrl = window.__PROFILE_URL__ || "/profile"; // ✅ use Flask injected URL
+    const profileUrl = window.__PROFILE_URL__ || "/profile"; // ✅ Flask injects __PROFILE_URL__
     const name = user?.name || (user?.email ? user.email.split("@")[0] : "User");
     return `
       <div class="relative">
@@ -141,13 +141,8 @@
     slot.querySelector(".logout-btn").addEventListener("click", async (e) => {
       e.preventDefault();
       try {
-        const mod = await import("/static/js/firebase.js");
-        if (mod?.doFirebaseLogout) {
-          await mod.doFirebaseLogout();
-          return;
-        }
+        await fetch("/logout", { method: "POST" });
       } catch (_) {}
-      try { await fetch("/sessionLogout", { method: "POST" }); } catch (_) {}
       document.dispatchEvent(new CustomEvent("auth-changed", { detail: null }));
       window.location.href = "/";
     });
@@ -191,6 +186,7 @@
     renderIntoSlot("auth-slot", null, true);
     renderIntoSlot("auth-slot-mobile", null, true);
 
+    // Bootstrap from Flask context
     if (window.__CURRENT_USER__ !== undefined) {
       updateUI(window.__CURRENT_USER__);
     }

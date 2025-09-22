@@ -1,7 +1,5 @@
 // static/js/profile.js
-// Frontend: fetch profile from server API, show modal, update via API
-import { auth } from "./firebase.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+// Frontend: fetch and update profile from server API (Flask + Supabase)
 
 document.addEventListener("DOMContentLoaded", () => {
   const loader = document.getElementById("profile-loader");
@@ -11,21 +9,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const profileEmail = document.getElementById("profile-email");
   const detailName = document.getElementById("detail-name");
   const detailEmail = document.getElementById("detail-email");
-  const detailPhone = document.getElementById("detail-phone");
-  const detailAddress = document.getElementById("detail-address");
   const bookedServices = document.getElementById("booked-services");
 
-  // Modal elements (IDs aligned with profile.html from earlier)
+  // Modal elements
   const editBtn = document.getElementById("edit-profile-btn");
   const modal = document.getElementById("edit-profile-modal");
   const closeBtn = document.getElementById("close-edit-modal");
   const saveBtn = document.getElementById("save-profile-btn");
 
-  const inputName = document.getElementById("edit-name");
-  const inputPhone = document.getElementById("edit-phone");
-  const inputAddress = document.getElementById("edit-address");
+  const inputFirst = document.getElementById("edit-first-name");
+  const inputMiddle = document.getElementById("edit-middle-name");
+  const inputLast = document.getElementById("edit-last-name");
 
-  // Utility: hide loader + show content
+  // Utility
   function showContent() {
     if (loader) loader.style.display = "none";
     if (content) content.style.display = "block";
@@ -37,22 +33,21 @@ document.addEventListener("DOMContentLoaded", () => {
     showContent();
   }
 
-  async function callApi(path, method = "GET", token = null, body = null) {
+  async function callApi(path, method = "GET", body = null) {
     const headers = {};
-    if (token) headers["Authorization"] = `Bearer ${token}`;
     if (body) headers["Content-Type"] = "application/json";
     const res = await fetch(path, {
       method,
       headers,
       body: body ? JSON.stringify(body) : undefined,
-      credentials: "same-origin"
+      credentials: "same-origin", // send cookies (Flask session)
     });
     return res;
   }
 
-  async function loadProfileWithToken(idToken) {
+  async function loadProfile() {
     try {
-      const res = await callApi("/api/profile", "GET", idToken);
+      const res = await callApi("/api/profile", "GET");
       if (!res.ok) {
         const txt = await res.text();
         console.error("Profile API failed:", res.status, txt);
@@ -62,17 +57,16 @@ document.addEventListener("DOMContentLoaded", () => {
       const user = await res.json();
 
       // Fill UI
-      profileName.textContent = user.name || "Unnamed User";
+      const fullName = [user.first_name, user.middle_name, user.last_name].filter(Boolean).join(" ");
+      profileName.textContent = fullName || "Unnamed User";
       profileEmail.textContent = user.email || "-";
-      detailName.textContent = user.name || "-";
+      detailName.textContent = fullName || "-";
       detailEmail.textContent = user.email || "-";
-      detailPhone.textContent = user.phone || "-";
-      detailAddress.textContent = user.address || "-";
 
-      // services — keep minimal, if not present show placeholder
+      // services placeholder
       if (Array.isArray(user.services) && user.services.length) {
         bookedServices.innerHTML = "";
-        user.services.forEach(s => {
+        user.services.forEach((s) => {
           const li = document.createElement("li");
           li.textContent = s;
           bookedServices.appendChild(li);
@@ -82,9 +76,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // Prefill modal inputs
-      inputName.value = user.name || "";
-      inputPhone.value = user.phone || "";
-      inputAddress.value = user.address || "";
+      if (inputFirst) inputFirst.value = user.first_name || "";
+      if (inputMiddle) inputMiddle.value = user.middle_name || "";
+      if (inputLast) inputLast.value = user.last_name || "";
 
       showContent();
     } catch (err) {
@@ -93,52 +87,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Listen to Firebase auth state — when user signs in we get a token, then call server API
-  onAuthStateChanged(auth, async (fbUser) => {
-    if (!fbUser) {
-      // Not signed in; hide loader and show content with guest
-      showError("Not signed in");
-      return;
-    }
-
-    try {
-      const idToken = await fbUser.getIdToken(/* forceRefresh */ false);
-      await loadProfileWithToken(idToken);
-    } catch (err) {
-      console.error("Failed to get ID token:", err);
-      showError("Not authenticated");
-    }
-  });
+  // Load profile on page load
+  loadProfile();
 
   // Modal open/close
   if (editBtn) {
-    editBtn.addEventListener("click", () => {
-      modal.classList.remove("hidden");
-    });
+    editBtn.addEventListener("click", () => modal.classList.remove("hidden"));
   }
   if (closeBtn) {
-    closeBtn.addEventListener("click", () => {
-      modal.classList.add("hidden");
-    });
+    closeBtn.addEventListener("click", () => modal.classList.add("hidden"));
   }
 
-  // Save handler: send update to server
+  // Save handler
   if (saveBtn) {
     saveBtn.addEventListener("click", async () => {
-      // need a current idToken
-      const user = auth.currentUser;
-      if (!user) {
-        alert("Not authenticated");
-        return;
-      }
       try {
-        const idToken = await user.getIdToken(/* forceRefresh */ false);
         const payload = {
-          name: inputName.value,
-          phone: inputPhone.value,
-          address: inputAddress.value
+          first_name: inputFirst.value,
+          middle_name: inputMiddle.value || null,
+          last_name: inputLast.value,
         };
-        const res = await callApi("/api/profile/update", "POST", idToken, payload);
+        const res = await callApi("/api/profile/update", "POST", payload);
         if (!res.ok) {
           const txt = await res.text();
           console.error("Update failed:", res.status, txt);
@@ -147,12 +116,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         const updated = await res.json();
 
-        // update UI immediately
-        profileName.textContent = updated.name || profileName.textContent;
+        // Update UI
+        const fullName = [updated.first_name, updated.middle_name, updated.last_name].filter(Boolean).join(" ");
+        profileName.textContent = fullName;
         profileEmail.textContent = updated.email || profileEmail.textContent;
-        detailName.textContent = updated.name || detailName.textContent;
-        detailPhone.textContent = updated.phone || detailPhone.textContent;
-        detailAddress.textContent = updated.address || detailAddress.textContent;
+        detailName.textContent = fullName;
+        detailEmail.textContent = updated.email || detailEmail.textContent;
 
         modal.classList.add("hidden");
         alert("Profile saved");
@@ -163,13 +132,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // --- nav switching (keeps earlier logic) ---
-  document.querySelectorAll(".nav-link").forEach(btn => {
+  // --- nav switching (same as before) ---
+  document.querySelectorAll(".nav-link").forEach((btn) => {
     btn.addEventListener("click", () => {
-      document.querySelectorAll(".nav-link").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".nav-link").forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
       const section = btn.dataset.section;
-      document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+      document.querySelectorAll(".section").forEach((s) => s.classList.remove("active"));
       const activeSection = document.getElementById(`section-${section}`);
       if (activeSection) activeSection.classList.add("active");
     });

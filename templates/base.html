@@ -566,42 +566,49 @@
   </div>
 </div>
 
-
-<!-- Inject user info from Flask -->
+<!-- ✅ Inject Flask User + Profile URL for JS -->
 <script>
-  window.__USER__ = {
-    isLoggedIn: {{ 'true' if current_user else 'false' }},
-    username: "{{ current_user.name if current_user else '' }}"
-  };
+  window.__PROFILE_URL__ = "{{ url_for('main.profile') }}";
+
+  {% if current_user.is_authenticated %}
+    window.__CURRENT_USER__ = {
+      id: "{{ current_user.id }}",
+      name: "{{ current_user.name or current_user.email.split('@')[0] }}",
+      email: "{{ current_user.email }}"
+    };
+  {% else %}
+    window.__CURRENT_USER__ = null;
+  {% endif %}
 </script>
 
-
-<!-- Firebase core & session sync -->
-<script type="module" src="{{ url_for('static', filename='js/firebase.js') }}"></script>
-
-<!-- Route protection -->
+<!-- ============================= -->
+<!-- Core Authentication & Profile -->
+<!-- ============================= -->
 <script type="module" src="{{ url_for('static', filename='js/auth-protect.js') }}"></script>
-
-<!-- Auth UI (show/hide login vs user-section) -->
 <script src="{{ url_for('static', filename='js/auth-ui.js') }}"></script>
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
 
-<!-- User dropdown toggle -->
-<!-- Mobile menu toggle -->
+<!-- ============================= -->
+<!-- Core UI Interactions -->
+<!-- ============================= -->
 <script src="{{ url_for('static', filename='js/mobile_toggle.js') }}"></script>
-
-<!-- Core scripts -->
 <script src="{{ url_for('static', filename='js/base.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dropdown.js') }}"></script>
+
+<!-- ============================= -->
+<!-- Animations & Hero Section -->
+<!-- ============================= -->
 <script src="{{ url_for('static', filename='js/scrollAnimation.js') }}"></script>
 <script src="{{ url_for('static', filename='js/hero.js') }}"></script>
 
-<!-- Chat-related -->
+<!-- ============================= -->
+<!-- Chat & Community -->
+<!-- ============================= -->
 <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chat2.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chat-extras.js') }}"></script>
-
-<!-- Dynamic Dropdown (must come last so it sees DOM + url_for endpoints) -->
-<script src="{{ url_for('static', filename='js/dropdown.js') }}"></script>
 <script src="{{ url_for('static', filename='js/community.js') }}"></script>
+
 
 
 

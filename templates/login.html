@@ -9,17 +9,17 @@
 <main class="auth-container" data-page="login">
   <div class="auth-box" role="region" aria-label="Authentication card">
     
-  <!-- Logo Header -->
-  <div class="logo-header">
-    <a href="{{ url_for('home') }}" class="brand" aria-label="Back to home">
-      <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Epiconsult Logo" class="logo-img" />
-      <div class="logo-text">
-        <h1 class="text-red">Epiconsult</h1>
-        <h2 class="text-navy">Clinic & Diagnostics</h2>
-        <p class="tagline italic">...a reference point in diagnostics</p>
-      </div>
-    </a>
-  </div>
+    <!-- Logo Header -->
+    <div class="logo-header">
+      <a href="{{ url_for('main.home') }}" class="brand" aria-label="Back to home">
+        <img src="{{ url_for('static', filename='images/logo.jpeg') }}" alt="Epiconsult Logo" class="logo-img" />
+        <div class="logo-text">
+          <h1 class="text-red">Epiconsult</h1>
+          <h2 class="text-navy">Clinic & Diagnostics</h2>
+          <p class="tagline italic">...a reference point in diagnostics</p>
+        </div>
+      </a>
+    </div>
 
     <!-- Auth Header -->
     <div class="auth-header">
@@ -60,13 +60,21 @@
 
           <div id="login-error" class="error-message" aria-live="assertive"></div>
 
-          <!-- NOTE: class is now auth-submit-btn (not generic .submit-btn) -->
           <button class="auth-submit-btn" type="submit" id="login-submit-btn">Sign In</button>
 
-          <button type="button" class="google-btn" id="googleLoginBtnSignin">
+  
+
+          <button type="button" class="google-btn mt-4" id="googleLoginBtnSignin">
             <img src="{{ url_for('static', filename='images/google_icon2.png') }}" alt="Google Icon">
             <span>Continue with Google</span>
           </button>
+
+        <!-- Forgot Password -->
+          <p class="text-sm mt-3 text-center">
+            <a href="#" id="forgot-password-link" class="text-blue-600 hover:underline">Forgot password?</a>
+          </p>
+
+
         </form>
 
         <!-- Signup Form -->
@@ -120,7 +128,6 @@
           <button type="button" class="google-btn" id="googleLoginBtnSignup">
             <img src="{{ url_for('static', filename='images/google_icon2.png') }}" alt="Google Icon">
             <span>Continue with Google</span>
-
           </button>
         </form>
 

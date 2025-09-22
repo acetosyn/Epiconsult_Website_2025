@@ -1,11 +1,4 @@
 // static/js/login.js
-import { auth } from "./firebase.js";
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
 // ==============================
 // Tabs
@@ -21,26 +14,22 @@ function switchTab(target) {
     loginTab.classList.add("active");
     signupTab.classList.remove("active");
     formsWrapper.classList.remove("show-signup");
-
-    // mobile: toggle active class
     loginForm.classList.add("active");
     signupForm.classList.remove("active");
   } else {
     signupTab.classList.add("active");
     loginTab.classList.remove("active");
     formsWrapper.classList.add("show-signup");
-
-    // mobile: toggle active class
     signupForm.classList.add("active");
     loginForm.classList.remove("active");
   }
 }
-// Hook up tab buttons
-loginTab.addEventListener("click", () => switchTab("login"));
-signupTab.addEventListener("click", () => switchTab("signup"));
+
+loginTab?.addEventListener("click", () => switchTab("login"));
+signupTab?.addEventListener("click", () => switchTab("signup"));
 
 // ==============================
-// Typewriter
+// Typewriter text
 // ==============================
 function typeWriter(elementId, messages, speed = 80, delay = 2500) {
   const element = document.getElementById(elementId);
@@ -66,19 +55,20 @@ function typeWriter(elementId, messages, speed = 80, delay = 2500) {
 }
 typeWriter("login-typewriter", [
   "Sign in to access your dashboard.",
-  "Secure, fast, and reliable.",
+  "Secure, fast, and reliable."
 ]);
 typeWriter("signup-typewriter", [
   "Create an account with us to get started.",
-  "Join Epiconsult Diagnostics today!",
+  "Join Epiconsult Diagnostics today!"
 ]);
 
 // ==============================
-// Password visibility toggle
+// Password visibility
 // ==============================
 document.querySelectorAll(".toggle-password").forEach((toggle) => {
   toggle.addEventListener("click", () => {
     const input = toggle.previousElementSibling;
+    if (!input) return;
     const isHidden = input.type === "password";
     input.type = isHidden ? "text" : "password";
     toggle.textContent = isHidden ? "🙈" : "👁️";
@@ -92,7 +82,6 @@ function getNextUrl() {
   const params = new URLSearchParams(window.location.search);
   return params.get("next") || "/";
 }
-
 function resetLoginButton() {
   const btn = document.getElementById("login-submit-btn");
   if (btn) {
@@ -100,20 +89,20 @@ function resetLoginButton() {
     btn.textContent = "Sign In";
   }
 }
-
 window.addEventListener("pageshow", resetLoginButton);
 window.addEventListener("DOMContentLoaded", resetLoginButton);
 
 // ==============================
-// Firebase Auth Handling
+// Supabase Auth Handling
+// ==============================
+
+// Login
 // ==============================
 // Login
-loginForm.addEventListener("submit", async (e) => {
+// ==============================
+loginForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
-  e.stopPropagation();
-  e.stopImmediatePropagation();
-
-  const email = document.getElementById("login-email").value;
+  const email = document.getElementById("login-email").value.trim();
   const password = document.getElementById("login-password").value;
   const errorBox = document.getElementById("login-error");
   const submitBtn = document.getElementById("login-submit-btn");
@@ -123,69 +112,127 @@ loginForm.addEventListener("submit", async (e) => {
   submitBtn.textContent = "Signing in...";
 
   try {
-    await signInWithEmailAndPassword(auth, email, password);
-    // ✅ No flash here; handled by auth-ui.js via auth-changed
+    const resp = await fetch("/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await resp.json();
+
+    if (!resp.ok) {
+      errorBox.textContent = data.error || "Login failed.";
+      resetLoginButton();
+      return;
+    }
+
+    // success → redirect
     window.location.href = getNextUrl();
-  } catch (error) {
-    errorBox.textContent = error.message;
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Sign In";
+  } catch (err) {
+    errorBox.textContent = "Network error: " + err.message;
+    resetLoginButton();
   }
 });
 
+// ==============================
 // Signup
-signupForm.addEventListener("submit", async (e) => {
+// ==============================
+signupForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
-  e.stopPropagation();
-  e.stopImmediatePropagation();
-
-  const email = document.getElementById("signup-email").value;
+  const first = document.getElementById("signup-first-name")?.value.trim();
+  const middle = document.getElementById("signup-middle-name")?.value.trim();
+  const last = document.getElementById("signup-last-name")?.value.trim();
+  const email = document.getElementById("signup-email").value.trim();
   const password = document.getElementById("signup-password").value;
-  const confirmPassword = document.getElementById("signup-confirm-password").value;
+  const confirm = document.getElementById("signup-confirm-password").value;
   const errorBox = document.getElementById("signup-error");
   const submitBtn = document.getElementById("signup-submit-btn");
 
   errorBox.textContent = "";
 
-  if (password !== confirmPassword) {
+  if (password !== confirm) {
     errorBox.textContent = "Passwords do not match.";
     return;
   }
 
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Creating account...";
+
   try {
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Creating account...";
-    await createUserWithEmailAndPassword(auth, email, password);
-    // ✅ Instead of flashing here, just redirect
-    window.location.href = "/login?created=1";
-  } catch (error) {
-    errorBox.textContent = error.message;
+    const resp = await fetch("/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        password,
+        first_name: first,
+        middle_name: middle,
+        last_name: last
+      })
+    });
+
+    const data = await resp.json();
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Create Account";
+
+    if (!resp.ok) {
+      errorBox.textContent = data.error || "Signup failed.";
+      return;
+    }
+
+    alert(data.message || "Account created. Please check your email to verify.");
+    switchTab("login");
+  } catch (err) {
+    errorBox.textContent = "Network error: " + err.message;
     submitBtn.disabled = false;
     submitBtn.textContent = "Create Account";
   }
 });
 
-// ==============================
-// Google Sign-In
-// ==============================
-const googleProvider = new GoogleAuthProvider();
+// Signup
+// Signup
+signupForm?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const first = document.getElementById("signup-first-name")?.value.trim();
+  const middle = document.getElementById("signup-middle-name")?.value.trim();
+  const last = document.getElementById("signup-last-name")?.value.trim();
+  const email = document.getElementById("signup-email").value.trim();
+  const password = document.getElementById("signup-password").value;
+  const confirm = document.getElementById("signup-confirm-password").value;
+  const errorBox = document.getElementById("signup-error");
+  const submitBtn = document.getElementById("signup-submit-btn");
 
-document.getElementById("googleLoginBtnSignin")?.addEventListener("click", () => {
-  signInWithPopup(auth, googleProvider)
-    .then(() => {
-      window.location.href = getNextUrl();
-    })
-    .catch((error) => {
-      document.getElementById("login-error").textContent = error.message;
-    });
-});
+  errorBox.textContent = "";
 
-document.getElementById("googleLoginBtnSignup")?.addEventListener("click", () => {
-  signInWithPopup(auth, googleProvider)
-    .then(() => {
-      window.location.href = "/login?created=1";
-    })
-    .catch((error) => {
-      document.getElementById("signup-error").textContent = error.message;
-    });
+  if (password !== confirm) {
+    errorBox.textContent = "Passwords do not match.";
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Creating account...";
+
+  const fullName = [first, middle, last].filter(Boolean).join(" ");
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: { data: { name: fullName } }
+  });
+
+  // Reset button state
+  submitBtn.disabled = false;
+  submitBtn.textContent = "Create Account";
+
+  if (error) {
+    errorBox.textContent = error.message;
+    return;
+  }
+
+  if (data.user && !data.session) {
+    // Email confirmation required
+    alert("Account created. Please check your email to verify your account before logging in.");
+    switchTab("login"); // switch back to login form
+  } else if (data.session) {
+    // Instant login if email confirmation not required
+    window.location.href = "/";
+  }
 });
