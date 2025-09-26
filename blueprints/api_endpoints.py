@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from services import data_loader
-from auth import verify_token
+from services.auth_supabase import verify_supabase_token
 
 api_bp = Blueprint("api", __name__)
 
@@ -14,6 +14,6 @@ def get_faqs():
 
 # Example protected API
 @api_bp.route("/user-data")
-@verify_token
+@verify_supabase_token
 def user_data():
     return {"message": "This is protected!"}

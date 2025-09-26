@@ -1,191 +1,198 @@
 // static/js/login.js
-import { auth } from "./firebase.js";
-import {
-  signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+// Auth flow with Supabase-backed Flask endpoints (/login, /signup)
 
-// ==============================
-// Tabs
-// ==============================
+// -----------------------------
+// UI: Tabs & helpers
+// -----------------------------
 const loginTab = document.getElementById("loginTab");
 const signupTab = document.getElementById("signupTab");
 const formsWrapper = document.querySelector(".auth-forms");
 const loginForm = document.getElementById("loginForm");
 const signupForm = document.getElementById("signupForm");
+const flashBox = document.getElementById("flash-message");
+
+function showFlash(message, type = "info") {
+  if (!flashBox) return;
+  flashBox.textContent = message;
+  flashBox.className = `flash-message ${type}`;
+  flashBox.style.display = "block";
+  setTimeout(() => {
+    flashBox.style.display = "none";
+  }, 4000);
+}
+
+function classifyError(msg) {
+  msg = (msg || "").toLowerCase();
+  if (msg.includes("incorrect") || msg.includes("password")) return "error";
+  if (msg.includes("not found")) return "warning";
+  if (msg.includes("confirm")) return "info";
+  return "error";
+}
 
 function switchTab(target) {
   if (target === "login") {
-    loginTab.classList.add("active");
-    signupTab.classList.remove("active");
-    formsWrapper.classList.remove("show-signup");
-
-    // mobile: toggle active class
-    loginForm.classList.add("active");
-    signupForm.classList.remove("active");
+    loginTab?.classList.add("active");
+    signupTab?.classList.remove("active");
+    formsWrapper?.classList.remove("show-signup");
+    loginForm?.classList.add("active");
+    signupForm?.classList.remove("active");
   } else {
-    signupTab.classList.add("active");
-    loginTab.classList.remove("active");
-    formsWrapper.classList.add("show-signup");
-
-    // mobile: toggle active class
-    signupForm.classList.add("active");
-    loginForm.classList.remove("active");
+    signupTab?.classList.add("active");
+    loginTab?.classList.remove("active");
+    formsWrapper?.classList.add("show-signup");
+    signupForm?.classList.add("active");
+    loginForm?.classList.remove("active");
   }
 }
-// Hook up tab buttons
-loginTab.addEventListener("click", () => switchTab("login"));
-signupTab.addEventListener("click", () => switchTab("signup"));
 
-// ==============================
+loginTab?.addEventListener("click", () => switchTab("login"));
+signupTab?.addEventListener("click", () => switchTab("signup"));
+
+// -----------------------------
 // Typewriter
-// ==============================
+// -----------------------------
 function typeWriter(elementId, messages, speed = 80, delay = 2500) {
   const element = document.getElementById(elementId);
   if (!element) return;
-  let i = 0, j = 0, currentMessage = "";
+  let i = 0, j = 0, current = "";
   function type() {
     if (j < messages[i].length) {
-      currentMessage += messages[i].charAt(j);
-      element.textContent = currentMessage;
-      j++;
+      current += messages[i].charAt(j++);
+      element.textContent = current;
       setTimeout(type, speed);
     } else {
-      setTimeout(() => {
-        currentMessage = "";
-        element.textContent = "";
-        j = 0;
-        i = (i + 1) % messages.length;
-        type();
-      }, delay);
+      setTimeout(() => { current = ""; j = 0; i = (i + 1) % messages.length; type(); }, delay);
     }
   }
   type();
 }
-typeWriter("login-typewriter", [
-  "Sign in to access your dashboard.",
-  "Secure, fast, and reliable.",
-]);
-typeWriter("signup-typewriter", [
-  "Create an account with us to get started.",
-  "Join Epiconsult Diagnostics today!",
-]);
+typeWriter("login-typewriter", ["Sign in to access your dashboard.", "Secure, fast, and reliable."]);
+typeWriter("signup-typewriter", ["Create an account with us to get started.", "Join Epiconsult Diagnostics today!"]);
 
-// ==============================
-// Password visibility toggle
-// ==============================
+// -----------------------------
+// Toggle password visibility
+// -----------------------------
 document.querySelectorAll(".toggle-password").forEach((toggle) => {
   toggle.addEventListener("click", () => {
-    const input = toggle.previousElementSibling;
-    const isHidden = input.type === "password";
-    input.type = isHidden ? "text" : "password";
-    toggle.textContent = isHidden ? "🙈" : "👁️";
+    const inputId = toggle.dataset.target;
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    input.type = input.type === "password" ? "text" : "password";
   });
 });
 
-// ==============================
+// -----------------------------
 // Helpers
-// ==============================
+// -----------------------------
 function getNextUrl() {
   const params = new URLSearchParams(window.location.search);
   return params.get("next") || "/";
 }
-
-function resetLoginButton() {
-  const btn = document.getElementById("login-submit-btn");
-  if (btn) {
+function toggleLoader(btn, show) {
+  if (!btn) return;
+  const text = btn.querySelector(".btn-text");
+  const loader = btn.querySelector(".loader");
+  if (show) {
+    btn.disabled = true;
+    text.hidden = true;
+    loader.hidden = false;
+  } else {
     btn.disabled = false;
-    btn.textContent = "Sign In";
+    text.hidden = false;
+    loader.hidden = true;
   }
 }
 
-window.addEventListener("pageshow", resetLoginButton);
-window.addEventListener("DOMContentLoaded", resetLoginButton);
-
-// ==============================
-// Firebase Auth Handling
-// ==============================
-// Login
-loginForm.addEventListener("submit", async (e) => {
+// ======================
+// LOGIN
+// ======================
+loginForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
-  e.stopPropagation();
-  e.stopImmediatePropagation();
-
-  const email = document.getElementById("login-email").value;
+  const email = document.getElementById("login-email").value.trim();
   const password = document.getElementById("login-password").value;
-  const errorBox = document.getElementById("login-error");
   const submitBtn = document.getElementById("login-submit-btn");
 
-  errorBox.textContent = "";
-  submitBtn.disabled = true;
-  submitBtn.textContent = "Signing in...";
+  toggleLoader(submitBtn, true);
 
   try {
-    await signInWithEmailAndPassword(auth, email, password);
-    // ✅ No flash here; handled by auth-ui.js via auth-changed
+    const resp = await fetch("/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await resp.json().catch(() => ({}));
+    toggleLoader(submitBtn, false);
+
+    if (!resp.ok) {
+      const errMsg = data.error || data.message || data.error_description || "Login failed. Please try again.";
+      showFlash(errMsg, classifyError(errMsg));
+      return;
+    }
+
+    // Success → redirect
     window.location.href = getNextUrl();
-  } catch (error) {
-    errorBox.textContent = error.message;
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Sign In";
+  } catch (err) {
+    toggleLoader(submitBtn, false);
+    showFlash("Network error: " + err.message, "error");
   }
 });
 
-// Signup
-signupForm.addEventListener("submit", async (e) => {
+// ======================
+// SIGNUP
+// ======================
+signupForm?.addEventListener("submit", async (e) => {
   e.preventDefault();
-  e.stopPropagation();
-  e.stopImmediatePropagation();
-
-  const email = document.getElementById("signup-email").value;
-  const password = document.getElementById("signup-password").value;
-  const confirmPassword = document.getElementById("signup-confirm-password").value;
-  const errorBox = document.getElementById("signup-error");
+  const first = document.getElementById("signup-first-name")?.value.trim() || "";
+  const middle = document.getElementById("signup-middle-name")?.value.trim() || "";
+  const last = document.getElementById("signup-last-name")?.value.trim() || "";
+  const email = document.getElementById("signup-email")?.value.trim();
+  const password = document.getElementById("signup-password")?.value;
+  const confirm = document.getElementById("signup-confirm-password")?.value;
   const submitBtn = document.getElementById("signup-submit-btn");
 
-  errorBox.textContent = "";
-
-  if (password !== confirmPassword) {
-    errorBox.textContent = "Passwords do not match.";
+  if (!email || !password) {
+    showFlash("Email and password required.", "error");
+    return;
+  }
+  if (password !== confirm) {
+    showFlash("Passwords do not match.", "error");
     return;
   }
 
+  toggleLoader(submitBtn, true);
+
   try {
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Creating account...";
-    await createUserWithEmailAndPassword(auth, email, password);
-    // ✅ Instead of flashing here, just redirect
-    window.location.href = "/login?created=1";
-  } catch (error) {
-    errorBox.textContent = error.message;
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Create Account";
+    const resp = await fetch("/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify({
+        email,
+        password,
+        first_name: first || null,
+        middle_name: middle || null,
+        last_name: last || null
+      })
+    });
+
+    const data = await resp.json().catch(() => ({}));
+    toggleLoader(submitBtn, false);
+
+    if (!resp.ok) {
+      const errMsg = data.error || data.message || data.error_description || "Signup failed.";
+      showFlash(errMsg, classifyError(errMsg));
+      return;
+    }
+
+    // Always redirect to login with flash
+    if (data.redirect) {
+      showFlash(data.message || "Account created successfully. Please login.", "success");
+      switchTab("login");
+    }
+  } catch (err) {
+    toggleLoader(submitBtn, false);
+    showFlash("Network error: " + err.message, "error");
   }
-});
-
-// ==============================
-// Google Sign-In
-// ==============================
-const googleProvider = new GoogleAuthProvider();
-
-document.getElementById("googleLoginBtnSignin")?.addEventListener("click", () => {
-  signInWithPopup(auth, googleProvider)
-    .then(() => {
-      window.location.href = getNextUrl();
-    })
-    .catch((error) => {
-      document.getElementById("login-error").textContent = error.message;
-    });
-});
-
-document.getElementById("googleLoginBtnSignup")?.addEventListener("click", () => {
-  signInWithPopup(auth, googleProvider)
-    .then(() => {
-      window.location.href = "/login?created=1";
-    })
-    .catch((error) => {
-      document.getElementById("signup-error").textContent = error.message;
-    });
 });

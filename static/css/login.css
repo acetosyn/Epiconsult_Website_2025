@@ -296,11 +296,21 @@ main.auth-container::before {
   font-size: 1.05rem;
   cursor: pointer;
   transition: var(--transition);
+  position: relative;
 }
 .auth-submit-btn:hover {
   background: var(--primary-dark);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+}
+.auth-submit-btn .btn-text {
+  display: inline-block;
+}
+.auth-submit-btn .loader {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 /* Google button (restored + polished) */
@@ -321,50 +331,69 @@ main.auth-container::before {
   transition: background 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
   box-shadow: 0 1px 3px rgba(60,64,67,0.3), 0 1px 2px rgba(60,64,67,0.15);
 }
-
 .google-btn img {
   width: 28px;
   height: 28px;
   object-fit: contain;
   flex-shrink: 0;
 }
-
 .google-btn:hover {
   background: #f8f9fa;
   transform: translateY(-1px);
   box-shadow: 0 3px 6px rgba(60,64,67,0.3), 0 2px 4px rgba(60,64,67,0.2);
 }
 
-
 /* =========================================================
-   FLASH MESSAGES
+   ERROR & FLASH MESSAGES
 ========================================================= */
+.error-message {
+  color: #d32f2f;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0.4rem 0;
+}
+
 .flash-message {
+  display: none;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  padding: 1rem;
+  border-radius: 10px;
+  text-align: center;
+  animation: fadein 0.4s ease;
+}
+.flash-message.info {
+  background: #2196f3;
+  color: white;
+}
+.flash-message.success {
   background: #4caf50;
   color: white;
-  padding: 12px 20px;
-  text-align: center;
-  font-weight: 600;
-  border-radius: 8px;
-  margin: 12px auto;
-  max-width: 520px;
-  animation: fadein 0.5s, fadeout 0.5s 3s forwards;
+}
+.flash-message.error {
+  background: #f44336;
+  color: white;
+}
+@keyframes fadein {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes fadein {
-  from {
-    opacity: 0;
-    transform: translateY(-12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* =========================================================
+   BUTTON LOADER SPINNER
+========================================================= */
+.loader {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid var(--white);
+  border-right: 3px solid var(--primary-dark);
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
 }
-@keyframes fadeout {
-  to {
-    opacity: 0;
-    transform: translateY(-12px);
-    pointer-events: none;
-  }
+@keyframes spin {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(360deg); }
 }
