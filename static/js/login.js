@@ -2,7 +2,7 @@
 // Auth flow with Supabase-backed Flask endpoints (/login, /signup)
 
 // -----------------------------
-// UI: Tabs & helpers
+// DOM Elements
 // -----------------------------
 const loginTab = document.getElementById("loginTab");
 const signupTab = document.getElementById("signupTab");
@@ -11,14 +11,27 @@ const loginForm = document.getElementById("loginForm");
 const signupForm = document.getElementById("signupForm");
 const flashBox = document.getElementById("flash-message");
 
+// -----------------------------
+// Flash (sticky inside card)
+// -----------------------------
 function showFlash(message, type = "info") {
   if (!flashBox) return;
-  flashBox.textContent = message;
-  flashBox.className = `flash-message ${type}`;
-  flashBox.style.display = "block";
-  setTimeout(() => {
-    flashBox.style.display = "none";
+
+  let icon = "ℹ️";
+  if (type === "success") icon = "✅";
+  else if (type === "error") icon = "❌";
+  else if (type === "warning") icon = "⚠️";
+
+  flashBox.innerHTML = `<span class="flash-icon">${icon}</span> ${message}`;
+  flashBox.className = `flash-message ${type} show`;
+
+  clearTimeout(flashBox._timeout);
+  flashBox._timeout = setTimeout(() => {
+    flashBox.classList.remove("show");
+    setTimeout(() => (flashBox.style.display = "none"), 300);
   }, 4000);
+
+  flashBox.style.display = "block";
 }
 
 function classifyError(msg) {
@@ -29,22 +42,25 @@ function classifyError(msg) {
   return "error";
 }
 
+// -----------------------------
+// Tabs
+// -----------------------------
 function switchTab(target) {
-  if (target === "login") {
-    loginTab?.classList.add("active");
-    signupTab?.classList.remove("active");
-    formsWrapper?.classList.remove("show-signup");
-    loginForm?.classList.add("active");
-    signupForm?.classList.remove("active");
-  } else {
-    signupTab?.classList.add("active");
-    loginTab?.classList.remove("active");
-    formsWrapper?.classList.add("show-signup");
-    signupForm?.classList.add("active");
-    loginForm?.classList.remove("active");
-  }
+  const isLogin = target === "login";
+
+  // Toggle active state on tabs
+  loginTab?.classList.toggle("active", isLogin);
+  signupTab?.classList.toggle("active", !isLogin);
+
+  // Slide the forms container
+  formsWrapper?.classList.toggle("show-signup", !isLogin);
+
+  // Toggle active form visibility
+  loginForm?.classList.toggle("active", isLogin);
+  signupForm?.classList.toggle("active", !isLogin);
 }
 
+// Tab button listeners
 loginTab?.addEventListener("click", () => switchTab("login"));
 signupTab?.addEventListener("click", () => switchTab("signup"));
 
@@ -103,6 +119,47 @@ function toggleLoader(btn, show) {
   }
 }
 
+// -----------------------------
+// Caps Lock Warning
+// -----------------------------
+function attachCapsWarning(inputId) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  input.addEventListener("keyup", (e) => {
+    if (e.getModifierState("CapsLock")) {
+      input.setCustomValidity("Caps Lock is on");
+      input.reportValidity();
+    } else {
+      input.setCustomValidity("");
+    }
+  });
+}
+attachCapsWarning("login-password");
+attachCapsWarning("signup-password");
+attachCapsWarning("signup-confirm-password");
+
+// -----------------------------
+// Password Strength Meter (Signup)
+// -----------------------------
+const signupPassword = document.getElementById("signup-password");
+if (signupPassword) {
+  const meter = document.createElement("div");
+  meter.className = "strength-meter";
+  signupPassword.parentNode.appendChild(meter);
+
+  signupPassword.addEventListener("input", () => {
+    const val = signupPassword.value;
+    let strength = 0;
+    if (val.length >= 8) strength++;
+    if (/[A-Z]/.test(val)) strength++;
+    if (/[0-9]/.test(val)) strength++;
+    if (/[^A-Za-z0-9]/.test(val)) strength++;
+
+    meter.textContent = ["Weak", "Fair", "Good", "Strong"][strength] || "";
+    meter.style.color = ["#b91c1c", "#d97706", "#2563eb", "#059669"][strength] || "";
+  });
+}
+
 // ======================
 // LOGIN
 // ======================
@@ -126,12 +183,13 @@ loginForm?.addEventListener("submit", async (e) => {
     toggleLoader(submitBtn, false);
 
     if (!resp.ok) {
-      const errMsg = data.error || data.message || data.error_description || "Login failed. Please try again.";
+      console.debug("❌ Raw login response:", data);
+      const errMsg =
+        data.error || data.message || data.error_description || data.msg || "Login failed. Please try again.";
       showFlash(errMsg, classifyError(errMsg));
       return;
     }
 
-    // Success → redirect
     window.location.href = getNextUrl();
   } catch (err) {
     toggleLoader(submitBtn, false);
@@ -181,12 +239,12 @@ signupForm?.addEventListener("submit", async (e) => {
     toggleLoader(submitBtn, false);
 
     if (!resp.ok) {
+      console.debug("❌ Raw signup response:", data);
       const errMsg = data.error || data.message || data.error_description || "Signup failed.";
       showFlash(errMsg, classifyError(errMsg));
       return;
     }
 
-    // Always redirect to login with flash
     if (data.redirect) {
       showFlash(data.message || "Account created successfully. Please login.", "success");
       switchTab("login");

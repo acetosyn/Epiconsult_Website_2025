@@ -10,20 +10,16 @@
   --white: #ffffff;
   --shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
   --radius: 18px;
-  --card-max-w: 640px;
-  --input-font: 1.05rem;
+  --card-max-w: 520px;   /* reduced from 640px */
+  --input-font: 1rem;    /* slightly smaller */
   --transition: all 0.25s ease;
 }
 
 /* =========================================================
    RESET & BASE
 ========================================================= */
-* {
-  box-sizing: border-box;
-}
-html, body {
-  height: 100%;
-}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
 body {
   font-family: "Inter", system-ui, sans-serif;
   background-color: var(--light);
@@ -35,7 +31,7 @@ body {
    PAGE BACKGROUND
 ========================================================= */
 main.auth-container {
-  min-height: calc(100vh - 140px);
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,21 +60,15 @@ main.auth-container::before {
   width: 100%;
   max-width: var(--card-max-w);
   background: var(--white);
-  padding: 2.5rem;
+  padding: 2rem; /* reduced from 2.5rem */
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   animation: floatUp 0.5s ease forwards;
 }
 
 @keyframes floatUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* =========================================================
@@ -86,9 +76,8 @@ main.auth-container::before {
 ========================================================= */
 .logo-header {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem; /* reduced spacing */
 }
-
 .logo-header .brand {
   display: flex;
   align-items: center;
@@ -96,60 +85,18 @@ main.auth-container::before {
   gap: 0.4rem;
   text-decoration: none;
 }
-
-.logo-img {
-  width: 52px;
-  height: 52px;
-  border-radius: 0.75rem;
-  object-fit: cover;
-}
-
-.logo-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  line-height: 1.1;
-}
-
-.logo-text h1 {
-  font-size: 1.9rem;
-  font-weight: 800;
-  margin: 0;
-}
-.logo-text h2 {
-  font-size: 1.05rem;
-  font-weight: 600;
-  margin: 0.15rem 0 0;
-}
-.logo-text .tagline {
-  font-size: 0.85rem;
-  color: var(--gray);
-  font-style: italic;
-}
-
-.text-red {
-  color: var(--primary);
-}
-.text-navy {
-  color: var(--navy);
-}
+.logo-img { width: 48px; height: 48px; border-radius: 0.75rem; object-fit: cover; }
+.logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+.logo-text h1 { font-size: 1.6rem; font-weight: 800; margin: 0; }
+.logo-text h2 { font-size: 1rem; font-weight: 600; margin: 0.15rem 0 0; }
+.logo-text .tagline { font-size: 0.82rem; color: var(--gray); font-style: italic; }
 
 /* =========================================================
    AUTH PAGE TITLE
 ========================================================= */
-.auth-header {
-  text-align: center;
-  margin-bottom: 1.6rem;
-}
-.auth-header h1 {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: var(--navy);
-}
-.auth-header p {
-  font-size: 0.95rem;
-  color: var(--gray);
-}
+.auth-header { text-align: center; margin-bottom: 1rem; }
+.auth-header h1 { font-size: 1.25rem; font-weight: 700; color: var(--navy); }
+.auth-header p  { font-size: 0.9rem; color: var(--gray); }
 
 /* =========================================================
    TAB BUTTONS
@@ -158,18 +105,18 @@ main.auth-container::before {
   display: flex;
   gap: 0.75rem;
   justify-content: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem; /* reduced */
 }
 .tab-btn {
   flex: 1;
-  padding: 0.8rem 1rem;
+  padding: 0.7rem 1rem;
   border: 2px solid var(--primary);
   border-radius: 14px;
   background: var(--white);
   color: var(--primary);
   font-weight: 700;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.95rem;
   transition: var(--transition);
 }
 .tab-btn.active {
@@ -185,67 +132,42 @@ main.auth-container::before {
   position: relative;
   width: 100%;
   overflow: hidden;
-  min-height: 600px;
+  min-height: 460px; /* reduced from 600px */
 }
 .auth-forms {
   display: flex;
   width: 200%;
   transition: transform 0.5s ease-in-out;
 }
-.auth-forms.show-signup {
-  transform: translateX(-50%);
-}
+.auth-forms.show-signup { transform: translateX(-50%); }
 .form {
   width: 50%;
   display: flex;
   flex-direction: column;
-  gap: 1.3rem;
+  gap: 1rem; /* tighter gap */
 }
 
-/* Mobile forms behavior */
+/* Mobile */
 @media (max-width: 768px) {
-  .auth-forms {
-    display: block;
-    width: 100%;
-    transform: none !important;
-  }
-  .form {
-    width: 100%;
-    display: none;
-  }
-  .form.active {
-    display: flex;
-  }
-  .auth-forms-wrapper {
-    min-height: auto;
-  }
-}
-
-/* =========================================================
-   TYPEWRITER MESSAGE
-========================================================= */
-.typewriter-message {
-  min-height: 1.4em;
-  margin-bottom: 0.6rem;
-  color: var(--gray);
-  font-weight: 600;
-  text-align: center;
+  .auth-forms { display: block; width: 100%; transform: none !important; }
+  .form { width: 100%; display: none; }
+  .form.active { display: flex; }
+  .auth-forms-wrapper { min-height: auto; }
 }
 
 /* =========================================================
    FORM FIELDS
 ========================================================= */
-.form-field label {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--navy);
-  margin-bottom: 0.3rem;
-  display: block;
+.form-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center inputs + toggle */
 }
+
 .form-field input {
   width: 100%;
-  padding: 1rem 1.1rem;
-  border-radius: 14px;
+  padding: 0.8rem 2.8rem 0.8rem 1rem; /* leave space on right for eye */
+  border-radius: 12px;
   border: 1px solid #d1d5db;
   font-size: var(--input-font);
   background: #fff;
@@ -254,46 +176,49 @@ main.auth-container::before {
 .form-field input:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.12);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
 }
 
 /* =========================================================
-   PASSWORD TOGGLE
+   PASSWORD TOGGLE (fixed)
 ========================================================= */
 .input-with-toggle {
   position: relative;
+  width: 90%;     /* 👈 same as input width */
+  margin: 0 auto; /* 👈 keep it centered */
 }
 .input-with-toggle input {
-  padding-right: 2.5rem;
+  width: 100%; /* fill container */
 }
 .toggle-password {
   position: absolute;
-  right: 0.9rem;
+  right: 0.9rem;  /* inside the input */
   top: 50%;
   transform: translateY(-50%);
   border: none;
   background: transparent;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: var(--gray);
-  transition: color 0.2s;
 }
 .toggle-password:hover {
   color: var(--primary);
 }
 
+
 /* =========================================================
    BUTTONS
 ========================================================= */
 .auth-submit-btn {
-  width: 100%;
-  padding: 1rem;
+  width: 90%; /* match input width */
+  margin: 0 auto;
+  padding: 0.9rem;
   background: var(--primary);
   color: var(--white);
   border: none;
-  border-radius: 14px;
+  border-radius: 12px;
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: var(--transition);
   position: relative;
@@ -303,82 +228,35 @@ main.auth-container::before {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
 }
-.auth-submit-btn .btn-text {
-  display: inline-block;
-}
-.auth-submit-btn .loader {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-}
 
-/* Google button (restored + polished) */
+/* Google button */
 .google-btn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.9rem;
-  width: 100%;
-  padding: 1rem 1.2rem;
+  width: 90%; /* match inputs */
+  margin: 0 auto;
+  padding: 0.9rem;
   background: #ffffff;
-  color: #202124; /* Google standard */
+  color: #202124;
   border: 1px solid #dadce0;
-  border-radius: 14px;
-  font-size: 1rem;
+  border-radius: 12px;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
   box-shadow: 0 1px 3px rgba(60,64,67,0.3), 0 1px 2px rgba(60,64,67,0.15);
 }
-.google-btn img {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-  flex-shrink: 0;
-}
+.google-btn img { width: 24px; height: 24px; }
 .google-btn:hover {
   background: #f8f9fa;
   transform: translateY(-1px);
   box-shadow: 0 3px 6px rgba(60,64,67,0.3), 0 2px 4px rgba(60,64,67,0.2);
 }
 
-/* =========================================================
-   ERROR & FLASH MESSAGES
-========================================================= */
-.error-message {
-  color: #d32f2f;
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-align: center;
-  margin: 0.4rem 0;
-}
 
-.flash-message {
-  display: none;
-  margin-bottom: 1rem;
-  font-weight: 600;
-  padding: 1rem;
-  border-radius: 10px;
-  text-align: center;
-  animation: fadein 0.4s ease;
-}
-.flash-message.info {
-  background: #2196f3;
-  color: white;
-}
-.flash-message.success {
-  background: #4caf50;
-  color: white;
-}
-.flash-message.error {
-  background: #f44336;
-  color: white;
-}
-@keyframes fadein {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+
 
 /* =========================================================
    BUTTON LOADER SPINNER
@@ -393,6 +271,7 @@ main.auth-container::before {
   animation: spin 0.8s linear infinite;
   display: inline-block;
 }
+
 @keyframes spin {
   0% { transform: rotate(0); }
   100% { transform: rotate(360deg); }
