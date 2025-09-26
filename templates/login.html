@@ -7,6 +7,10 @@
 
 {% block content %}
 <main class="auth-container" data-page="login">
+
+  <!-- Flash Message (moved OUTSIDE auth-box for visibility) -->
+  <div id="flash-message" class="flash-message" aria-live="assertive"></div>
+
   <div class="auth-box" role="region" aria-label="Authentication card">
     
     <!-- Logo Header -->
@@ -53,28 +57,27 @@
               <label for="login-password">Password</label>
               <div class="input-with-toggle">
                 <input type="password" id="login-password" placeholder="Enter your password" autocomplete="current-password" required>
-                <button type="button" class="toggle-password" aria-label="Toggle password visibility">👁️</button>
+                <button type="button" class="toggle-password" data-target="login-password" aria-label="Toggle password visibility">👁️</button>
               </div>
             </div>
           </div>
 
-          <div id="login-error" class="error-message" aria-live="assertive"></div>
+          <!-- Removed inline #login-error -->
 
-          <button class="auth-submit-btn" type="submit" id="login-submit-btn">Sign In</button>
-
-  
+          <button class="auth-submit-btn" type="submit" id="login-submit-btn">
+            <span class="btn-text">Sign In</span>
+            <span class="loader" hidden></span>
+          </button>
 
           <button type="button" class="google-btn mt-4" id="googleLoginBtnSignin">
             <img src="{{ url_for('static', filename='images/google_icon2.png') }}" alt="Google Icon">
             <span>Continue with Google</span>
           </button>
 
-        <!-- Forgot Password -->
+          <!-- Forgot Password -->
           <p class="text-sm mt-3 text-center">
             <a href="#" id="forgot-password-link" class="text-blue-600 hover:underline">Forgot password?</a>
           </p>
-
-
         </form>
 
         <!-- Signup Form -->
@@ -108,7 +111,7 @@
               <label for="signup-password">Password</label>
               <div class="input-with-toggle">
                 <input type="password" id="signup-password" placeholder="Create a password" autocomplete="new-password" required>
-                <button type="button" class="toggle-password" aria-label="Toggle password visibility">👁️</button>
+                <button type="button" class="toggle-password" data-target="signup-password" aria-label="Toggle password visibility">👁️</button>
               </div>
             </div>
 
@@ -116,14 +119,17 @@
               <label for="signup-confirm-password">Confirm Password</label>
               <div class="input-with-toggle">
                 <input type="password" id="signup-confirm-password" placeholder="Re-enter your password" autocomplete="new-password" required>
-                <button type="button" class="toggle-password" aria-label="Toggle password visibility">👁️</button>
+                <button type="button" class="toggle-password" data-target="signup-confirm-password" aria-label="Toggle password visibility">👁️</button>
               </div>
             </div>
           </div>
 
-          <div id="signup-error" class="error-message" aria-live="assertive"></div>
+          <!-- Removed inline #signup-error -->
 
-          <button class="auth-submit-btn" type="submit" id="signup-submit-btn">Create Account</button>
+          <button class="auth-submit-btn" type="submit" id="signup-submit-btn">
+            <span class="btn-text">Create Account</span>
+            <span class="loader" hidden></span>
+          </button>
 
           <button type="button" class="google-btn" id="googleLoginBtnSignup">
             <img src="{{ url_for('static', filename='images/google_icon2.png') }}" alt="Google Icon">
