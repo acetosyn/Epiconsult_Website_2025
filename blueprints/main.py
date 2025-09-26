@@ -62,11 +62,6 @@ def forgot_password():
 
 @main_bp.route("/login", methods=["POST"])
 def api_login():
-    """
-    POST { email, password }
-    Calls Supabase Auth (grant_type=password).
-    On success, stores in Flask session.
-    """
     payload = request.get_json(silent=True) or request.form or {}
     email = payload.get("email")
     password = payload.get("password")
@@ -87,21 +82,35 @@ def api_login():
     except Exception as e:
         return jsonify({"error": f"Could not reach authentication server: {str(e)}"}), 500
 
+    # 🔎 Log full Supabase response for debugging
+    current_app.logger.debug(f"🔐 Supabase login response: {resp.status_code} -> {data}")
+
     if resp.status_code not in (200, 201):
-        # Friendly contextual error messages
-        message = (data.get("message") or "").lower()
-        if "invalid login credentials" in message:
+        # Collect possible error messages
+        raw_error = (
+            data.get("error_description")
+            or data.get("msg")
+            or data.get("message")
+            or data.get("error")
+            or ""
+        ).lower()
+
+        if "invalid login credentials" in raw_error:
             msg = "Incorrect email or password. Please try again."
-        elif "email not confirmed" in message:
+        elif "email not confirmed" in raw_error:
             msg = "Your email is not confirmed yet. Please check your inbox."
-        elif "user not found" in message:
+        elif "user not found" in raw_error:
             msg = "Account not found. Please check your details or sign up."
         else:
+            # Fall back to original keys if not matched
             msg = (
                 data.get("error_description")
+                or data.get("msg")
                 or data.get("message")
+                or data.get("error")
                 or "Login failed."
             )
+
         return jsonify({"error": msg}), 401
 
     access_token = data.get("access_token")
@@ -110,7 +119,7 @@ def api_login():
     if not access_token or not user:
         return jsonify({"error": "Invalid authentication response. Please try again."}), 500
 
-    # Optional: fetch fresh user profile
+    # Fetch fresh user profile
     try:
         profile_url = f"{current_app.config['SUPABASE_URL'].rstrip('/')}/auth/v1/user"
         profile_headers = {
@@ -120,8 +129,8 @@ def api_login():
         profile_resp = requests.get(profile_url, headers=profile_headers, timeout=8)
         if profile_resp.status_code in (200, 201):
             user = profile_resp.json()
-    except Exception:
-        pass
+    except Exception as e:
+        current_app.logger.warning(f"⚠️ Profile fetch failed: {e}")
 
     # Save session
     session.permanent = True
@@ -134,6 +143,8 @@ def api_login():
     }
 
     return jsonify({"ok": True, "user": session["user"]}), 200
+
+
 
 
 @main_bp.route("/signup", methods=["POST"])
@@ -157,6 +168,7 @@ def api_signup():
         "Content-Type": "application/json",
         "apikey": current_app.config.get("SUPABASE_ANON_KEY", ""),
     }
+
     body = {
         "email": email,
         "password": password,
@@ -171,40 +183,49 @@ def api_signup():
         resp = requests.post(url, json=body, headers=headers, timeout=8)
         data = resp.json()
     except Exception as e:
+        current_app.logger.error(f"⚠️ Signup request failed: {e}")
         return jsonify({"error": f"Signup request failed: {str(e)}"}), 500
+
+    # Log everything we got back from Supabase for debugging
+    current_app.logger.debug(f"🔎 Supabase signup response: {resp.status_code} -> {data}")
 
     if resp.status_code not in (200, 201):
         msg = (
             data.get("error_description")
+            or data.get("msg")
             or data.get("message")
+            or str(data)
             or "Signup failed."
         )
         return jsonify({"error": msg}), 400
 
-    user = data.get("user")
+    # Supabase may return `user` or a top-level dict with `id`
+    user = data.get("user") or data
+
+    if not user or not user.get("id"):
+        current_app.logger.error(f"⚠️ Signup response missing user object: {data}")
+        return jsonify({"error": "Signup response invalid, no user object returned."}), 500
 
     # Insert row into patients table
-    if user:
-        try:
-            patient_row = {
-                "user_id": user.get("id"),
-                "first_name": first
-                or (user.get("user_metadata", {}).get("name") or "").split(" ")[0]
-                or "User",
-                "middle_name": middle or None,
-                "last_name": last or None,
-                "email": email,
-            }
-            current_app.supabase.table("patients").insert(patient_row).execute()
-        except Exception:
-            pass
+    try:
+        patient_row = {
+            "user_id": user.get("id"),
+            "first_name": first
+            or (user.get("user_metadata", {}).get("name") or "").split(" ")[0]
+            or "User",
+            "middle_name": middle or None,
+            "last_name": last or None,
+            "email": email,
+        }
+        current_app.supabase.table("patients").insert(patient_row).execute()
+    except Exception as e:
+        current_app.logger.warning(f"⚠️ Patients insert failed: {e}")
 
     return jsonify({
         "ok": True,
         "redirect": "/login?signup=success",
         "message": "Account created successfully. Please login with your new credentials."
     }), 200
-
 
 
 

@@ -7,12 +7,11 @@
 
 {% block content %}
 <main class="auth-container" data-page="login">
-
-  <!-- Flash Message (moved OUTSIDE auth-box for visibility) -->
-  <div id="flash-message" class="flash-message" aria-live="assertive"></div>
-
   <div class="auth-box" role="region" aria-label="Authentication card">
     
+    <!-- Flash Message (INSIDE card to avoid shifting layout) -->
+    <div id="flash-message" class="flash-message" aria-live="assertive"></div>
+
     <!-- Logo Header -->
     <div class="logo-header">
       <a href="{{ url_for('main.home') }}" class="brand" aria-label="Back to home">
@@ -62,8 +61,6 @@
             </div>
           </div>
 
-          <!-- Removed inline #login-error -->
-
           <button class="auth-submit-btn" type="submit" id="login-submit-btn">
             <span class="btn-text">Sign In</span>
             <span class="loader" hidden></span>
@@ -74,7 +71,6 @@
             <span>Continue with Google</span>
           </button>
 
-          <!-- Forgot Password -->
           <p class="text-sm mt-3 text-center">
             <a href="#" id="forgot-password-link" class="text-blue-600 hover:underline">Forgot password?</a>
           </p>
@@ -123,8 +119,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Removed inline #signup-error -->
 
           <button class="auth-submit-btn" type="submit" id="signup-submit-btn">
             <span class="btn-text">Create Account</span>
