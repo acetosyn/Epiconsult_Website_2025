@@ -22,6 +22,7 @@
       <button class="nav-link active" data-section="info">ℹ️ Personal Info</button>
       <button class="nav-link" data-section="services">📋 Services</button>
       <button class="nav-link" data-section="settings">⚙️ Settings</button>
+      <button class="nav-link" data-section="security">🔐 Security</button>
     </nav>
   </aside>
 
@@ -38,8 +39,6 @@
         <div class="profile-details">
           <div><strong>Full Name:</strong> <span id="detail-name">-</span></div>
           <div><strong>Email:</strong> <span id="detail-email">-</span></div>
-          <div><strong>Phone:</strong> <span id="detail-phone">-</span></div>
-          <div><strong>Address:</strong> <span id="detail-address">-</span></div>
         </div>
       </div>
 
@@ -47,14 +46,22 @@
       <div class="profile-card section" id="section-services">
         <h3>Past Booked Services</h3>
         <ul id="booked-services" class="service-list">
-          <li>No services booked yet.</li>
+          <li class="muted-text">No services booked yet.</li>
         </ul>
       </div>
 
       <!-- Settings -->
       <div class="profile-card section" id="section-settings">
         <h3>Settings</h3>
-        <p class="muted-text">Change password, notifications, and other settings will appear here.</p>
+        <p class="muted-text">Change preferences, notifications, and language here.</p>
+      </div>
+
+      <!-- Security -->
+      <div class="profile-card section" id="section-security">
+        <h3>Security</h3>
+        <p class="muted-text">Update your password and enable 2FA for stronger protection.</p>
+        <button class="btn-secondary mt-3">🔑 Change Password</button>
+        <button class="btn-secondary mt-2">📱 Enable 2FA</button>
       </div>
     </div>
   </div>
@@ -65,10 +72,10 @@
   <div class="modal-content">
     <h3>Edit Profile</h3>
     <form id="edit-form">
-      <label>Name <input type="text" id="edit-name"></label>
+      <label>First Name <input type="text" id="edit-first-name"></label>
+      <label>Middle Name <input type="text" id="edit-middle-name"></label>
+      <label>Last Name <input type="text" id="edit-last-name"></label>
       <label>Email <input type="email" id="edit-email" disabled></label>
-      <label>Phone <input type="tel" id="edit-phone"></label>
-      <label>Address <input type="text" id="edit-address"></label>
       <div class="modal-actions">
         <button type="button" id="close-edit-modal" class="btn-secondary">Cancel</button>
         <button type="button" id="save-profile-btn" class="btn-primary">Save</button>
