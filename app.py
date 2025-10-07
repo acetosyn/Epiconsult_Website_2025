@@ -22,6 +22,7 @@ load_dotenv()
 # APP CONFIG
 # -------------------------------
 app = Flask(__name__)
+application = app
 app.secret_key = os.environ.get("SECRET_KEY", os.environ.get("FLASK_SECRET", "supersecret"))
 app.permanent_session_lifetime = timedelta(days=7)
 
