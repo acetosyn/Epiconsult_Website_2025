@@ -1,9 +1,31 @@
+# ===============================
+# Core Web Framework
+# ===============================
 Flask==3.1.2
-openpyxl==3.1.5
-PyPDF2==3.0.1
-python-dotenv==1.1.1
-python_jose==3.5.0
-reportlab==4.4.3
-requests==2.32.5
-sendgrid==6.12.4
+gunicorn==22.0.0        # Production WSGI server used by Render
+# ===============================
+# Supabase / Database
+# ===============================
 supabase==2.21.1
+python-jose==3.3.0       # JWT handling (use hyphen not underscore)
+requests==2.32.3
+# ===============================
+# Email / API Integrations
+# ===============================
+sendgrid==6.12.4
+# ===============================
+# PDF / Excel Processing
+# ===============================
+PyPDF2==3.0.1
+openpyxl==3.1.5
+reportlab==4.4.3
+# ===============================
+# Environment Management
+# ===============================
+python-dotenv==1.0.1
+# ===============================
+# Security / Utilities
+# ===============================
+cryptography>=42.0.5
+
+# ===============================
