@@ -1,0 +1,123 @@
+/* =========================
+   Auth UI Styling (Modern)
+   ========================= */
+
+/* =========================
+   Login Button
+   ========================= */
+.login-btn {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: white;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border-radius: 9999px; /* pill */
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.login-btn:hover {
+  background: linear-gradient(135deg, #fbbf24, #f87171);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* =========================
+   User Menu Button
+   ========================= */
+.user-menu-btn {
+  background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+  border: 1px solid #e5e7eb;
+  border-radius: 9999px; /* pill */
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-menu-btn:hover {
+  background: #f3f4f6;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Avatar circle */
+.user-menu-btn div {
+  background: linear-gradient(135deg, #f59e0b, #ef4444);
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =========================
+   Dropdown Menu
+   ========================= */
+.user-dropdown {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid rgba(229, 231, 235, 0.6);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  animation: dropdownFade 0.25s ease;
+}
+
+/* Dropdown animation */
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.user-dropdown a,
+.user-dropdown button {
+  display: block;
+  padding: 0.75rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #374151;
+  transition: background 0.2s ease, color 0.2s ease;
+  width: 100%;
+  text-align: left;
+}
+
+.user-dropdown a:hover,
+.user-dropdown button:hover {
+  background: #f9fafb;
+  color: #111827;
+}
+
+/* Divider for menu sections */
+.user-dropdown .divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 0.25rem 0;
+}
+
+/* =========================
+   Logout Styling
+   ========================= */
+.user-dropdown .logout-btn {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.user-dropdown .logout-btn:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+}
