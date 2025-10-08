@@ -1,27 +1,41 @@
-# Ignore asset folders
+# -----------------------------
+# ASSETS (local only, not in repo)
+# -----------------------------
 epiconsult_assets/
 jaiz_assets/
 fhc_assets/
 
-# Ignore file types
+# -----------------------------
+# DATA / GENERATED FILES
+# -----------------------------
+new_database/
+dataset/
+*.csv
+*.ipynb
 *.pdf
 *.xlsx
-*.ipynb
-*.csv
 *.docx
+*.log
+__pycache__/
+*.pyc
 
-# Environment and sensitive files
+# -----------------------------
+# ENVIRONMENT / SENSITIVE FILES
+# -----------------------------
 .env
 ServiceAccountKey.json
 firebase_config.html
 
-# Ignore project data folders
-new_database/
-dataset/
-generate.pyS
+# -----------------------------
+# SYSTEM FILES (ignore OS/editor junk)
+# -----------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
 
-# Python cache and compiled files
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
+# -----------------------------
+# PYTHON VENV
+# -----------------------------
+venv/
+.env/
