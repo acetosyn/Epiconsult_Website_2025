@@ -1,0 +1,17 @@
+{
+  "files.associations": {
+    "**/templates/*.html": "html"
+  },
+  "emmet.includeLanguages": {
+    "html": "html"
+  },
+  "html.validate.scripts": false,
+  "html.validate.styles": false,
+  "javascript.validate.enable": false,
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ]
+}
