@@ -1,0 +1,29 @@
+{
+  "Clinic": {
+    "General Consultation": [],
+    "Sickle Cell": [],
+    "Specialist": {
+      "Surgery": {
+        "Neuro-Surgery": [],
+        "Urology": [],
+        "Anesthesiology": [],
+        "General Surgery": [],
+        "Plastic Surgery": [],
+        "Orthopedic Surgery": [],
+        "Gynecology": [],
+        "Spine Surgery": [],
+        "Bariatrics": []
+      },
+      "Medicine": {
+        "Cardiology": [],
+        "Neurology": [],
+        "Pediatrics": [],
+        "Endocrinology": [],
+        "Dermatology": [],
+        "Gastroenterology": [],
+        "GP (General Outpatient)": [],
+        "Hematology": []
+      }
+    }
+  }
+}

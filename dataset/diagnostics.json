@@ -1,0 +1,26 @@
+{
+  "Diagnostics": {
+    "Imaging": {
+      "X-RAY": [],
+      "MAMO": [],
+      "ECG": [],
+      "ECHO": [],
+      "MR": [],
+      "CT SCAN": [],
+      "HSG": [],
+      "IUV": []
+    },
+    "Laboratory": {
+      "Haematology": [],
+      "Biochemistry": [],
+      "Microbiology": [],
+      "Immunology": [],
+      "Cytology / Histology": [],
+      "Virology": [],
+      "Tumor Markers": [],
+      "Endocrinology / Hormones": [],
+      "Blood Bank": [],
+      "Others": []
+    }
+  }
+}

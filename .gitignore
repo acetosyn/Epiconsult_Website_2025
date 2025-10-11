@@ -9,7 +9,6 @@ fhc_assets/
 # DATA / GENERATED FILES
 # -----------------------------
 new_database/
-dataset/
 *.csv
 *.ipynb
 *.pdf
