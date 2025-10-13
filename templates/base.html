@@ -104,26 +104,28 @@
   {% endif %}
 {% endwith %}
 
-<!-- Main Navigation -->
+<!-- ======================= Main Navigation ======================= -->
 <nav class="bg-white shadow-lg sticky top-[48px] z-50">
   <div class="container mx-auto px-4">
     <div class="flex justify-between items-center py-4">
 
-      <!-- Logo + Brand -->
-      <a href="{{ url_for('main.home') }}" class="flex items-center space-x-3">
+      <!-- ✅ Logo + Brand (closer alignment + tagline below logo) -->
+      <a href="{{ url_for('main.home') }}" class="flex items-center logo-block">
         <img src="{{ url_for('static', filename='images/logo.jpeg') }}"
              alt="Epiconsult Logo"
-             class="h-12 w-auto object-contain">
+             class="h-12 w-auto object-contain mr-2">
 
-        <div class="leading-tight">
-          <h1 class="font-bold text-2xl md:text-3xl text-red-600">Epiconsult</h1>
-          <h2 class="font-semibold text-base md:text-lg text-[#002F5E]">Clinic & Diagnostics</h2>
-          <p class="text-gray-600 italic text-xs md:text-sm">...a reference point in diagnostics</p>
+        <div class="leading-tight logo-text">
+          <div class="flex items-baseline flex-wrap gap-x-1">
+            <h1 class="font-bold text-2xl md:text-3xl text-red-600">Epiconsult</h1>
+            <span class="text-sm md:text-base font-semibold text-[#002F5E]">Clinic & Diagnostics</span>
+          </div>
+          <p class="text-gray-600 italic text-xs md:text-sm mt-0.5 ml-0.5">...a reference point in diagnostics</p>
         </div>
       </a>
 
-      <!-- Desktop Nav -->
-      <div class="hidden lg:flex items-center space-x-10">
+      <!-- ✅ Desktop Nav -->
+      <div class="hidden lg:flex items-center space-x-8">
         <a href="{{ url_for('main.home') }}" class="nav-link">HOME</a>
 
         <!-- CLINIC Dropdown -->
@@ -157,7 +159,7 @@
         <a href="{{ url_for('main.contact') }}" class="nav-link">CONTACT</a>
         <a href="{{ url_for('main.community') }}" class="nav-link">COMMUNITY</a>
 
-        <!-- Patient Portal -->
+        <!-- ✅ Patient Portal -->
         <a href="{{ url_for('main.patient_portal') }}"
            class="btn-primary flex items-center space-x-1 px-3 py-1 text-sm">
           <span>🔒</span>
@@ -165,9 +167,7 @@
         </a>
 
         <!-- ✅ Auth/User Slot -->
-        <div class="relative flex items-center justify-end w-[180px] h-[48px]">
-          <div id="auth-slot"></div>
-        </div>
+        <div class="relative flex items-center justify-end min-w-[80px] h-[48px]" id="auth-slot"></div>
       </div>
 
       <!-- ✅ Mobile Menu Button -->
@@ -181,18 +181,17 @@
   </div>
 </nav>
 
-<!-- Mobile Menu Overlay -->
-<div id="mobile-overlay"
-     class="fixed inset-0 bg-black bg-opacity-60 hidden z-40"></div>
+<!-- ======================= Mobile Menu Overlay ======================= -->
+<div id="mobile-overlay" class="fixed inset-0 bg-black bg-opacity-60 hidden z-40"></div>
 
-<!-- Mobile Menu (Drawer) -->
+<!-- ======================= Mobile Menu Drawer ======================= -->
 <div id="mobile-menu"
      class="fixed top-[144px] right-0 w-[260px] shadow-lg
             h-[calc(100vh-144px)] transform translate-x-full
             transition-transform duration-500 ease-in-out
             overflow-y-auto text-white bg-gray-900 z-50">
 
-  <!-- Drawer Close Button -->
+  <!-- Drawer Close -->
   <button id="drawer-close-btn"
           class="absolute top-4 right-4 text-white hover:text-red-500 z-60">
     <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -201,13 +200,13 @@
     </svg>
   </button>
 
+  <!-- ✅ Mobile Navigation Links -->
   <div class="px-6 py-6 space-y-4 mt-12">
-    <a href="{{ url_for('main.home') }}"
-       class="block py-2 font-semibold hover:text-red-400 transition-colors">
+    <a href="{{ url_for('main.home') }}" class="block py-2 font-semibold hover:text-red-400 transition-colors">
       HOME
     </a>
 
-    <!-- ✅ Mobile Accordion Clinic -->
+    <!-- Clinic Accordion -->
     <div class="mobile-section">
       <button class="w-full flex justify-between items-center py-2 font-semibold hover:text-red-400 transition"
               data-target="mobile-clinic-root">
@@ -220,7 +219,7 @@
       <div id="mobile-clinic-root" class="ml-3 hidden flex-col space-y-1"></div>
     </div>
 
-    <!-- ✅ Mobile Accordion Diagnostics -->
+    <!-- Diagnostics Accordion -->
     <div class="mobile-section">
       <button class="w-full flex justify-between items-center py-2 font-semibold hover:text-red-400 transition"
               data-target="mobile-diagnostics-root">
@@ -252,18 +251,14 @@
 
     <!-- ✅ Mobile Navigation Grid -->
     <div class="mobile-menu-grid mt-6">
-      <!-- Patient Portal -->
       <a href="{{ url_for('main.patient_portal') }}"
          class="patient-portal-btn flex items-center justify-center space-x-2 py-2 rounded font-semibold shadow transition">
         <span>🔒</span><span>Patient Portal</span>
       </a>
-
-      <!-- Auth slot for mobile (Login / Profile handled by auth-ui.js) -->
       <div id="auth-slot-mobile" class="mt-3"></div>
     </div>
   </div>
 </div>
-
 
 
 </nav>
