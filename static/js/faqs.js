@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const faqContainer = document.querySelector(".faq-container");
 
   try {
-    const response = await fetch("/faqs");
+    const response = await fetch("/api/faqs");
     if (!response.ok) throw new Error("Failed to fetch FAQs.");
     const faqs = await response.json();
     renderFaqs(faqs);
