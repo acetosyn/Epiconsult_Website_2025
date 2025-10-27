@@ -1,10 +1,10 @@
 # app.py
 import os
 from datetime import timedelta
-from flask import Flask, url_for, g, redirect
+from flask import Flask, url_for, g, redirect,  request, Response, jsonify
 from supabase import create_client
 from dotenv import load_dotenv
-
+from bot import stream_ecare  # Updated import
 # -------------------------------
 # REGISTER BLUEPRINTS
 # -------------------------------
@@ -116,6 +116,27 @@ def about_alias():
 
 # print(app.url_map)
 
+# ✅ Streaming Chat endpoint for e-Care Assistant
+# -------------------------------
+# e-Care Chat Endpoint
+# -------------------------------
+@app.route("/chat", methods=["POST"])
+def chat():
+    data = request.get_json(force=True, silent=True) or {}
+    user_message = data.get("message", "")
+    session_id = data.get("session_id") or request.remote_addr
+
+    if not user_message.strip():
+        return jsonify({"error": "Message cannot be empty"}), 400
+
+    def generate():
+        try:
+            for chunk in stream_ecare(user_message, session_id=session_id):
+                yield chunk
+        except Exception as e:
+            yield f"⚠️ Error: {str(e)}"
+
+    return Response(generate(), mimetype="text/plain")
 
 # -------------------------------
 # ENTRYPOINT

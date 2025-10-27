@@ -55,6 +55,11 @@ def forgot_password():
     return "<h1>Forgot Password Page Coming Soon</h1>"
 
 
+@main_bp.route("/e-care", endpoint="ecare")
+def ecare():
+    return render_template("e-care.html")
+
+
 
 # -------------------------- #
 # AUTH ROUTES

@@ -128,6 +128,10 @@
       <div class="hidden lg:flex items-center space-x-8">
         <a href="{{ url_for('main.home') }}" class="nav-link">HOME</a>
 
+      <!-- ✅ eCare (Chat Assistant) -->
+      <a href="{{ url_for('main.ecare') }}" class="nav-link">eCare</a>
+
+
         <!-- CLINIC Dropdown -->
         <div class="relative group" id="clinic-menu-container" data-json="{{ url_for('clinic.clinic_data') }}">
           <a href="#" class="nav-link flex items-center relative z-20" aria-haspopup="true" aria-expanded="false">
@@ -205,6 +209,13 @@
     <a href="{{ url_for('main.home') }}" class="block py-2 font-semibold hover:text-red-400 transition-colors">
       HOME
     </a>
+
+        <!-- ✅ e-Care Mobile Link -->
+    <a href="{{ url_for('main.ecare') }}"
+       class="block py-2 font-semibold hover:text-red-400 transition-colors">
+      e-Care
+    </a>
+
 
     <!-- Clinic Accordion -->
     <div class="mobile-section">

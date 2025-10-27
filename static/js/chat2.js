@@ -1,8 +1,10 @@
+// ================== e-Care Pop-Up Assistant Typing Engine (chat2.js) ==================
 document.addEventListener("DOMContentLoaded", () => {
   const chatMessages = document.getElementById("chat-messages");
 
-  // Futuristic typing bubble
+  // --- Typing Indicator ---
   function showTypingIndicator() {
+    removeTypingIndicator();
     const typingDiv = document.createElement("div");
     typingDiv.id = "typing-indicator";
     typingDiv.className = "flex items-start space-x-2 animate-fade-in";
@@ -12,18 +14,17 @@ document.addEventListener("DOMContentLoaded", () => {
         <span class="dot"></span>
         <span class="dot"></span>
         <span class="dot"></span>
-      </div>
-    `;
+      </div>`;
     chatMessages.appendChild(typingDiv);
-    chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: "smooth" });
+    chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
   function removeTypingIndicator() {
-    const typingDiv = document.getElementById("typing-indicator");
-    if (typingDiv) typingDiv.remove();
+    const el = document.getElementById("typing-indicator");
+    if (el) el.remove();
   }
 
-  // Typing effect for bot messages
+  // --- Smooth Bot Typing Reveal ---
   function typeBotMessage(message) {
     removeTypingIndicator();
 
@@ -38,49 +39,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const textContainer = msgDiv.querySelector(".bot-bubble");
     chatMessages.appendChild(msgDiv);
-    chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: "smooth" });
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 
     let i = 0;
-    function typingStep() {
+    const step = () => {
       if (i < message.length) {
-        textContainer.textContent += message.charAt(i);
-        i++;
-        chatMessages.scrollTo({ top: chatMessages.scrollHeight, behavior: "smooth" });
-        setTimeout(typingStep, 25); // typing speed (ms per char)
+        textContainer.textContent += message[i++];
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        setTimeout(step, 25);
       } else {
-        // Add timestamp when finished
         const time = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
         const ts = document.createElement("div");
         ts.className = "text-[10px] text-gray-400 mt-1";
         ts.textContent = time;
         textContainer.parentElement.appendChild(ts);
       }
-    }
-    typingStep();
+    };
+    step();
   }
 
-  // Wrap addMessage so bot uses typing effect
-  const originalAddMessage = window.addMessage;
+  // --- Intercept Message Rendering ---
+  const originalAdd = window.addMessage;
   window.addMessage = function(message, isUser = false, save = true) {
     if (isUser) {
-      originalAddMessage(message, true, save);
-
-      // Add seen ticks ✅
-      const lastMsg = chatMessages.querySelectorAll(".chat-msg[data-is-user='true']");
-      if (lastMsg.length > 0) {
-        const bubble = lastMsg[lastMsg.length - 1].querySelector(".bubble");
-        if (bubble && !bubble.querySelector(".ticks")) {
-          const ticks = document.createElement("span");
-          ticks.className = "ticks ml-2 text-xs text-emerald-500";
-          ticks.textContent = "✓✓";
-          bubble.appendChild(ticks);
-        }
-      }
+      originalAdd(message, true, save);
     } else {
       showTypingIndicator();
-      setTimeout(() => {
-        typeBotMessage(message);
-      }, 700); // delay before typing starts
+      setTimeout(() => typeBotMessage(message), 600);
     }
   };
+
+  // Trigger from chat.js when sendMessage is called
+  chatMessages.addEventListener("chat-start-typing", () => showTypingIndicator());
 });
