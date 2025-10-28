@@ -282,12 +282,11 @@ Epiconsult Clinic & Diagnostics
 # ✅ Email Relay — Send Booking Data to cPanel Endpoint
 # =========================================================
 
-import requests
 
 def send_booking_emails(data):
     """Send booking email via Epiconsult cPanel relay."""
-    RELAY_URL = "https://relay.epidiagnostics.com/relay_mail.php"
-    RELAY_KEY = "EPICONSULT_RELAY_2025"  # must match AUTH_KEY in relay_mail.php
+    RELAY_URL = "http://relay.epidiagnostics.com/relay_mail.php"  # <-- use http
+    RELAY_KEY = "EPICONSULT_RELAY_2025"
 
     try:
         response = requests.post(
@@ -299,7 +298,6 @@ def send_booking_emails(data):
 
         print(f"[Render ➜ Relay] ✅ POST {RELAY_URL} → {response.status_code}")
 
-        # Attempt to parse JSON response
         try:
             result = response.json()
             print("[Render ➜ Relay] Response:", result)
