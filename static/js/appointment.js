@@ -255,46 +255,118 @@ async function submitBooking(bookingType) {
   bookPayBtn.addEventListener("click", () => submitBooking("Book & Pay Later"));
 
   // =========================================================
-  // SEARCH AUTOCOMPLETE
-  // =========================================================
-  const ALL_TESTS = [];
+// 🔍 SEARCH AUTOCOMPLETE (Full Intelligent Version Restored)
+// =========================================================
+function flattenTests() {
+  const flat = [];
   categories.forEach(cat => {
-    const groups = getTestsFor(cat);
-    groups.forEach(g => g.tests.forEach(t => ALL_TESTS.push({ test: t, category: cat })));
-  });
-
-  let searchResults = [];
-  searchInput.addEventListener("input", e => {
-    const q = e.target.value.trim().toLowerCase();
-    resultsContainer.innerHTML = "";
-    if (q.length < 2) return resultsPanel.classList.add("hidden");
-    searchResults = ALL_TESTS.filter(
-      t => t.test.toLowerCase().includes(q) || t.category.toLowerCase().includes(q)
-    );
-    if (searchResults.length === 0) return resultsPanel.classList.add("hidden");
-
-    searchResults.forEach(r => {
-      const div = document.createElement("div");
-      div.className = "p-2 cursor-pointer hover:bg-gray-100 border-b text-sm transition";
-      div.innerHTML = `<div class="font-medium">${r.test}</div><div class="text-xs text-gray-500">${r.category}</div>`;
-      div.addEventListener("click", () => {
-        searchInput.value = r.test;
-        serviceCategory.value = r.category;
-        serviceCategory.dispatchEvent(new Event("change"));
-        serviceSubcategory.value = r.test;
-        subcategoryWrapper.classList.remove("hidden");
-        resultsPanel.classList.add("hidden");
+    const tests = getTestsFor(cat);
+    tests.forEach(group => {
+      group.tests.forEach(test => {
+        flat.push({ test, category: cat });
       });
-      resultsContainer.appendChild(div);
     });
-    resultsPanel.classList.remove("hidden");
+  });
+  return flat;
+}
+
+const ALL_TESTS = flattenTests();
+let searchResults = [];
+let selectedIndex = -1;
+
+// Function to render results dynamically
+function renderResults(list) {
+  resultsContainer.innerHTML = "";
+  if (list.length === 0) {
+    resultsPanel.classList.add("hidden");
+    return;
+  }
+
+  resultsPanel.classList.remove("hidden");
+  list.forEach((item, idx) => {
+    const el = document.createElement("div");
+    el.className =
+      "p-2 border-b border-gray-200 cursor-pointer hover:bg-gray-100 transition";
+    el.dataset.index = idx;
+    el.innerHTML = `
+      <div class="font-medium text-gray-800">${item.test}</div>
+      <div class="text-xs text-gray-500">${item.category}</div>
+    `;
+    el.addEventListener("click", () => selectResult(idx));
+    resultsContainer.appendChild(el);
+  });
+}
+
+// Function to highlight keyboard-selected result
+function highlightResult(idx) {
+  Array.from(resultsContainer.children).forEach((el, i) => {
+    el.classList.toggle("bg-gray-200", i === idx);
+  });
+}
+
+// Function to apply selected test
+function selectResult(idx) {
+  const item = searchResults[idx];
+  if (!item) return;
+  serviceCategory.value = item.category;
+  serviceCategory.dispatchEvent(new Event("change"));
+  serviceSubcategory.value = item.test;
+  subcategoryWrapper.classList.remove("hidden");
+  searchInput.value = item.test;
+  resultsPanel.classList.add("hidden");
+}
+
+// Handle user input
+if (searchInput) {
+  searchInput.addEventListener("input", e => {
+    const q = e.target.value.trim();
+    searchResults = [];
+    selectedIndex = -1;
+    resultsContainer.innerHTML = "";
+
+    if (q.length < 2) {
+      resultsPanel.classList.add("hidden");
+      return;
+    }
+
+    const lowerQ = q.toLowerCase();
+    searchResults = ALL_TESTS.filter(
+      t =>
+        t.test.toLowerCase().includes(lowerQ) ||
+        t.category.toLowerCase().includes(lowerQ)
+    );
+
+    renderResults(searchResults);
   });
 
+  // Keyboard navigation support
+  searchInput.addEventListener("keydown", e => {
+    if (resultsPanel.classList.contains("hidden")) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      selectedIndex = (selectedIndex + 1) % searchResults.length;
+      highlightResult(selectedIndex);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      selectedIndex = (selectedIndex - 1 + searchResults.length) % searchResults.length;
+      highlightResult(selectedIndex);
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (selectedIndex >= 0) selectResult(selectedIndex);
+    } else if (e.key === "Escape") {
+      resultsPanel.classList.add("hidden");
+    }
+  });
+
+  // Hide dropdown when clicking outside
   document.addEventListener("click", e => {
     if (!resultsPanel.contains(e.target) && e.target !== searchInput) {
       resultsPanel.classList.add("hidden");
     }
   });
+}
+
 
   // =========================================================
   // STYLE / ANIMATION HELPERS
