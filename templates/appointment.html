@@ -1,15 +1,10 @@
 {% extends "base.html" %}
 
-{# ==========================================================
-   Appointment Page — Epiconsult Clinic & Diagnostics
-   Structure follows index.html for proper CSS loading
-   ========================================================== #}
-
 {% block styles %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/service_header.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/appointment.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/appointment_success.css') }}">
-
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/appointment_cart.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -43,16 +38,14 @@
 
 {% include "partials/carousel_slide.html" with context %}
 
-
-
-{# ==== APPOINTMENT FORM SECTION ==== #}
+<!-- ====================================================== -->
+<!-- ==== APPOINTMENT FORM SECTION ==== -->
+<!-- ====================================================== -->
 <section class="appointment-section relative overflow-hidden">
-  <!-- Animated Blobs -->
   <div class="blob red"></div>
   <div class="blob blue"></div>
 
-  <!-- Main Booking Card -->
-  <div class="appointment-card">
+  <div class="appointment-card relative">
 
     <!-- Clock Widget -->
     <div class="absolute top-2 right-12 z-20">
@@ -65,7 +58,6 @@
       </div>
     </div>
 
-    <!-- Section Title -->
     <h2>Book an <span>Appointment</span></h2>
 
     <!-- ====== FORM START ====== -->
@@ -85,28 +77,33 @@
       <div class="grid md:grid-cols-2 gap-6">
         <div>
           <label for="serviceCategory">Select Category</label>
-          <select id="serviceCategory">
+          <select id="serviceCategory" name="serviceCategory">
             <option value="">-- Select Category --</option>
           </select>
         </div>
 
         <div id="subcategoryWrapper" class="hidden">
           <label for="serviceSubcategory">Select Test / Sub-Service</label>
-          <select id="serviceSubcategory">
+          <select id="serviceSubcategory" name="serviceSubcategory">
             <option value="">-- Select Test --</option>
           </select>
         </div>
+      </div>
+
+      <!-- Add to Cart -->
+      <div class="flex justify-center">
+        <button type="button" id="addToCartBtn" class="add-cart-btn">➕ Add Test to Cart</button>
       </div>
 
       <!-- Date & Time -->
       <div class="grid md:grid-cols-2 gap-6">
         <div>
           <label for="appointmentDate">Preferred Date</label>
-          <input type="date" id="appointmentDate">
+          <input type="date" id="appointmentDate" name="appointmentDate">
         </div>
         <div>
           <label for="appointmentTime">Preferred Time</label>
-          <select id="appointmentTime">
+          <select id="appointmentTime" name="appointmentTime">
             <option value="">-- Select Time --</option>
             <option>Morning (9AM - 12PM)</option>
             <option>Afternoon (12PM - 4PM)</option>
@@ -114,15 +111,15 @@
         </div>
       </div>
 
-      <!-- Personal Information -->
+      <!-- Personal Info -->
       <div class="grid md:grid-cols-2 gap-6">
         <div>
           <label for="fullName">Full Name *</label>
-          <input type="text" id="fullName" required>
+          <input type="text" id="fullName" name="fullName" required>
         </div>
         <div>
           <label for="sex">Sex *</label>
-          <select id="sex" required>
+          <select id="sex" name="sex" required>
             <option value="">-- Select --</option>
             <option>Male</option>
             <option>Female</option>
@@ -130,11 +127,11 @@
         </div>
         <div>
           <label for="phone">Phone Number *</label>
-          <input type="tel" id="phone" placeholder="+234..." required>
+          <input type="tel" id="phone" name="phone" placeholder="+234..." required>
         </div>
         <div>
           <label for="email">Email *</label>
-          <input type="email" id="email" placeholder="you@email.com" list="emailSuggestions" required>
+          <input type="email" id="email" name="email" placeholder="you@email.com" list="emailSuggestions" required>
           <datalist id="emailSuggestions">
             <option value="@gmail.com"></option>
             <option value="@outlook.com"></option>
@@ -145,7 +142,12 @@
         </div>
         <div class="md:col-span-2">
           <label for="address">Address (Optional)</label>
-          <input type="text" id="address">
+          <input type="text" id="address" name="address">
+        </div>
+
+        <div class="md:col-span-2">
+          <label for="message">Message (Optional)</label>
+          <textarea id="message" name="message" rows="3" placeholder="Any extra note for us…"></textarea>
         </div>
       </div>
 
@@ -155,7 +157,6 @@
         <button type="button" id="bookPayBtn">💳 Book & Pay Later</button>
       </div>
 
-      <!-- Contact Hint -->
       <p class="appointment-hint">
         Or call us anytime at <span>+234-7035765000</span>
       </p>
@@ -165,8 +166,25 @@
   </div>
 </section>
 
+<!-- 🛒 CART DRAWER -->
+<div id="cartDrawer" class="cart-drawer hidden">
+  <div class="cart-header">
+    <h3>Your Selected Tests</h3>
+    <button id="closeCartBtn" class="cart-close">×</button>
+  </div>
+  <ul id="cartItems" class="cart-items"></ul>
+  <div class="cart-footer">
+    <button id="clearCartBtn" class="clear-cart">Clear</button>
+    <button id="proceedCartBtn" class="proceed-cart">Proceed</button>
+  </div>
+</div>
 
-{# ==== SUMMARY MODAL ==== #}
+<!-- 🧾 Floating Cart Button -->
+<button id="floatingCartBtn" class="floating-cart">
+  🧾 <span id="cartBadge">0</span>
+</button>
+
+<!-- ==== SUMMARY MODAL ==== -->
 <div id="summaryModal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
   <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-8 animate-fade-in">
     <h2 class="text-2xl font-bold text-navy mb-4">Confirm Your Booking</h2>
@@ -179,13 +197,11 @@
   </div>
 </div>
 
-{# ==== EMBED TEST DATA ==== #}
 <script id="test-data" type="application/json">
   {{ test_data | tojson }}
 </script>
 
 <script>
-  // Initialize global test data safely
   (function () {
     try {
       window.testData = JSON.parse(document.getElementById('test-data').textContent);
@@ -196,22 +212,11 @@
   })();
 </script>
 
-<!-- 💡 Force Modal Hidden Immediately -->
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const modal = document.getElementById("summaryModal");
-    if (modal) {
-      modal.classList.add("hidden");
-      modal.classList.remove("flex", "block");
-      modal.style.display = "none";
-    }
-  });
-</script>
-
 <!-- ================= External JS ================= -->
 <script src="{{ url_for('static', filename='js/appointment-timer.js') }}"></script>
 <script src="{{ url_for('static', filename='js/clock.js') }}"></script>
 <script src="{{ url_for('static', filename='js/service_header.js') }}"></script>
 <script src="{{ url_for('static', filename='js/email_suggestion.js') }}"></script>
+<script src="{{ url_for('static', filename='js/appointment.js') }}"></script>
 
 {% endblock %}

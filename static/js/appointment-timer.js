@@ -2,6 +2,7 @@
    appointment-timer.js — Ultra-Stable Clock Renderer
    Prevents flicker by updating digits individually instead
    of rewriting the entire text node each second.
+   Includes safety checks for undefined spans.
    ========================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -14,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const initDigits = () => {
     const placeholders = "00:00:00".split("");
     timeDigits.innerHTML = "";
-    placeholders.forEach((char, i) => {
+    placeholders.forEach(char => {
       const span = document.createElement("span");
       span.textContent = char;
       span.style.display = "inline-block";
@@ -33,9 +34,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const h12 = hours % 12 || 12;
     const formatted = `${h12.toString().padStart(2, "0")}:${minutes}:${seconds}`;
 
+    // ✅ Safeguard — reinitialize if mismatch (prevents undefined span error)
+    if (timeDigits.children.length !== formatted.length) {
+      initDigits();
+    }
+
     const spans = timeDigits.children;
     for (let i = 0; i < formatted.length; i++) {
-      if (spans[i].textContent !== formatted[i]) {
+      if (spans[i] && spans[i].textContent !== formatted[i]) {
         spans[i].textContent = formatted[i]; // update only changed character
       }
     }
@@ -47,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const dateStr = now.toDateString();
     if (dateEl.textContent !== dateStr) dateEl.textContent = dateStr;
 
-    // Next update
+    // Schedule next update precisely at next second
     const delay = 1000 - now.getMilliseconds();
     setTimeout(updateClock, delay);
   };

@@ -108,34 +108,70 @@ def book_appointment_alias():
 
 
 # ==========================================================
-# BOOK APPOINTMENT — API ENDPOINT
+# BOOK APPOINTMENT — API ENDPOINT (Supports Multiple Tests)
 # ==========================================================
 @app.route("/book", methods=["POST"])
 def submit_booking():
-    """Handles appointment form submission and sends email notifications."""
     try:
+        import json
+
+        # ✅ Collect multi-test data if available
+        services = []
+        if "multiTests" in request.form:
+            try:
+                raw_tests = json.loads(request.form.get("multiTests", "[]"))
+                for t in raw_tests:
+                    if isinstance(t, dict):
+                        test_name = t.get("test") or ""
+                        category = t.get("category") or ""
+                        if test_name and category:
+                            services.append(f"{test_name} ({category})")
+                        elif test_name:
+                            services.append(test_name)
+                    elif isinstance(t, str):
+                        services.append(t)
+            except Exception as e:
+                print(f"[submit_booking] ⚠️ Failed to parse multiTests: {e}")
+                services = []
+        else:
+            # Fallback for single service
+            services = request.form.getlist("serviceSubcategory") or [request.form.get("serviceCategory")]
+
+        # ✅ Build booking data payload
+        service_str = ", ".join([s for s in services if isinstance(s, str) and s.strip()])
         data = {
             "name": request.form.get("fullName"),
             "email": request.form.get("email"),
             "phone": request.form.get("phone"),
             "sex": request.form.get("sex"),
-            "service": request.form.get("serviceCategory") or request.form.get("serviceSubcategory"),
+            "service": service_str or "N/A",
             "date": request.form.get("appointmentDate"),
             "time": request.form.get("appointmentTime"),
             "address": request.form.get("address"),
             "message": request.form.get("message"),
+            "booking_type": request.form.get("bookingType"),
         }
 
+        # 🚀 Send booking emails (admin + client)
         result = send_booking_emails(data)
+        admin_ok = result.get("admin", False)
+        client_ok = result.get("client", False)
 
-        if result["admin"] and result["client"]:
+        # ✅ Relaxed success condition: at least one email succeeded
+        if admin_ok or client_ok:
+            print(f"[submit_booking] ✅ Booking email(s) sent — Admin: {admin_ok}, Client: {client_ok}")
             return jsonify({"status": "success", "message": "Appointment booked successfully!"})
         else:
-            return jsonify({"status": "failed", "message": "Unable to send confirmation emails."})
+            print(f"[submit_booking] ❌ Both emails failed — Admin: {admin_ok}, Client: {client_ok}")
+            return jsonify({"status": "failed", "message": "Unable to send booking emails."})
 
     except Exception as e:
         print(f"[submit_booking] ❌ Error: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
+
+
+
+
 
 
 

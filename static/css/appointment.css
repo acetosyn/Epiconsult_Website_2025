@@ -1,5 +1,5 @@
 /* ==========================================================
-   appointment.css — Tailwind-Compatible + Color-Enhanced Build
+   appointment.css — Tailwind-Compatible Premium Build
    Epiconsult Clinic & Diagnostics
    ========================================================== */
 
@@ -118,7 +118,7 @@
   display: block;
 }
 
-/* Subtle tinted backgrounds alternating for visual depth */
+/* Input fields */
 .appointment-section input[type="text"],
 .appointment-section input[type="email"],
 .appointment-section input[type="tel"],
@@ -135,13 +135,11 @@
   transition: var(--transition);
 }
 
-/* Light red accent for alternating fields */
 .appointment-section input[type="tel"],
 .appointment-section select#sex {
   background: var(--red-tint);
 }
 
-/* Dynamic focus state */
 .appointment-section input:focus,
 .appointment-section select:focus {
   border-color: var(--red);
@@ -157,94 +155,210 @@
   padding-left: 2.5rem;
 }
 
-/* Results Panel */
-.appointment-section #resultsPanel {
-  background: #fff;
-  border-radius: 0.75rem;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  overflow: hidden;
+/* ==========================================================
+   Add to Cart Button
+========================================================== */
+.add-cart-btn {
+  background: linear-gradient(90deg, var(--red), var(--red-light));
+  color: var(--white);
+  padding: 0.8rem 2rem;
+  border-radius: 9999px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  border: none;
+  box-shadow: 0 6px 14px rgba(225, 29, 72, 0.35);
+  transition: var(--transition);
 }
-
-/* Dropdown arrow */
-.appointment-section select {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg fill='none' stroke='%230f2b46' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 1em;
+.add-cart-btn:hover {
+  background: linear-gradient(90deg, var(--red-light), #ff6f80);
+  transform: translateY(-2px);
 }
 
 /* ==========================================================
-   Buttons
+   Booking Buttons
 ========================================================== */
-.appointment-section button {
-  cursor: pointer;
-  border: none;
-  transition: var(--transition);
-  font-weight: 600;
-  border-radius: 9999px;
-  letter-spacing: 0.3px;
-}
-
 .appointment-section #bookOnlyBtn,
 .appointment-section #bookPayBtn {
   padding: 0.9rem 2.2rem;
   width: 100%;
   max-width: 280px;
+  border-radius: 9999px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: var(--transition);
 }
 
-.appointment-section #bookOnlyBtn {
+#bookOnlyBtn {
   background: linear-gradient(90deg, var(--red), var(--red-light));
   color: var(--white);
   box-shadow: 0 8px 16px rgba(225, 29, 72, 0.3);
 }
-.appointment-section #bookOnlyBtn:hover {
+#bookOnlyBtn:hover {
   background: linear-gradient(90deg, var(--red-light), #ff7085);
   transform: translateY(-2px);
 }
 
-.appointment-section #bookPayBtn {
+#bookPayBtn {
   background: linear-gradient(90deg, var(--navy), var(--navy-light));
   color: var(--white);
   box-shadow: 0 8px 16px rgba(15, 43, 70, 0.3);
 }
-.appointment-section #bookPayBtn:hover {
+#bookPayBtn:hover {
   background: linear-gradient(90deg, #1e3a8a, #112c56);
   transform: translateY(-2px);
 }
 
 /* ==========================================================
-   Modal
+   Floating Cart Button
 ========================================================== */
-.appointment-section #summaryModal {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
+.floating-cart {
+  position: fixed;
+  bottom: 30px;
+  right: 25px;
+  background: linear-gradient(135deg, var(--navy), var(--navy-light));
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 50px;
+  padding: 0.8rem 1.5rem;
+  box-shadow: 0 6px 16px rgba(15, 43, 70, 0.4);
+  cursor: pointer;
+  z-index: 100;
+  transition: var(--transition);
 }
-.appointment-section #summaryModal.flex {
-  display: flex !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  backdrop-filter: blur(8px);
+.floating-cart:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(15, 43, 70, 0.5);
 }
-.appointment-section #summaryModal .bg-white {
-  background: rgba(255, 255, 255, 0.98);
-  border-radius: 1.25rem;
-  box-shadow: var(--shadow-lg);
-  animation: fade-in 0.4s ease forwards;
+#cartBadge {
+  background: var(--red);
+  color: white;
+  padding: 0 8px;
+  margin-left: 4px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  vertical-align: middle;
 }
 
 /* ==========================================================
-   Clock
+   Cart Drawer
+========================================================== */
+.cart-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 380px;
+  height: 100vh;
+  background: var(--white);
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.2);
+  transform: translateX(100%);
+  opacity: 0;
+  transition: var(--transition);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+}
+.cart-drawer.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.cart-header {
+  background: var(--navy);
+  color: white;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cart-header h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+.cart-close {
+  background: transparent;
+  border: none;
+  font-size: 1.8rem;
+  color: #fff;
+  cursor: pointer;
+  line-height: 1;
+  transition: var(--transition);
+}
+.cart-close:hover { transform: scale(1.1); }
+
+.cart-items {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 1.5rem;
+  list-style: none;
+}
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px dashed var(--border);
+  padding: 0.5rem 0;
+}
+.cart-item span { color: var(--text-dark); font-size: 0.9rem; }
+
+.cart-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+.cart-footer button {
+  flex: 1;
+  padding: 0.8rem;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  transition: var(--transition);
+  cursor: pointer;
+}
+.clear-cart {
+  background: var(--red-tint);
+  color: var(--red);
+}
+.clear-cart:hover { background: #ffc5ce; }
+.proceed-cart {
+  background: linear-gradient(90deg, var(--navy), var(--navy-light));
+  color: white;
+}
+.proceed-cart:hover { background: linear-gradient(90deg, #1e3a8a, #112c56); }
+
+/* ==========================================================
+   Mobile Drawer
+========================================================== */
+@media (max-width: 768px) {
+  .cart-drawer {
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+    bottom: 0;
+    right: 0;
+    border-top-left-radius: 1.2rem;
+    border-top-right-radius: 1.2rem;
+    box-shadow: 0 -6px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(100%);
+    transition: var(--transition);
+  }
+  .cart-drawer.show {
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================
+   Clock + Hint (unchanged)
 ========================================================== */
 #timeDigits, #ampm {
   color: var(--navy);
   text-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
 }
-
-/* ==========================================================
-   Hint
-========================================================== */
 .appointment-section .appointment-hint {
   text-align: center;
   color: var(--text-muted);
@@ -257,18 +371,7 @@
 }
 
 /* ==========================================================
-   Animations
-========================================================== */
-@keyframes fade-in {
-  0% { opacity: 0; transform: scale(0.98); }
-  100% { opacity: 1; transform: scale(1); }
-}
-.animate-fade-in {
-  animation: fade-in 0.4s ease forwards;
-}
-
-/* ==========================================================
-   Responsive
+   Responsive Card Adjustments
 ========================================================== */
 @media (max-width: 768px) {
   .appointment-section .appointment-card {
@@ -277,67 +380,41 @@
     border-radius: 1.25rem;
     background: linear-gradient(180deg, rgba(250,250,252,0.95), rgba(236,240,245,0.97));
   }
-
   .appointment-section input,
   .appointment-section select {
     font-size: 1rem;
     padding: 1rem;
   }
-
   .appointment-section #bookOnlyBtn,
   .appointment-section #bookPayBtn {
     width: 100%;
     font-size: 1rem;
     padding: 1rem 0;
   }
-
   .appointment-section #summaryModal .bg-white {
     width: 92%;
   }
 }
 
-@media (max-width: 480px) {
-  .appointment-section .appointment-card h2 {
-    font-size: 1.5rem;
-  }
-  .appointment-section label {
-    font-size: 0.9rem;
-  }
-  .appointment-section input,
-  .appointment-section select {
-    font-size: 0.9rem;
-  }
-}
-
-
 /* ==========================================================
-   CLOCK — push into empty top-right space on desktop
-   (safe to append; overrides previous rules)
+   CLOCK Placement
 ========================================================== */
-
-/* Default desktop */
 .appointment-section .appointment-card > .absolute {
-  top: 2.4rem !important;    /* a little higher */
-  right: 1.1rem !important;  /* hug the right edge inside card padding */
+  top: 2.4rem !important;
+  right: 1.1rem !important;
 }
-
-/* Larger laptops / desktops */
-@media (min-width: 1280px) { /* ~Tailwind lg/xl breakpoint */
+@media (min-width: 1280px) {
   .appointment-section .appointment-card > .absolute {
     top: 2rem !important;
     right: 1.2rem !important;
   }
 }
-
-/* Very wide screens */
-@media (min-width: 1536px) { /* ~Tailwind 2xl */
+@media (min-width: 1536px) {
   .appointment-section .appointment-card > .absolute {
     top: 1.8rem !important;
     right: 1.6rem !important;
   }
 }
-
-/* Tablet & Mobile — keep it clean, out of the header */
 @media (max-width: 768px) {
   .appointment-section .appointment-card > .absolute {
     position: relative !important;
@@ -346,9 +423,47 @@
     margin-top: 1rem !important;
     margin-bottom: 1.5rem !important;
     display: flex !important;
-    justify-content: center;     /* centered above the form */
+    justify-content: center;
     width: 100%;
   }
 }
 
 
+/* ==========================================================
+   Dynamic Message Box (Modern, Expanding Textarea)
+========================================================== */
+.appointment-section textarea {
+  width: 100%;
+  min-height: 70px;
+  max-height: 280px;
+  resize: none;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--navy-tint);
+  color: var(--text-dark);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: var(--transition);
+  overflow-y: hidden;
+}
+
+.appointment-section textarea:focus {
+  border-color: var(--red);
+  background: #fff;
+  box-shadow: 0 0 0 4px rgba(225, 29, 72, 0.18);
+  outline: none;
+  transform: scale(1.01);
+}
+
+.appointment-section textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 0.8;
+}
+
+/* Slight hover feedback */
+.appointment-section textarea:hover {
+  background: rgba(255,255,255,0.98);
+  border-color: rgba(225,29,72,0.25);
+}
