@@ -278,12 +278,24 @@ Epiconsult Clinic & Diagnostics
     return _smtp_send(msg)
 
 
-# ======================================================
-# 🚀 MASTER FUNCTION
-# ======================================================
-def send_booking_emails(data: dict) -> dict:
-    """Send both admin and client booking emails."""
-    print("[booking_server] 📤 Sending booking notifications...")
-    admin_ok = send_admin_booking(data)
-    client_ok = send_client_booking(data)
-    return {"admin": admin_ok, "client": client_ok}
+# ==========================================================
+# ✅ Email Relay — Send Booking Data to cPanel Endpoint
+# ==========================================================
+import requests
+
+def send_booking_emails(data):
+    try:
+        response = requests.post(
+            "https://epidiagnostics.com/relay_mail.php",  # cPanel endpoint
+            json=data,
+            timeout=10
+        )
+        print("[Render ➜ Relay] ✅ Posted booking data to relay:", response.status_code)
+        try:
+            return response.json()
+        except Exception:
+            print("[Render ➜ Relay] ⚠️ Non-JSON response:", response.text[:200])
+            return {"admin": False, "client": False}
+    except Exception as e:
+        print("[Render ➜ Relay] ❌ Email relay failed:", e)
+        return {"admin": False, "client": False}
