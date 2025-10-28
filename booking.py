@@ -4,7 +4,7 @@ Epiconsult Clinic & Diagnostics
 Handles appointment confirmation and notifications (admin + client)
 with support for multiple booked tests.
 """
-
+import requests
 import os
 import io
 import smtplib
@@ -280,22 +280,38 @@ Epiconsult Clinic & Diagnostics
 
 # ==========================================================
 # ✅ Email Relay — Send Booking Data to cPanel Endpoint
-# ==========================================================
+# =========================================================
+
 import requests
 
 def send_booking_emails(data):
+    """Send booking email via Epiconsult cPanel relay."""
+    RELAY_URL = "https://relay.epidiagnostics.com/relay_mail.php"
+    RELAY_KEY = "EPICONSULT_RELAY_2025"  # must match AUTH_KEY in relay_mail.php
+
     try:
         response = requests.post(
-            "https://epidiagnostics.com/relay_mail.php",  # cPanel endpoint
+            RELAY_URL,
             json=data,
-            timeout=10
+            headers={"X-Relay-Key": RELAY_KEY},
+            timeout=20
         )
-        print("[Render ➜ Relay] ✅ Posted booking data to relay:", response.status_code)
+
+        print(f"[Render ➜ Relay] ✅ POST {RELAY_URL} → {response.status_code}")
+
+        # Attempt to parse JSON response
         try:
-            return response.json()
+            result = response.json()
+            print("[Render ➜ Relay] Response:", result)
+            return result
         except Exception:
-            print("[Render ➜ Relay] ⚠️ Non-JSON response:", response.text[:200])
+            print("[Render ➜ Relay] ⚠️ Non-JSON reply:", response.text[:250])
             return {"admin": False, "client": False}
+
+    except requests.Timeout:
+        print("[Render ➜ Relay] ❌ Timeout — relay server not responding in time")
+        return {"admin": False, "client": False}
+
     except Exception as e:
-        print("[Render ➜ Relay] ❌ Email relay failed:", e)
+        print("[Render ➜ Relay] ❌ Email relay failed:", str(e))
         return {"admin": False, "client": False}
