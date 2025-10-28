@@ -41,13 +41,15 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/base2.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/auth-ui.css') }}">
-
 <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile_menu.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/community.css') }}">
 
-  {% block styles %}{% endblock %}
+<!-- ✅ Page-specific styles (loaded LAST to override global CSS) -->
+{% block styles %}{% endblock %}
+
+
 </head>
 
 <body class="font-poppins">

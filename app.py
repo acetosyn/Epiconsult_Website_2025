@@ -5,6 +5,7 @@ from flask import Flask, url_for, g, redirect,  request, Response, jsonify
 from supabase import create_client
 from dotenv import load_dotenv
 from bot import stream_ecare  # Updated import
+from booking import send_booking_emails
 # -------------------------------
 # REGISTER BLUEPRINTS
 # -------------------------------
@@ -104,6 +105,39 @@ def home_alias():
 @app.route("/book-appointment", endpoint="book_appointment")
 def book_appointment_alias():
     return redirect(url_for("main.book_appointment"))
+
+
+# ==========================================================
+# BOOK APPOINTMENT — API ENDPOINT
+# ==========================================================
+@app.route("/book", methods=["POST"])
+def submit_booking():
+    """Handles appointment form submission and sends email notifications."""
+    try:
+        data = {
+            "name": request.form.get("fullName"),
+            "email": request.form.get("email"),
+            "phone": request.form.get("phone"),
+            "sex": request.form.get("sex"),
+            "service": request.form.get("serviceCategory") or request.form.get("serviceSubcategory"),
+            "date": request.form.get("appointmentDate"),
+            "time": request.form.get("appointmentTime"),
+            "address": request.form.get("address"),
+            "message": request.form.get("message"),
+        }
+
+        result = send_booking_emails(data)
+
+        if result["admin"] and result["client"]:
+            return jsonify({"status": "success", "message": "Appointment booked successfully!"})
+        else:
+            return jsonify({"status": "failed", "message": "Unable to send confirmation emails."})
+
+    except Exception as e:
+        print(f"[submit_booking] ❌ Error: {e}")
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+
 
 @app.route("/contact", endpoint="contact")
 def contact_alias():
