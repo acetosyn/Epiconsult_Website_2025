@@ -18,6 +18,105 @@ from reportlab.lib import colors
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm
 from reportlab.lib.utils import ImageReader
+# ==============================================================
+# BOOKING EMAILS — Send directly via cPanel SMTP (no SendGrid)
+# ==============================================================
+
+import smtplib, ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import os
+
+def send_booking_emails(data):
+    """
+    Sends booking confirmation to client and notification to admin
+    through Epiconsult's cPanel SMTP server.
+    """
+    smtp_host = os.getenv("SMTP_HOST", "premium220.web-hosting.com")
+    smtp_port = int(os.getenv("SMTP_PORT", 587))
+    smtp_user = os.getenv("SMTP_USER")
+    smtp_pass = os.getenv("SMTP_PASS")
+    email_from = os.getenv("EMAIL_FROM", smtp_user)
+    notify_email = os.getenv("NOTIFY_EMAIL", "bookings@epidiagnostics.com")
+
+    name = data.get("name", "")
+    client_email = data.get("email", "")
+    service = data.get("service", "")
+    date = data.get("date", "")
+    time = data.get("time", "")
+    phone = data.get("phone", "")
+    address = data.get("address", "")
+    message = data.get("message", "")
+
+    # -----------------------------
+    # Compose messages
+    # -----------------------------
+    admin_subject = f"[Epiconsult Booking] {name} — {service}"
+    client_subject = "Your Appointment with Epiconsult Clinic & Diagnostics"
+
+    admin_body = f"""
+📋 NEW APPOINTMENT BOOKING
+
+Name: {name}
+Email: {client_email}
+Phone: {phone}
+Service(s): {service}
+Date: {date}   Time: {time}
+Address: {address}
+
+Message:
+{message}
+
+-- Epiconsult Automated Booking System --
+"""
+
+    client_body = f"""
+Dear {name},
+
+Thank you for booking with Epiconsult Clinic & Diagnostics.
+Your appointment request has been received successfully.
+
+📅 Date: {date}
+⏰ Time: {time}
+🧪 Service: {service}
+
+Our representative will reach out shortly to confirm your appointment.
+
+Warm regards,
+Epiconsult Team
+www.epidiagnostics.com
+"""
+
+    try:
+        context = ssl.create_default_context()
+        with smtplib.SMTP(smtp_host, smtp_port, timeout=20) as server:
+            server.starttls(context=context)
+            server.login(smtp_user, smtp_pass)
+
+            # ---- Admin Email ----
+            admin_msg = MIMEMultipart()
+            admin_msg["From"] = email_from
+            admin_msg["To"] = notify_email
+            admin_msg["Subject"] = admin_subject
+            admin_msg.attach(MIMEText(admin_body, "plain"))
+            server.send_message(admin_msg)
+
+            # ---- Client Email ----
+            if client_email:
+                client_msg = MIMEMultipart()
+                client_msg["From"] = email_from
+                client_msg["To"] = client_email
+                client_msg["Subject"] = client_subject
+                client_msg.attach(MIMEText(client_body, "plain"))
+                server.send_message(client_msg)
+
+        print("[SMTP] ✅ Booking emails sent successfully")
+        return {"admin": True, "client": True}
+
+    except Exception as e:
+        print("[SMTP] ❌ Email sending failed:", str(e))
+        return {"admin": False, "client": False}
+
 
 # Load environment variables
 load_dotenv()
@@ -278,38 +377,98 @@ Epiconsult Clinic & Diagnostics
     return _smtp_send(msg)
 
 
-# ==========================================================
-# ✅ Email Relay — Send Booking Data to cPanel Endpoint
-# =========================================================
+# ==============================================================
+# BOOKING EMAILS — Send directly via cPanel SMTP (no SendGrid)
+# ==============================================================
+
 
 
 def send_booking_emails(data):
-    """Send booking email via Epiconsult cPanel relay."""
-    RELAY_URL = "http://relay.epidiagnostics.com/relay_mail.php"  # <-- use http
-    RELAY_KEY = "EPICONSULT_RELAY_2025"
+    """
+    Sends booking confirmation to client and notification to admin
+    through Epiconsult's cPanel SMTP server.
+    """
+    smtp_host = os.getenv("SMTP_HOST", "premium220.web-hosting.com")
+    smtp_port = int(os.getenv("SMTP_PORT", 587))
+    smtp_user = os.getenv("SMTP_USER")
+    smtp_pass = os.getenv("SMTP_PASS")
+    email_from = os.getenv("EMAIL_FROM", smtp_user)
+    notify_email = os.getenv("NOTIFY_EMAIL", "bookings@epidiagnostics.com")
+
+    name = data.get("name", "")
+    client_email = data.get("email", "")
+    service = data.get("service", "")
+    date = data.get("date", "")
+    time = data.get("time", "")
+    phone = data.get("phone", "")
+    address = data.get("address", "")
+    message = data.get("message", "")
+
+    # -----------------------------
+    # Compose messages
+    # -----------------------------
+    admin_subject = f"[Epiconsult Booking] {name} — {service}"
+    client_subject = "Your Appointment with Epiconsult Clinic & Diagnostics"
+
+    admin_body = f"""
+📋 NEW APPOINTMENT BOOKING
+
+Name: {name}
+Email: {client_email}
+Phone: {phone}
+Service(s): {service}
+Date: {date}   Time: {time}
+Address: {address}
+
+Message:
+{message}
+
+-- Epiconsult Automated Booking System --
+"""
+
+    client_body = f"""
+Dear {name},
+
+Thank you for booking with Epiconsult Clinic & Diagnostics.
+Your appointment request has been received successfully.
+
+📅 Date: {date}
+⏰ Time: {time}
+🧪 Service: {service}
+
+Our representative will reach out shortly to confirm your appointment.
+
+Warm regards,
+Epiconsult Team
+www.epidiagnostics.com
+"""
 
     try:
-        response = requests.post(
-            RELAY_URL,
-            json=data,
-            headers={"X-Relay-Key": RELAY_KEY},
-            timeout=20
-        )
+        context = ssl.create_default_context()
+        with smtplib.SMTP(smtp_host, smtp_port, timeout=20) as server:
+            server.starttls(context=context)
+            server.login(smtp_user, smtp_pass)
 
-        print(f"[Render ➜ Relay] ✅ POST {RELAY_URL} → {response.status_code}")
+            # ---- Admin Email ----
+            admin_msg = MIMEMultipart()
+            admin_msg["From"] = email_from
+            admin_msg["To"] = notify_email
+            admin_msg["Subject"] = admin_subject
+            admin_msg.attach(MIMEText(admin_body, "plain"))
+            server.send_message(admin_msg)
 
-        try:
-            result = response.json()
-            print("[Render ➜ Relay] Response:", result)
-            return result
-        except Exception:
-            print("[Render ➜ Relay] ⚠️ Non-JSON reply:", response.text[:250])
-            return {"admin": False, "client": False}
+            # ---- Client Email ----
+            if client_email:
+                client_msg = MIMEMultipart()
+                client_msg["From"] = email_from
+                client_msg["To"] = client_email
+                client_msg["Subject"] = client_subject
+                client_msg.attach(MIMEText(client_body, "plain"))
+                server.send_message(client_msg)
 
-    except requests.Timeout:
-        print("[Render ➜ Relay] ❌ Timeout — relay server not responding in time")
-        return {"admin": False, "client": False}
+        print("[SMTP] ✅ Booking emails sent successfully")
+        return {"admin": True, "client": True}
 
     except Exception as e:
-        print("[Render ➜ Relay] ❌ Email relay failed:", str(e))
+        print("[SMTP] ❌ Email sending failed:", str(e))
         return {"admin": False, "client": False}

@@ -171,10 +171,6 @@ def submit_booking():
 
 
 
-
-
-
-
 @app.route("/contact", endpoint="contact")
 def contact_alias():
     return redirect(url_for("main.contact"))
