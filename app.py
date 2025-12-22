@@ -1,11 +1,12 @@
 # app.py
 import os
 from datetime import timedelta
-from flask import Flask, url_for, g, redirect,  request, Response, jsonify
-from supabase import create_client
+from flask import Flask, url_for, g, redirect, request, Response, jsonify
 from dotenv import load_dotenv
-from bot import stream_ecare  # Updated import
+
+from bot import stream_ecare
 from booking import send_booking_emails
+
 # -------------------------------
 # REGISTER BLUEPRINTS
 # -------------------------------
@@ -24,36 +25,12 @@ load_dotenv()
 # -------------------------------
 app = Flask(__name__)
 application = app
+
 app.secret_key = os.environ.get("SECRET_KEY", os.environ.get("FLASK_SECRET", "supersecret"))
 app.permanent_session_lifetime = timedelta(days=7)
 
 # -------------------------------
-# SUPABASE SERVER CLIENT (service_role)
-# -------------------------------
-SUPABASE_URL = os.environ["SUPABASE_URL"]
-SUPABASE_SERVICE_ROLE = os.environ["SUPABASE_SERVICE_ROLE"]
-SUPABASE_ANON = os.environ.get("SUPABASE_ANON_KEY")
-SUPABASE_JWKS_URL = os.environ.get("SUPABASE_JWKS_URL", f"{SUPABASE_URL}/auth/v1/keys")
-
-# Server-side client (service role)
-app.supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE)
-
-# Add configs for auth_supabase
-app.config["SUPABASE_URL"] = SUPABASE_URL
-app.config["SUPABASE_ANON_KEY"] = SUPABASE_ANON or ""
-app.config["SUPABASE_SERVICE_ROLE"] = SUPABASE_SERVICE_ROLE
-app.config["SUPABASE_JWKS_URL"] = SUPABASE_JWKS_URL
-
-# Provide anon key + url to templates (if needed)
-@app.context_processor
-def inject_supabase_client_env():
-    return dict(
-        SUPABASE_URL_FROM_SERVER=SUPABASE_URL,
-        SUPABASE_ANON_KEY_FROM_SERVER=SUPABASE_ANON or "",
-    )
-
-# -------------------------------
-# Shared JSON data loader
+# SHARED JSON DATA
 # -------------------------------
 data_loader.tips = data_loader.load_json(app.root_path, "tips.json")
 data_loader.faqs = data_loader.load_json(app.root_path, "faqs.json")
@@ -63,7 +40,8 @@ data_loader.faqs = data_loader.load_json(app.root_path, "faqs.json")
 # -------------------------------
 @app.context_processor
 def inject_user():
-    return dict(current_user=getattr(g, "user", None))
+    # Supabase removed → no authenticated user injection
+    return dict(current_user=None)
 
 @app.context_processor
 def override_url_for():
@@ -106,39 +84,47 @@ def home_alias():
 def book_appointment_alias():
     return redirect(url_for("main.book_appointment"))
 
+@app.route("/contact", endpoint="contact")
+def contact_alias():
+    return redirect(url_for("main.contact"))
+
+@app.route("/about", endpoint="about")
+def about_alias():
+    return redirect(url_for("main.about"))
 
 # ==========================================================
-# BOOK APPOINTMENT — API ENDPOINT (Supports Multiple Tests)
+# BOOK APPOINTMENT — API ENDPOINT
 # ==========================================================
 @app.route("/book", methods=["POST"])
 def submit_booking():
     try:
         import json
 
-        # ✅ Collect multi-test data if available
         services = []
+
         if "multiTests" in request.form:
             try:
                 raw_tests = json.loads(request.form.get("multiTests", "[]"))
                 for t in raw_tests:
                     if isinstance(t, dict):
-                        test_name = t.get("test") or ""
+                        test = t.get("test") or ""
                         category = t.get("category") or ""
-                        if test_name and category:
-                            services.append(f"{test_name} ({category})")
-                        elif test_name:
-                            services.append(test_name)
+                        if test and category:
+                            services.append(f"{test} ({category})")
+                        elif test:
+                            services.append(test)
                     elif isinstance(t, str):
                         services.append(t)
             except Exception as e:
                 print(f"[submit_booking] ⚠️ Failed to parse multiTests: {e}")
-                services = []
         else:
-            # Fallback for single service
-            services = request.form.getlist("serviceSubcategory") or [request.form.get("serviceCategory")]
+            services = (
+                request.form.getlist("serviceSubcategory")
+                or [request.form.get("serviceCategory")]
+            )
 
-        # ✅ Build booking data payload
-        service_str = ", ".join([s for s in services if isinstance(s, str) and s.strip()])
+        service_str = ", ".join(s for s in services if s)
+
         data = {
             "name": request.form.get("fullName"),
             "email": request.form.get("email"),
@@ -152,40 +138,28 @@ def submit_booking():
             "booking_type": request.form.get("bookingType"),
         }
 
-        # 🚀 Send booking emails (admin + client)
         result = send_booking_emails(data)
         admin_ok = result.get("admin", False)
         client_ok = result.get("client", False)
 
-        # ✅ Relaxed success condition: at least one email succeeded
         if admin_ok or client_ok:
-            print(f"[submit_booking] ✅ Booking email(s) sent — Admin: {admin_ok}, Client: {client_ok}")
-            return jsonify({"status": "success", "message": "Appointment booked successfully!"})
+            return jsonify({
+                "status": "success",
+                "message": "Appointment booked successfully!"
+            })
         else:
-            print(f"[submit_booking] ❌ Both emails failed — Admin: {admin_ok}, Client: {client_ok}")
-            return jsonify({"status": "failed", "message": "Unable to send booking emails."})
+            return jsonify({
+                "status": "failed",
+                "message": "Unable to send booking emails."
+            })
 
     except Exception as e:
         print(f"[submit_booking] ❌ Error: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
 
-
-
-@app.route("/contact", endpoint="contact")
-def contact_alias():
-    return redirect(url_for("main.contact"))
-
-@app.route("/about", endpoint="about")
-def about_alias():
-    return redirect(url_for("main.about"))
-
-
-# print(app.url_map)
-
-# ✅ Streaming Chat endpoint for e-Care Assistant
-# -------------------------------
-# e-Care Chat Endpoint
-# -------------------------------
+# ==========================================================
+# e-Care Chat Endpoint (Streaming)
+# ==========================================================
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.get_json(force=True, silent=True) or {}
@@ -208,4 +182,8 @@ def chat():
 # ENTRYPOINT
 # -------------------------------
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    app.run(
+        debug=True,
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000))
+    )
