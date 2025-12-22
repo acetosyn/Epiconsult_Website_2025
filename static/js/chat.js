@@ -87,10 +87,8 @@ document.addEventListener("DOMContentLoaded", () => {
     chatMessages.appendChild(msgDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
-    // 🔊 Bot TTS (optional, if enabled globally)
     if (!isUser && window.ttsSpeak) window.ttsSpeak(message);
 
-    // Notify chat2.js to animate typing
     const evt = new CustomEvent("chat-message-added", { detail: { message, isUser, save } });
     chatMessages.dispatchEvent(evt);
   }
@@ -105,7 +103,6 @@ document.addEventListener("DOMContentLoaded", () => {
     window.__chatConversation.push({ role: "user", content: message });
     chatInput.value = "";
 
-    // 👉 Show typing bubble (chat2.js will handle display/transition)
     chatMessages.dispatchEvent(new CustomEvent("chat-start-typing"));
 
     try {
@@ -145,7 +142,17 @@ document.addEventListener("DOMContentLoaded", () => {
   if (chatMin) chatMin.addEventListener("click", minimizeChat);
   if (chatMax) chatMax.addEventListener("click", () => (isMaximized ? minimizeChat() : maximizeChat()));
   if (chatSend) chatSend.addEventListener("click", sendMessage);
-  if (chatInput) chatInput.addEventListener("keypress", (e) => e.key === "Enter" && sendMessage());
+
+  // 🔴 FIX: prevent Enter key from submitting any form
+  if (chatInput) {
+    chatInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        e.stopPropagation();
+        sendMessage();
+      }
+    });
+  }
 
   quickBtns.forEach((btn) =>
     btn.addEventListener("click", () => {
