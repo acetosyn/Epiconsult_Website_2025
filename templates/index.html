@@ -35,11 +35,11 @@
           <div class="hero-buttons flex flex-wrap gap-3 sm:gap-4 mt-4 animate-fade-in-up delay-400">
 
             <!-- Book Appointment -->
-            <a href="{{ url_for('main.book_appointment') }}"
-               data-protected="true"
-               class="btn-hero btn-red">
-               📅 Book Now
-            </a>
+          <a href="{{ url_for('main.book_appointment') }}"
+          class="btn-hero btn-red">
+          📅 Book
+        </a>
+
 
             <!-- Teleconsultation -->
             <a href="{{ url_for('clinic.teleconsultation') }}"
@@ -249,15 +249,18 @@
               </select>
             </div>
           </div>
-
           <!-- Button -->
           <div class="pt-4 text-center">
-            <button type="submit" class="bg-red-600 text-white px-10 py-4 rounded-full font-semibold text-lg shadow-md hover:bg-red-700 hover:scale-105 transition-transform duration-300">
-              Book Appointment
-            </button>
-            <p class="text-gray-500 text-sm mt-4">Or call us at <span class="font-semibold">+234-800-EPICONSULT</span></p>
+            <a href="{{ url_for('main.book_appointment') }}"
+               class="bg-red-600 text-white px-10 py-4 rounded-full font-semibold text-lg shadow-md 
+                      hover:bg-red-700 hover:scale-105 transition-transform duration-300 inline-block">
+              📅 Book
+            </a>
+            <p class="text-gray-500 text-sm mt-4">
+              Or call us at <span class="font-semibold">+234-800-EPICONSULT</span>
+            </p>
           </div>
-        </form>
+        </div> <!-- end booking form card -->
       </div>
     </div>
   </div>

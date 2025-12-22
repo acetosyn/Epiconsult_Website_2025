@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/e-care.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="ecare-wrapper">
+
+  <!-- Sidebar -->
+  <aside class="ecare-sidebar">
+    <h3>💬 Conversations</h3>
+
+    <ul id="conversation-list">
+      <li><button class="conv-btn w-full">General Health</button></li>
+      <li><button class="conv-btn w-full">Lab Tests</button></li>
+      <li><button class="conv-btn w-full">Medications</button></li>
+      <li><button class="conv-btn w-full">Diagnostics</button></li>
+    </ul>
+
+    <button id="new-chat-btn">➕ New Conversation</button>
+  </aside>
+
+  <!-- Chat Area -->
+  <section class="ecare-chat">
+
+    <!-- Chat Window (scrolls) -->
+    <div id="chat-window">
+
+
+      <!-- Quick Suggestions -->
+      <div class="quick-bar">
+        <button class="chip">🤢 I feel unwell</button>
+        <button class="chip">💊 Drug interaction?</button>
+        <button class="chip">🔍 Explain a test</button>
+        <button class="chip">❤️ Healthy habits</button>
+        <button class="chip">🧪 I want to carry out a test</button>
+      </div>
+
+      <!-- Messages -->
+      <div id="messages"></div>
+
+      <!-- Typing Indicator -->
+      <div id="typing-indicator" class="hidden typing">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        <span>e-Care is typing...</span>
+      </div>
+    </div>
+
+    <!-- Input Bar (always visible) -->
+    <div class="chat-input">
+      <button id="voice-toggle" class="icon-btn" title="Voice"><i class="fa-solid fa-microphone"></i></button>
+      <input id="user-input" type="text" placeholder="Ask e-Care anything..." autocomplete="off" />
+      <button id="attach-btn" class="icon-btn" title="Attach"><i class="fa-solid fa-paperclip"></i></button>
+      <button id="send-btn" class="send-btn" title="Send"><i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+
+  </section>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/e-care1.js') }}"></script>
+<script src="{{ url_for('static', filename='js/e-care2.js') }}"></script>
+{% endblock %}

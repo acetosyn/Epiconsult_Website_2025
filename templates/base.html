@@ -41,13 +41,15 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/base2.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/auth-ui.css') }}">
-
 <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile_menu.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/community.css') }}">
 
-  {% block styles %}{% endblock %}
+<!-- ✅ Page-specific styles (loaded LAST to override global CSS) -->
+{% block styles %}{% endblock %}
+
+
 </head>
 
 <body class="font-poppins">
@@ -128,6 +130,10 @@
       <div class="hidden lg:flex items-center space-x-8">
         <a href="{{ url_for('main.home') }}" class="nav-link">HOME</a>
 
+      <!-- ✅ eCare (Chat Assistant) -->
+      <a href="{{ url_for('main.ecare') }}" class="nav-link">eCare</a>
+
+
         <!-- CLINIC Dropdown -->
         <div class="relative group" id="clinic-menu-container" data-json="{{ url_for('clinic.clinic_data') }}">
           <a href="#" class="nav-link flex items-center relative z-20" aria-haspopup="true" aria-expanded="false">
@@ -205,6 +211,13 @@
     <a href="{{ url_for('main.home') }}" class="block py-2 font-semibold hover:text-red-400 transition-colors">
       HOME
     </a>
+
+        <!-- ✅ e-Care Mobile Link -->
+    <a href="{{ url_for('main.ecare') }}"
+       class="block py-2 font-semibold hover:text-red-400 transition-colors">
+      e-Care
+    </a>
+
 
     <!-- Clinic Accordion -->
     <div class="mobile-section">
@@ -429,7 +442,8 @@
 
 <!-- Virtual Assistant Button (Floating Orb v2) -->
 <div class="fixed bottom-6 right-6 z-50">
-  <button id="chatbot-toggle" class="chatbot-btn" aria-label="Open Virtual Assistant">
+  <button type="button" id="chatbot-toggle" class="chatbot-btn" aria-label="Open Virtual Assistant">
+
     <!-- Dual glowing rings -->
     <span class="glow-ring pink"></span>
     <span class="glow-ring cyan"></span>
@@ -539,7 +553,7 @@
     </button>
 
     <!-- Send -->
-    <button id="chat-send"
+   <button type="button" id="chat-send"
             class="bg-gradient-to-tr from-indigo-600 to-purple-600 text-white p-3 rounded-full shadow 
                    transition hover:scale-110 active:scale-95"
             title="Send">

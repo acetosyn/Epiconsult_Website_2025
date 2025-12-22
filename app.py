@@ -1,10 +1,11 @@
 # app.py
 import os
 from datetime import timedelta
-from flask import Flask, url_for, g, redirect
+from flask import Flask, url_for, g, redirect,  request, Response, jsonify
 from supabase import create_client
 from dotenv import load_dotenv
-
+from bot import stream_ecare  # Updated import
+from booking import send_booking_emails
 # -------------------------------
 # REGISTER BLUEPRINTS
 # -------------------------------
@@ -105,6 +106,71 @@ def home_alias():
 def book_appointment_alias():
     return redirect(url_for("main.book_appointment"))
 
+
+# ==========================================================
+# BOOK APPOINTMENT — API ENDPOINT (Supports Multiple Tests)
+# ==========================================================
+@app.route("/book", methods=["POST"])
+def submit_booking():
+    try:
+        import json
+
+        # ✅ Collect multi-test data if available
+        services = []
+        if "multiTests" in request.form:
+            try:
+                raw_tests = json.loads(request.form.get("multiTests", "[]"))
+                for t in raw_tests:
+                    if isinstance(t, dict):
+                        test_name = t.get("test") or ""
+                        category = t.get("category") or ""
+                        if test_name and category:
+                            services.append(f"{test_name} ({category})")
+                        elif test_name:
+                            services.append(test_name)
+                    elif isinstance(t, str):
+                        services.append(t)
+            except Exception as e:
+                print(f"[submit_booking] ⚠️ Failed to parse multiTests: {e}")
+                services = []
+        else:
+            # Fallback for single service
+            services = request.form.getlist("serviceSubcategory") or [request.form.get("serviceCategory")]
+
+        # ✅ Build booking data payload
+        service_str = ", ".join([s for s in services if isinstance(s, str) and s.strip()])
+        data = {
+            "name": request.form.get("fullName"),
+            "email": request.form.get("email"),
+            "phone": request.form.get("phone"),
+            "sex": request.form.get("sex"),
+            "service": service_str or "N/A",
+            "date": request.form.get("appointmentDate"),
+            "time": request.form.get("appointmentTime"),
+            "address": request.form.get("address"),
+            "message": request.form.get("message"),
+            "booking_type": request.form.get("bookingType"),
+        }
+
+        # 🚀 Send booking emails (admin + client)
+        result = send_booking_emails(data)
+        admin_ok = result.get("admin", False)
+        client_ok = result.get("client", False)
+
+        # ✅ Relaxed success condition: at least one email succeeded
+        if admin_ok or client_ok:
+            print(f"[submit_booking] ✅ Booking email(s) sent — Admin: {admin_ok}, Client: {client_ok}")
+            return jsonify({"status": "success", "message": "Appointment booked successfully!"})
+        else:
+            print(f"[submit_booking] ❌ Both emails failed — Admin: {admin_ok}, Client: {client_ok}")
+            return jsonify({"status": "failed", "message": "Unable to send booking emails."})
+
+    except Exception as e:
+        print(f"[submit_booking] ❌ Error: {e}")
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+
+
 @app.route("/contact", endpoint="contact")
 def contact_alias():
     return redirect(url_for("main.contact"))
@@ -116,6 +182,27 @@ def about_alias():
 
 # print(app.url_map)
 
+# ✅ Streaming Chat endpoint for e-Care Assistant
+# -------------------------------
+# e-Care Chat Endpoint
+# -------------------------------
+@app.route("/chat", methods=["POST"])
+def chat():
+    data = request.get_json(force=True, silent=True) or {}
+    user_message = data.get("message", "")
+    session_id = data.get("session_id") or request.remote_addr
+
+    if not user_message.strip():
+        return jsonify({"error": "Message cannot be empty"}), 400
+
+    def generate():
+        try:
+            for chunk in stream_ecare(user_message, session_id=session_id):
+                yield chunk
+        except Exception as e:
+            yield f"⚠️ Error: {str(e)}"
+
+    return Response(generate(), mimetype="text/plain")
 
 # -------------------------------
 # ENTRYPOINT
