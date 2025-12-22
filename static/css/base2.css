@@ -1,6 +1,10 @@
 /* ==================================================
    base2.css → Tesla/Apple Style Dropdown with Flyouts
-   (Scoped per parent, wider cards)
+   (Scoped per parent, wider cards, refined hover effects)
+================================================== */
+
+/* ==================================================
+   1. Dropdown Structure and Positioning
 ================================================== */
 
 /* Wrapper ensures each dropdown is independent */
@@ -18,11 +22,12 @@
   display: flex;
   flex-direction: column;
   background: #fff;
-  border-radius: 0.75rem;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-  padding: 0.5rem 0;
-  min-width: 320px;   /* wider */
-  max-width: 480px;   /* wider */
+  border-radius: 1rem; /* smoother, more modern */
+  box-shadow: 0 15px 45px rgba(0,0,0,0.12);
+  backdrop-filter: blur(6px);
+  padding: 0.75rem 0.25rem;
+  min-width: 320px;
+  max-width: 480px;
   overflow: visible;
   z-index: 100;
 
@@ -34,7 +39,9 @@
   transition: all 250ms ease;
 }
 
-/* Show only on hover/focus of its parent */
+/* ==================================================
+   2. Hover / Focus Triggers (Dropdown Show)
+================================================== */
 .dropdown-wrapper:hover .dropdown-menu,
 .dropdown-wrapper:focus-within .dropdown-menu,
 .relative.group:hover .dropdown-menu,
@@ -58,12 +65,15 @@
   transform: translateX(-50%) translateY(0);
 }
 
+/* Subtle fade animation */
 @keyframes dropdown-fade {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Top-level item */
+/* ==================================================
+   3. Dropdown Links
+================================================== */
 .dropdown-item {
   position: relative;
 }
@@ -72,24 +82,25 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.6rem 1rem;
-  font-size: 0.95rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
   font-weight: 500;
   color: #1f2937;
   text-decoration: none;
-  transition: all 0.25s ease;
+  transition: all 0.3s ease;
   border-radius: 0.5rem;
 }
 
 .dropdown-link:hover {
-  background: #f9fafb;
+  background: #f3f4f6;
   color: #dc2626; /* red accent */
+  transform: translateX(4px);
 }
 
-/* Chevron */
+/* Chevron icon for items with submenus */
 .chevron {
   margin-left: 0.5rem;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, color 0.2s ease;
   font-size: 0.9rem;
   color: #9ca3af;
 }
@@ -98,12 +109,14 @@
   color: #dc2626;
 }
 
-/* Submenu (flyout) */
+/* ==================================================
+   4. Submenu (Flyout)
+================================================== */
 .submenu {
   position: absolute;
-  top: 0;
+  top: 0.25rem;
   left: 100%;
-  min-width: 260px;   /* wider than before */
+  min-width: 260px;
   background: #fff;
   border-radius: 0.5rem;
   box-shadow: 0 12px 30px rgba(0,0,0,0.1);
@@ -114,6 +127,7 @@
   transform: translateX(10px);
   transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
   z-index: 200;
+  margin-left: 0.5rem;
 }
 
 .submenu-open {
@@ -133,13 +147,16 @@
   text-decoration: none;
   transition: all 0.25s ease;
 }
+
 .submenu-link:hover {
   background: #fee2e2;
   color: #dc2626;
   transform: translateX(4px);
 }
 
-/* Mobile Accordion */
+/* ==================================================
+   5. Mobile Accordion (for small screens)
+================================================== */
 .mobile-section {
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
@@ -160,12 +177,14 @@ button[aria-expanded]:focus {
   border-radius: 0.5rem;
 }
 
-/* Mobile submenu container */
+/* Mobile submenu indentation */
 .submenu.ml-3 {
   padding-left: 0.5rem;
 }
 
-/* Scrollbar safety (desktop flyout if tall) */
+/* ==================================================
+   6. Scrollbar Customization
+================================================== */
 .dropdown-menu::-webkit-scrollbar,
 .submenu::-webkit-scrollbar {
   width: 6px;
@@ -178,4 +197,21 @@ button[aria-expanded]:focus {
 .dropdown-menu::-webkit-scrollbar-thumb:hover,
 .submenu::-webkit-scrollbar-thumb:hover {
   background: #999;
+}
+
+/* ==================================================
+   7. Responsive Tweaks
+================================================== */
+@media (max-width: 1024px) {
+  .dropdown-menu {
+    min-width: 260px;
+    max-width: 360px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dropdown-menu,
+  .submenu {
+    transition: none;
+  }
 }

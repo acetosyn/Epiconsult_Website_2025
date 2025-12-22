@@ -1,71 +1,74 @@
-/* Mobile Drawer Container */
+/* ==================================================
+   Mobile Drawer Container
+================================================== */
 #mobile-menu {
-  background-color: #111827 !important; /* solid dark */
+  background-color: #111827 !important;
   opacity: 1 !important;
   z-index: 9999 !important;
+  overflow-y: auto;
+  padding-bottom: 1rem;
 }
 
-/* ---------------------------
+/* ==================================================
    Mobile Top-level Links
----------------------------- */
+================================================== */
 #mobile-menu a,
 #mobile-menu button {
-  color: #f3f4f6;             /* light gray text */
+  color: #f3f4f6;
   font-weight: 600;
   font-size: 1rem;
 }
-
 #mobile-menu a:hover,
 #mobile-menu button:hover {
-  color: #f87171;             /* red-400 on hover */
+  color: #f87171;
 }
 
-/* Make accordion buttons stand out */
+/* Accordion buttons */
 #mobile-menu button {
-  background: #1f2937;        /* dark gray background */
-  border-radius: 0.375rem;    /* rounded-md */
+  background: #1f2937;
+  border-radius: 0.5rem;
   margin-top: 0.5rem;
-  padding: 0.5rem 0.75rem;
+  padding: 0.6rem 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* ---------------------------
+/* ==================================================
    Mobile Submenus
----------------------------- */
+================================================== */
 #mobile-menu .submenu a {
   font-size: 0.9rem;
   font-weight: 400;
-  color: #d1d5db;             /* gray-300 for distinction */
-  margin-left: 1rem;          /* indentation */
+  color: #d1d5db;
+  margin-left: 1rem;
   display: block;
-  padding: 0.25rem 0;
+  padding: 0.3rem 0;
+  transition: all 0.25s ease;
 }
-
 #mobile-menu .submenu a:hover {
-  color: #f87171;             /* red-400 */
-  padding-left: 1.25rem;      /* subtle slide on hover */
+  color: #f87171;
+  padding-left: 1.25rem;
 }
 
-/* ---------------------------
+/* ==================================================
    User Dropdown (Mobile)
----------------------------- */
+================================================== */
 #user-dropdown-mobile .dropdown-item {
   color: #f3f4f6 !important;
   font-weight: 500;
 }
-
 #user-dropdown-mobile .dropdown-item:hover {
-  background: #374151 !important; /* gray-700 */
-  color: #ffffff !important;
+  background: #374151 !important;
+  color: #fff !important;
 }
 
-
-
-/* ---------------------------
+/* ==================================================
    Fix Auth Slot (Mobile)
----------------------------- */
+================================================== */
 #auth-slot-mobile a,
 #auth-slot-mobile button {
-  width: 100%;                 /* full width */
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,36 +76,29 @@
   font-size: 1rem;
   font-weight: 600;
   border-radius: 0.5rem;
-  background: #1f2937;         /* gray-800 */
-  color: #f3f4f6;              /* light text */
+  background: #1f2937;
+  color: #f3f4f6;
   margin-top: 0.5rem;
 }
-
 #auth-slot-mobile a:hover,
 #auth-slot-mobile button:hover {
-  background: #374151;         /* gray-700 */
-  color: #f87171;              /* red accent */
+  background: #374151;
+  color: #f87171;
 }
 
-/* Ensure dropdown looks right in dark panel */
-#auth-slot-mobile .user-dropdown {
-  position: static !important; /* no floating */
-  background: #111827 !important;
-  border: none !important;
-  box-shadow: none !important;
-  margin-top: 0.5rem;
+/* Mobile drawer polish */
+#mobile-menu .mobile-section {
+  margin-bottom: 0.75rem;
 }
-
-#auth-slot-mobile .user-dropdown a,
-#auth-slot-mobile .user-dropdown button {
-  justify-content: flex-start;
+#mobile-menu .mobile-section div[id^="mobile-"] {
   padding-left: 1rem;
-  font-weight: 500;
-  color: #d1d5db;
+  margin-top: 0.4rem;
+  border-left: 2px solid rgba(255,255,255,0.15);
 }
 
-#auth-slot-mobile .user-dropdown a:hover,
-#auth-slot-mobile .user-dropdown button:hover {
-  background: #1f2937;
-  color: #fff;
+/* Fit smaller phones */
+@media (max-height: 680px) {
+  #mobile-menu {
+    height: calc(100vh - 100px);
+  }
 }

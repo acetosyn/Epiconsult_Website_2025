@@ -1,0 +1,147 @@
+/* ===================================================
+   HERO BUTTON STYLING — Compact, Elegant, Responsive
+   =================================================== */
+
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  justify-content: flex-start; /* Default for desktop */
+}
+
+.btn-hero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  border-radius: 9999px;
+  padding: 0.55rem 1.4rem;
+  line-height: 1.2;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  min-width: fit-content;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Primary Red Button */
+.btn-red {
+  background: linear-gradient(90deg, #dc2626, #ef4444);
+  color: #fff;
+  border: none;
+}
+.btn-red:hover {
+  background: linear-gradient(90deg, #b91c1c, #dc2626);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(220, 38, 38, 0.4);
+}
+
+/* Outline Button (Teleconsultation) */
+.btn-outline {
+  border: 1.5px solid #fff;
+  color: #fff;
+  background: transparent;
+}
+.btn-outline:hover {
+  background: #fff;
+  color: #002f5e;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(255, 255, 255, 0.25);
+}
+
+/* Tap/Click feedback */
+.btn-hero:active {
+  transform: scale(0.96);
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.2);
+}
+
+/* Mobile Adjustments (untouched) */
+@media (max-width: 768px) {
+  .hero-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .btn-hero {
+    width: auto;
+    padding: 0.5rem 1.2rem;
+    font-size: 0.9rem;
+    border-radius: 9999px;
+  }
+}
+
+/* ===================================================
+   HERO DOTS — Position, Color & Animation (Responsive)
+   =================================================== */
+
+.hero-dot {
+  background-color: #002F5E !important; /* navy blue */
+  opacity: 0.8 !important;
+  transition: all 0.3s ease !important;
+  width: 0.75rem !important;
+  height: 0.75rem !important;
+  border: none !important;
+}
+
+.hero-dot:hover,
+.hero-dot.active {
+  background-color: #002F5E !important;
+  opacity: 1 !important;
+  transform: scale(1.1);
+}
+
+.hero-dot {
+  animation: fadeInDots 0.8s ease both;
+}
+
+@keyframes fadeInDots {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  section.relative.h-\[46vh\] .absolute.bottom-6,
+  section.relative.h-\[50vh\] .absolute.bottom-6 {
+    bottom: 0.75rem !important; /* moves dots below buttons */
+  }
+
+  .hero-dot {
+    width: 0.9rem !important;
+    height: 0.9rem !important;
+  }
+}
+
+/* ===================================================
+   DYNAMIC MOTION & MODERN INTERACTION
+   =================================================== */
+
+/* Smooth fade-up animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 1s ease forwards;
+}
+
+.animate-fade-in-up.delay-200 {
+  animation-delay: 0.2s;
+}
+.animate-fade-in-up.delay-400 {
+  animation-delay: 0.4s;
+}
