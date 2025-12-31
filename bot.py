@@ -29,16 +29,14 @@ def load_json(path):
 lab_data = load_json(LAB_FILE)
 
 # -----------------------------
-# FLATTEN TESTS (FIXED)
+# FLATTEN LAB TESTS
 # -----------------------------
 def extract_lab_tests(data):
     tests = {}
     for category, items in (data.get("Laboratory") or {}).items():
         for item in items:
-            # Extract clean name and amount safely
-            name_match = re.match(r"^(.*?)\s*₦?[\d,]+(?:\.\d{2})?", item.strip())
-            amount_match = re.search(r"₦\s*([\d,]+(?:\.\d{2})?)", item)
-
+            name_match = re.match(r"^(.*?)\s*₦?[\d,]+", item.strip())
+            amount_match = re.search(r"₦\s*([\d,]+)", item)
             if name_match:
                 name = name_match.group(1).strip().upper()
                 price = f"₦{amount_match.group(1)}" if amount_match else ""
@@ -57,228 +55,220 @@ CONTACT_TEXT = (
 )
 
 # -----------------------------
-# TEXT HELPERS
+# HELPERS
 # -----------------------------
-def _normalize(s: str) -> str:
+def _normalize(s):
     s = (s or "").upper()
-    s = re.sub(r"[^\w\s/]", " ", s)
+    s = re.sub(r"[^\w\s]", " ", s)
     return re.sub(r"\s+", " ", s).strip()
 
 
-def titlecase_test_name(name: str) -> str:
+def titlecase_test_name(name):
     return " ".join(w.capitalize() for w in (name or "").split())
 
 
-# --- Fixed: handles ₦ before or after amount ---
-def extract_amount(line: str) -> str:
+def extract_amount(line):
     if not line:
         return ""
-    # Match ₦4000 or 4000 ₦
-    m = re.search(r"(?:₦\s*([\d,]+(?:\.\d{2})?)|([\d,]+(?:\.\d{2})?)\s*₦)", line)
-    if m:
-        return m.group(1) or m.group(2)
-    return ""
+    m = re.search(r"₦\s*([\d,]+)", line)
+    return m.group(1) if m else ""
 
 
 # -----------------------------
-# LOGIC DETECTORS
+# INTENT DETECTORS
 # -----------------------------
-def is_price_question(t): return any(x in t for x in ["how much", "price", "cost", "fee", "₦", "naira", "amount"])
-def is_location_question(t): return any(x in t for x in ["where", "address", "location", "map", "directions"])
-def wants_contact_or_booking(t): return any(x in t for x in ["book", "appointment", "contact", "call", "reach", "confirm", "schedule"])
-def is_farewell(t): return any(x in t for x in ["bye", "goodbye", "see you", "later", "take care"])
-def is_gratitude(t): return any(x in t for x in ["thanks", "thank you", "appreciate", "grateful"])
-def is_greeting(t): return any(x in t for x in ["hi", "hello", "hey", "good morning", "good afternoon", "good evening"])
+def is_price_question(t): return any(x in t for x in ["price", "cost", "how much", "₦", "naira", "amount"])
+def is_location_question(t): return any(x in t for x in ["where", "address", "location", "map"])
+def wants_contact_or_booking(t): return any(x in t for x in ["book", "appointment", "contact", "call", "schedule"])
+def is_farewell(t): return any(x in t for x in ["bye", "goodbye", "see you"])
+def is_gratitude(t): return any(x in t for x in ["thanks", "thank you"])
+def is_greeting(t): return any(x in t for x in ["hi", "hello", "hey", "good morning", "good evening"])
 
 # -----------------------------
-# MEMORY PER SESSION
+# SESSION MEMORY
 # -----------------------------
 session_memory = {}
 
-def get_session_context(session_id):
-    return session_memory.setdefault(session_id, {"history": [], "symptoms": [], "last_test": None})
+def get_ctx(session_id):
+    return session_memory.setdefault(session_id, {
+        "history": [],
+        "symptoms": [],
+        "suspected": None,
+        "last_test": None
+    })
 
-def update_session_context(session_id, role, content):
-    ctx = get_session_context(session_id)
+
+def remember(ctx, role, content):
     ctx["history"].append({"role": role, "content": content})
-    if len(ctx["history"]) > 10:
+    if len(ctx["history"]) > 12:
         ctx["history"].pop(0)
 
 # -----------------------------
-# SYSTEM PROMPT
+# SYMPTOM → LIKELY CAUSE MAP (NON-DIAGNOSTIC)
 # -----------------------------
-ECARE_SYSTEM_PROMPT = """
-You are e-Care — a friendly, conversational virtual health assistant for Epiconsult Clinic & Diagnostics, Abuja.
-
-Guidelines:
-- Always use the Nigerian Naira symbol ₦.
-- Sound warm, natural, and reassuring — like a real clinic assistant.
-- Keep replies brief (1–3 sentences) and helpful.
-- Focus on lab tests, wellness, and clinic information.
-- Do NOT diagnose or prescribe medicine — only suggest general steps or available tests.
-- Always be polite and professional.
-"""
+SYMPTOM_MAP = {
+    "fever": {
+        "suspect": "malaria or typhoid",
+        "tests": ["MALARIA PARASITE", "WIDAL"]
+    },
+    "headache": {
+        "suspect": "malaria or infection",
+        "tests": ["MALARIA PARASITE"]
+    },
+    "body pain": {
+        "suspect": "malaria or viral infection",
+        "tests": ["MALARIA PARASITE"]
+    },
+    "vomit": {
+        "suspect": "typhoid or stomach infection",
+        "tests": ["WIDAL"]
+    },
+    "stomach": {
+        "suspect": "typhoid or gastrointestinal infection",
+        "tests": ["WIDAL"]
+    },
+    "cough": {
+        "suspect": "respiratory infection",
+        "tests": ["FULL BLOOD COUNT"]
+    }
+}
 
 # -----------------------------
 # FIND TEST MATCH
 # -----------------------------
-def find_test_match(query: str):
+def find_test_match(query):
     if not query:
         return None, None
 
     q = _normalize(query)
-    q = re.sub(r"\b(TEST|CHECK|LEVEL|SCREEN|SCREENING|EXAMINATION|PROFILE)\b", "", q).strip()
     norm_tests = {_normalize(k): v for k, v in lab_tests_flat.items()}
 
-    # --- Direct or partial match
-    for k_norm, v in norm_tests.items():
-        if k_norm in q or q in k_norm:
-            return k_norm, v
+    for k, v in norm_tests.items():
+        if k in q or q in k:
+            return k, v
 
-    # --- Word overlap
-    q_words = set(q.split())
-    for k_norm, v in norm_tests.items():
-        if any(word in k_norm.split() for word in q_words):
-            return k_norm, v
-
-    # --- Fuzzy match
-    candidates = difflib.get_close_matches(q, list(norm_tests.keys()), n=1, cutoff=0.45)
-    if candidates:
-        return candidates[0], norm_tests[candidates[0]]
+    matches = difflib.get_close_matches(q, list(norm_tests.keys()), n=1, cutoff=0.45)
+    if matches:
+        return matches[0], norm_tests[matches[0]]
 
     return None, None
 
 # -----------------------------
-# MAIN CHAT FUNCTION
+# SYSTEM PROMPT
+# -----------------------------
+SYSTEM_PROMPT = """
+You are e-Care, a virtual health assistant for Epiconsult Clinic & Diagnostics (Nigeria).
+
+Rules:
+- Do NOT diagnose or prescribe.
+- You MAY suggest likely causes common in Nigeria.
+- Always recommend lab tests for confirmation.
+- Be calm, human, reassuring.
+- Keep replies short and helpful.
+"""
+
+# -----------------------------
+# MAIN CHAT STREAM
 # -----------------------------
 def stream_ecare(user_message, session_id="default"):
     text = (user_message or "").strip()
     text_l = text.lower()
-    ctx = get_session_context(session_id)
+    ctx = get_ctx(session_id)
 
     # ---- Greetings ----
-    if is_greeting(text_l):
-        if not ctx["history"]:
-            reply = (
-                "👋 Hello! I’m e-Care, your virtual health companion from Epiconsult Clinic. "
-                "How are you feeling today?"
-            )
-            yield reply
-            update_session_context(session_id, "assistant", reply)
-            return
+    if is_greeting(text_l) and not ctx["history"]:
+        reply = "👋 Hello! I’m e-Care from Epiconsult Clinic. How are you feeling today?"
+        yield reply
+        remember(ctx, "assistant", reply)
+        return
 
     # ---- Farewell ----
     if is_farewell(text_l):
-        reply = (
-            "Take care and stay healthy! 👋 "
-            "Remember, I’m always here if you need quick medical info or lab support."
-        )
+        reply = "Take care and stay healthy 👋 I’m here anytime you need assistance."
         yield reply
-        update_session_context(session_id, "assistant", reply)
+        remember(ctx, "assistant", reply)
         return
 
     # ---- Gratitude ----
     if is_gratitude(text_l):
-        reply = "You're very welcome! 😊 Wishing you good health always."
+        reply = "You’re very welcome 😊"
         yield reply
-        update_session_context(session_id, "assistant", reply)
+        remember(ctx, "assistant", reply)
         return
 
-    # ---- Contact / Booking ----
+    # ---- Contact ----
     if wants_contact_or_booking(text_l):
-        reply = f"You can reach us anytime here: {CONTACT_TEXT}"
+        reply = f"You can reach Epiconsult here: {CONTACT_TEXT}"
         yield reply
-        update_session_context(session_id, "assistant", reply)
+        remember(ctx, "assistant", reply)
         return
 
     # ---- Location ----
     if is_location_question(text_l):
-        reply = "📍 We’re located at 33 Abidjan Street, Wuse Zone 3, Abuja — opposite the National Library."
+        reply = "📍 We’re at 33 Abidjan Street, Wuse Zone 3, Abuja — opposite the National Library."
         yield reply
-        update_session_context(session_id, "assistant", reply)
+        remember(ctx, "assistant", reply)
         return
 
-    # ---- Symptom Detection ----
-    symptom_keywords = [
-        "fever", "typhoid", "malaria", "infection", "pain", "cough", "headache",
-        "cold", "catarrh", "unwell", "sick", "weak", "tired", "not feeling well",
-        "dizzy", "vomit", "nausea", "stomach ache", "body pain"
-    ]
+    # ---- SYMPTOM INTELLIGENCE ----
+    for symptom, info in SYMPTOM_MAP.items():
+        if symptom in text_l:
+            ctx["symptoms"].append(symptom)
+            ctx["suspected"] = info["suspect"]
+            ctx["last_test"] = info["tests"][0]
 
-    if any(x in text_l for x in symptom_keywords):
-        ctx["symptoms"].append(text)
-
-        if "malaria" in text_l:
-            ctx["last_test"] = "MALARIA PARASITE"
-        elif "typhoid" in text_l:
-            ctx["last_test"] = "WIDAL"
-        elif "infection" in text_l:
-            ctx["last_test"] = "URINALYSIS"
-
-        if not is_price_question(text_l):
             reply = (
-                "I’m sorry to hear that. It might help to run a quick lab test for confirmation. "
-                "Would you like me to suggest one?"
+                f"I’m sorry you’re feeling unwell. Symptoms like this are commonly linked to "
+                f"{info['suspect']} in our environment.\n\n"
+                f"A lab test is the best way to confirm. Would you like me to suggest the appropriate test?"
             )
             yield reply
-            update_session_context(session_id, "assistant", reply)
+            remember(ctx, "assistant", reply)
             return
 
-    # ---- Lab / Price Queries ----
+    # ---- PRICE / LAB QUESTIONS ----
     test_name, price_line = find_test_match(user_message)
 
-    # fallback to last remembered test
-    if is_price_question(text_l) and not test_name and ctx.get("last_test"):
-        test_name = ctx["last_test"]
-        price_line = lab_tests_flat.get(test_name)
+    if is_price_question(text_l):
+        if not test_name and ctx.get("last_test"):
+            test_name = ctx["last_test"]
+            price_line = lab_tests_flat.get(test_name)
 
-    # --- Case 1: Asking for price ---
-    if is_price_question(text_l) and test_name and price_line:
-        amt = extract_amount(price_line)
-        reply = f"The {titlecase_test_name(test_name)} test costs ₦{amt}."
-        yield reply
-        update_session_context(session_id, "assistant", reply)
-        return
+        if test_name and price_line:
+            amt = extract_amount(price_line)
+            reply = f"The {titlecase_test_name(test_name)} test costs ₦{amt}."
+            yield reply
+            remember(ctx, "assistant", reply)
+            return
 
-    # --- Case 2: Mentions known test but not price ---
     if test_name and not is_price_question(text_l):
         ctx["last_test"] = test_name
         amt = extract_amount(price_line)
         reply = (
-            f"Yes, we offer {titlecase_test_name(test_name)} testing at Epiconsult Clinic."
+            f"We offer {titlecase_test_name(test_name)} testing at Epiconsult."
             + (f" It costs ₦{amt}." if amt else "")
         )
         yield reply
-        update_session_context(session_id, "assistant", reply)
+        remember(ctx, "assistant", reply)
         return
 
-    # --- Case 3: Asking for price but no match found ---
-    if is_price_question(text_l) and not test_name:
-        reply = (
-            "Hmm, I couldn’t find that test in our records. "
-            "Could you please confirm the name — for example *Widal*, *FBC*, or *Lipid Profile*?"
-        )
-        yield reply
-        update_session_context(session_id, "assistant", reply)
-        return
-
-    # ---- LLM Fallback ----
+    # ---- LLM FALLBACK ----
     ctx["history"].append({"role": "user", "content": user_message})
-    messages = [{"role": "system", "content": ECARE_SYSTEM_PROMPT}] + ctx["history"]
+    messages = [{"role": "system", "content": SYSTEM_PROMPT}] + ctx["history"]
 
     stream = client.chat.completions.create(
         model="llama-3.1-8b-instant",
         messages=messages,
-        temperature=0.8,
-        max_tokens=400,
+        temperature=0.7,
+        max_tokens=350,
         stream=True,
     )
 
-    collected_reply = ""
+    full_reply = ""
     for chunk in stream:
         if chunk.choices and chunk.choices[0].delta and chunk.choices[0].delta.content:
             piece = chunk.choices[0].delta.content
-            collected_reply += piece
+            full_reply += piece
             yield piece
 
-    update_session_context(session_id, "assistant", collected_reply)
+    remember(ctx, "assistant", full_reply)
