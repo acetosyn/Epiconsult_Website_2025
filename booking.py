@@ -38,6 +38,8 @@ NOTIFY_EMAIL = os.getenv("NOTIFY_EMAIL", "bookings@epidiagnostics.com")
 
 
 LOGO_PATH = os.path.join("static", "images", "logo.jpeg")
+print("[postmark] token_set =", bool(POSTMARK_SERVER_TOKEN), "| stream =", POSTMARK_MESSAGE_STREAM, "| from =", EMAIL_FROM)
+
 
 
 # ======================================================
@@ -153,17 +155,24 @@ def _build_message(to_email: str, subject: str, text: str, html: str) -> EmailMe
 POSTMARK_URL = "https://api.postmarkapp.com/email"
 
 def _postmark_send(to_email: str, subject: str, text_body: str, html_body: str, attachments=None) -> bool:
-    if not POSTMARK_SERVER_TOKEN:
-        print("[postmark] ❌ Missing POSTMARK_SERVER_TOKEN")
+    token = (POSTMARK_SERVER_TOKEN or "").strip()
+    stream = (POSTMARK_MESSAGE_STREAM or "outbound").strip()
+
+    if not token:
+        print("[postmark] ❌ Missing POSTMARK_SERVER_TOKEN (Render env var not set?)")
+        return False
+
+    if not to_email:
+        print("[postmark] ❌ Missing recipient email")
         return False
 
     payload = {
         "From": EMAIL_FROM,
         "To": to_email,
         "Subject": subject,
-        "TextBody": text_body,
-        "HtmlBody": html_body,
-        "MessageStream": POSTMARK_MESSAGE_STREAM,
+        "TextBody": text_body or " ",
+        "HtmlBody": html_body or "<p> </p>",
+        "MessageStream": stream,
     }
 
     if attachments:
@@ -172,25 +181,30 @@ def _postmark_send(to_email: str, subject: str, text_body: str, html_body: str, 
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/json",
-        "X-Postmark-Server-Token": POSTMARK_SERVER_TOKEN,
+        "X-Postmark-Server-Token": token,
     }
 
     try:
         r = requests.post(POSTMARK_URL, headers=headers, json=payload, timeout=25)
+
         if 200 <= r.status_code < 300:
-            print(f"[postmark] ✅ Email sent to {to_email}")
+            print(f"[postmark] ✅ Email sent to {to_email} | stream={stream}")
             return True
 
+        # show real error from Postmark
         try:
             err = r.json()
         except Exception:
             err = r.text
-        print(f"[postmark] ❌ Send failed ({r.status_code}): {err}")
+
+        print(f"[postmark] ❌ Send failed ({r.status_code}) to={to_email} stream={stream} from={EMAIL_FROM}")
+        print(f"[postmark] ❌ Error: {err}")
         return False
 
     except Exception as e:
         print(f"[postmark] ❌ Request error: {e}")
         return False
+
 
 
 def _pdf_attachment(pdf_bytes: bytes, filename: str) -> dict:
