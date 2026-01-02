@@ -23,101 +23,6 @@ from reportlab.lib.utils import ImageReader
 # BOOKING EMAILS — Send directly via cPanel SMTP (no SendGrid)
 # ==============================================================
 
-import smtplib, ssl
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-import os
-
-def send_booking_emails(data):
-    """
-    Sends booking confirmation to client and notification to admin
-    through Epiconsult's cPanel SMTP server.
-    """
-    smtp_host = os.getenv("SMTP_HOST", "premium220.web-hosting.com")
-    smtp_port = int(os.getenv("SMTP_PORT", 587))
-    smtp_user = os.getenv("SMTP_USER")
-    smtp_pass = os.getenv("SMTP_PASS")
-    email_from = os.getenv("EMAIL_FROM", smtp_user)
-    notify_email = os.getenv("NOTIFY_EMAIL", "bookings@epidiagnostics.com")
-
-    name = data.get("name", "")
-    client_email = data.get("email", "")
-    service = data.get("service", "")
-    date = data.get("date", "")
-    time = data.get("time", "")
-    phone = data.get("phone", "")
-    address = data.get("address", "")
-    message = data.get("message", "")
-
-    # -----------------------------
-    # Compose messages
-    # -----------------------------
-    admin_subject = f"[Epiconsult Booking] {name} — {service}"
-    client_subject = "Your Appointment with Epiconsult Clinic & Diagnostics"
-
-    admin_body = f"""
-📋 NEW APPOINTMENT BOOKING
-
-Name: {name}
-Email: {client_email}
-Phone: {phone}
-Service(s): {service}
-Date: {date}   Time: {time}
-Address: {address}
-
-Message:
-{message}
-
--- Epiconsult Automated Booking System --
-"""
-
-    client_body = f"""
-Dear {name},
-
-Thank you for booking with Epiconsult Clinic & Diagnostics.
-Your appointment request has been received successfully.
-
-📅 Date: {date}
-⏰ Time: {time}
-🧪 Service: {service}
-
-Our representative will reach out shortly to confirm your appointment.
-
-Warm regards,
-Epiconsult Team
-www.epidiagnostics.com
-"""
-
-    try:
-        context = ssl.create_default_context()
-        with smtplib.SMTP(smtp_host, smtp_port, timeout=20) as server:
-            server.starttls(context=context)
-            server.login(smtp_user, smtp_pass)
-
-            # ---- Admin Email ----
-            admin_msg = MIMEMultipart()
-            admin_msg["From"] = email_from
-            admin_msg["To"] = notify_email
-            admin_msg["Subject"] = admin_subject
-            admin_msg.attach(MIMEText(admin_body, "plain"))
-            server.send_message(admin_msg)
-
-            # ---- Client Email ----
-            if client_email:
-                client_msg = MIMEMultipart()
-                client_msg["From"] = email_from
-                client_msg["To"] = client_email
-                client_msg["Subject"] = client_subject
-                client_msg.attach(MIMEText(client_body, "plain"))
-                server.send_message(client_msg)
-
-        print("[SMTP] ✅ Booking emails sent successfully")
-        return {"admin": True, "client": True}
-
-    except Exception as e:
-        print("[SMTP] ❌ Email sending failed:", str(e))
-        return {"admin": False, "client": False}
-
 
 # Load environment variables
 load_dotenv()
@@ -385,7 +290,8 @@ def send_client_booking(data: dict) -> bool:
     text = f"""
 Dear {data.get('name')},
 
-Your appointment has been successfully received.
+Your appointment has been successfully received. Thank you for booking with Epiconsult Clinic & Diagnostics.
+
 
 Service(s):
 {service_text}
@@ -425,6 +331,16 @@ def send_booking_emails(data: dict) -> dict:
     Sends booking confirmation to client and notification to admin
     using Postmark (HTTPS) — works on Render.
     """
+    client_email = (data.get("email") or "").strip()
+
+    print(f"[booking] Admin recipient: {NOTIFY_EMAIL}")
+    print(f"[booking] Client recipient: {client_email}")
+
     admin_ok = send_admin_booking(data)
+    print(f"[booking] Admin send result: {admin_ok}")
+
     client_ok = send_client_booking(data)
+    print(f"[booking] Client send result: {client_ok}")
+
     return {"admin": admin_ok, "client": client_ok}
+
