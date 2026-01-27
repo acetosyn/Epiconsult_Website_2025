@@ -4,6 +4,7 @@ Epiconsult Clinic & Diagnostics
 Handles appointment confirmation and notifications (admin + client)
 with support for multiple booked tests.
 """
+import base64
 import requests
 import os
 import io
@@ -22,116 +23,23 @@ from reportlab.lib.utils import ImageReader
 # BOOKING EMAILS — Send directly via cPanel SMTP (no SendGrid)
 # ==============================================================
 
-import smtplib, ssl
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-import os
-
-def send_booking_emails(data):
-    """
-    Sends booking confirmation to client and notification to admin
-    through Epiconsult's cPanel SMTP server.
-    """
-    smtp_host = os.getenv("SMTP_HOST", "premium220.web-hosting.com")
-    smtp_port = int(os.getenv("SMTP_PORT", 587))
-    smtp_user = os.getenv("SMTP_USER")
-    smtp_pass = os.getenv("SMTP_PASS")
-    email_from = os.getenv("EMAIL_FROM", smtp_user)
-    notify_email = os.getenv("NOTIFY_EMAIL", "bookings@epidiagnostics.com")
-
-    name = data.get("name", "")
-    client_email = data.get("email", "")
-    service = data.get("service", "")
-    date = data.get("date", "")
-    time = data.get("time", "")
-    phone = data.get("phone", "")
-    address = data.get("address", "")
-    message = data.get("message", "")
-
-    # -----------------------------
-    # Compose messages
-    # -----------------------------
-    admin_subject = f"[Epiconsult Booking] {name} — {service}"
-    client_subject = "Your Appointment with Epiconsult Clinic & Diagnostics"
-
-    admin_body = f"""
-📋 NEW APPOINTMENT BOOKING
-
-Name: {name}
-Email: {client_email}
-Phone: {phone}
-Service(s): {service}
-Date: {date}   Time: {time}
-Address: {address}
-
-Message:
-{message}
-
--- Epiconsult Automated Booking System --
-"""
-
-    client_body = f"""
-Dear {name},
-
-Thank you for booking with Epiconsult Clinic & Diagnostics.
-Your appointment request has been received successfully.
-
-📅 Date: {date}
-⏰ Time: {time}
-🧪 Service: {service}
-
-Our representative will reach out shortly to confirm your appointment.
-
-Warm regards,
-Epiconsult Team
-www.epidiagnostics.com
-"""
-
-    try:
-        context = ssl.create_default_context()
-        with smtplib.SMTP(smtp_host, smtp_port, timeout=20) as server:
-            server.starttls(context=context)
-            server.login(smtp_user, smtp_pass)
-
-            # ---- Admin Email ----
-            admin_msg = MIMEMultipart()
-            admin_msg["From"] = email_from
-            admin_msg["To"] = notify_email
-            admin_msg["Subject"] = admin_subject
-            admin_msg.attach(MIMEText(admin_body, "plain"))
-            server.send_message(admin_msg)
-
-            # ---- Client Email ----
-            if client_email:
-                client_msg = MIMEMultipart()
-                client_msg["From"] = email_from
-                client_msg["To"] = client_email
-                client_msg["Subject"] = client_subject
-                client_msg.attach(MIMEText(client_body, "plain"))
-                server.send_message(client_msg)
-
-        print("[SMTP] ✅ Booking emails sent successfully")
-        return {"admin": True, "client": True}
-
-    except Exception as e:
-        print("[SMTP] ❌ Email sending failed:", str(e))
-        return {"admin": False, "client": False}
-
 
 # Load environment variables
 load_dotenv()
 
 # ======================================================
-# 📧 CONFIG
+# 📧 CONFIG (Postmark)
 # ======================================================
-SMTP_HOST = os.getenv("SMTP_HOST", "premium220.web-hosting.com")
-SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
-SMTP_USER = os.getenv("SMTP_USER", "noreply@epidiagnostics.com")
-SMTP_PASS = os.getenv("SMTP_PASS", "")
-EMAIL_FROM = os.getenv("EMAIL_FROM", SMTP_USER)
+POSTMARK_SERVER_TOKEN = os.getenv("POSTMARK_SERVER_TOKEN", "").strip()
+POSTMARK_MESSAGE_STREAM = os.getenv("POSTMARK_MESSAGE_STREAM", "outbound").strip()
+
+EMAIL_FROM = os.getenv("EMAIL_FROM", "Epiconsult Clinic & Diagnostics <noreply@epidiagnostics.com>")
 NOTIFY_EMAIL = os.getenv("NOTIFY_EMAIL", "bookings@epidiagnostics.com")
 
+
 LOGO_PATH = os.path.join("static", "images", "logo.jpeg")
+print("[postmark] token_set =", bool(POSTMARK_SERVER_TOKEN), "| stream =", POSTMARK_MESSAGE_STREAM, "| from =", EMAIL_FROM)
+
 
 
 # ======================================================
@@ -243,17 +151,68 @@ def _build_message(to_email: str, subject: str, text: str, html: str) -> EmailMe
 # ======================================================
 # 🔐 SECURE SMTP SEND
 # ======================================================
-def _smtp_send(msg: EmailMessage) -> bool:
-    try:
-        with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=25) as server:
-            server.starttls()
-            server.login(SMTP_USER, SMTP_PASS)
-            server.send_message(msg)
-        print(f"[booking_server] ✅ Email sent to {msg['To']}")
-        return True
-    except Exception as e:
-        print(f"[booking_server] ❌ Email send failed: {e}")
+
+POSTMARK_URL = "https://api.postmarkapp.com/email"
+
+def _postmark_send(to_email: str, subject: str, text_body: str, html_body: str, attachments=None) -> bool:
+    token = (POSTMARK_SERVER_TOKEN or "").strip()
+    stream = (POSTMARK_MESSAGE_STREAM or "outbound").strip()
+
+    if not token:
+        print("[postmark] ❌ Missing POSTMARK_SERVER_TOKEN (Render env var not set?)")
         return False
+
+    if not to_email:
+        print("[postmark] ❌ Missing recipient email")
+        return False
+
+    payload = {
+        "From": EMAIL_FROM,
+        "To": to_email,
+        "Subject": subject,
+        "TextBody": text_body or " ",
+        "HtmlBody": html_body or "<p> </p>",
+        "MessageStream": stream,
+    }
+
+    if attachments:
+        payload["Attachments"] = attachments
+
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "X-Postmark-Server-Token": token,
+    }
+
+    try:
+        r = requests.post(POSTMARK_URL, headers=headers, json=payload, timeout=25)
+
+        if 200 <= r.status_code < 300:
+            print(f"[postmark] ✅ Email sent to {to_email} | stream={stream}")
+            return True
+
+        # show real error from Postmark
+        try:
+            err = r.json()
+        except Exception:
+            err = r.text
+
+        print(f"[postmark] ❌ Send failed ({r.status_code}) to={to_email} stream={stream} from={EMAIL_FROM}")
+        print(f"[postmark] ❌ Error: {err}")
+        return False
+
+    except Exception as e:
+        print(f"[postmark] ❌ Request error: {e}")
+        return False
+
+
+
+def _pdf_attachment(pdf_bytes: bytes, filename: str) -> dict:
+    return {
+        "Name": filename,
+        "Content": base64.b64encode(pdf_bytes).decode("utf-8"),
+        "ContentType": "application/pdf",
+    }
 
 
 # ======================================================
@@ -315,11 +274,10 @@ Epiconsult Booking System
     </div>
     """.strip()
 
-    msg = _build_message(NOTIFY_EMAIL, subject, text, html)
     pdf_bytes = _generate_booking_pdf(data)
-    msg.add_attachment(pdf_bytes, maintype="application", subtype="pdf",
-                       filename=f"Epiconsult_Appointment_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf")
-    return _smtp_send(msg)
+    filename = f"Epiconsult_Appointment_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
+    attachments = [_pdf_attachment(pdf_bytes, filename)]
+    return _postmark_send(NOTIFY_EMAIL, subject, text, html, attachments=attachments)
 
 
 # ======================================================
@@ -346,7 +304,8 @@ def send_client_booking(data: dict) -> bool:
     text = f"""
 Dear {data.get('name')},
 
-Your appointment has been successfully received.
+Your appointment has been successfully received. Thank you for booking with Epiconsult Clinic & Diagnostics.
+
 
 Service(s):
 {service_text}
@@ -370,105 +329,32 @@ Epiconsult Clinic & Diagnostics
     </div>
     """.strip()
 
-    msg = _build_message(user_email, subject, text, html)
     pdf_bytes = _generate_booking_pdf(data)
-    msg.add_attachment(pdf_bytes, maintype="application", subtype="pdf",
-                       filename=f"Your_Appointment_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf")
-    return _smtp_send(msg)
+    filename = f"Your_Appointment_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf"
+    attachments = [_pdf_attachment(pdf_bytes, filename)]
+    return _postmark_send(user_email, subject, text, html, attachments=attachments)
+
 
 
 # ==============================================================
-# BOOKING EMAILS — Send directly via cPanel SMTP (no SendGrid)
+# BOOKING EMAILS — Postmark (HTTPS) — Render-safe
 # ==============================================================
 
-
-
-def send_booking_emails(data):
+def send_booking_emails(data: dict) -> dict:
     """
     Sends booking confirmation to client and notification to admin
-    through Epiconsult's cPanel SMTP server.
+    using Postmark (HTTPS) — works on Render.
     """
-    smtp_host = os.getenv("SMTP_HOST", "premium220.web-hosting.com")
-    smtp_port = int(os.getenv("SMTP_PORT", 587))
-    smtp_user = os.getenv("SMTP_USER")
-    smtp_pass = os.getenv("SMTP_PASS")
-    email_from = os.getenv("EMAIL_FROM", smtp_user)
-    notify_email = os.getenv("NOTIFY_EMAIL", "bookings@epidiagnostics.com")
+    client_email = (data.get("email") or "").strip()
 
-    name = data.get("name", "")
-    client_email = data.get("email", "")
-    service = data.get("service", "")
-    date = data.get("date", "")
-    time = data.get("time", "")
-    phone = data.get("phone", "")
-    address = data.get("address", "")
-    message = data.get("message", "")
+    print(f"[booking] Admin recipient: {NOTIFY_EMAIL}")
+    print(f"[booking] Client recipient: {client_email}")
 
-    # -----------------------------
-    # Compose messages
-    # -----------------------------
-    admin_subject = f"[Epiconsult Booking] {name} — {service}"
-    client_subject = "Your Appointment with Epiconsult Clinic & Diagnostics"
+    admin_ok = send_admin_booking(data)
+    print(f"[booking] Admin send result: {admin_ok}")
 
-    admin_body = f"""
-📋 NEW APPOINTMENT BOOKING
+    client_ok = send_client_booking(data)
+    print(f"[booking] Client send result: {client_ok}")
 
-Name: {name}
-Email: {client_email}
-Phone: {phone}
-Service(s): {service}
-Date: {date}   Time: {time}
-Address: {address}
+    return {"admin": admin_ok, "client": client_ok}
 
-Message:
-{message}
-
--- Epiconsult Automated Booking System --
-"""
-
-    client_body = f"""
-Dear {name},
-
-Thank you for booking with Epiconsult Clinic & Diagnostics.
-Your appointment request has been received successfully.
-
-📅 Date: {date}
-⏰ Time: {time}
-🧪 Service: {service}
-
-Our representative will reach out shortly to confirm your appointment.
-
-Warm regards,
-Epiconsult Team
-www.epidiagnostics.com
-"""
-
-    try:
-        context = ssl.create_default_context()
-        with smtplib.SMTP(smtp_host, smtp_port, timeout=20) as server:
-            server.starttls(context=context)
-            server.login(smtp_user, smtp_pass)
-
-            # ---- Admin Email ----
-            admin_msg = MIMEMultipart()
-            admin_msg["From"] = email_from
-            admin_msg["To"] = notify_email
-            admin_msg["Subject"] = admin_subject
-            admin_msg.attach(MIMEText(admin_body, "plain"))
-            server.send_message(admin_msg)
-
-            # ---- Client Email ----
-            if client_email:
-                client_msg = MIMEMultipart()
-                client_msg["From"] = email_from
-                client_msg["To"] = client_email
-                client_msg["Subject"] = client_subject
-                client_msg.attach(MIMEText(client_body, "plain"))
-                server.send_message(client_msg)
-
-        print("[SMTP] ✅ Booking emails sent successfully")
-        return {"admin": True, "client": True}
-
-    except Exception as e:
-        print("[SMTP] ❌ Email sending failed:", str(e))
-        return {"admin": False, "client": False}
