@@ -8,16 +8,21 @@
 
 <!-- ================= EPIC HERO SLIDER (Jaiz-style) ================= -->
 <section class="epic-hero relative h-[65vh] md:h-[78vh] lg:h-[85vh] overflow-hidden">
-
   <div class="epic-slider relative h-full" id="epicHero">
 
-    {% set letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p'] %}
+    {# Use real filenames exactly as they exist in Git/Render #}
+    {% set files = [
+      'a.JPG','b.JPG','c.JPG','d.JPG','e.JPG','f.JPG','g.JPG','h.JPG',
+      'i.jpg','j.jpg','k.jpg','l.jpg','m.jpg',
+      'n.JPG',
+      'o.jpg','p.jpg'
+    ] %}
 
-    {% for l in letters %}
+    {% for f in files %}
     <div class="epic-slide absolute inset-0 {% if loop.first %}is-active{% else %}is-next{% endif %}">
       <img
-        src="{{ url_for('static', filename='images/menu/' ~ l ~ '.jpg') }}"
-        alt="Epiconsult slide {{ l }}"
+        src="{{ url_for('static', filename='images/menu/' ~ f) }}"
+        alt="Epiconsult slide {{ loop.index }}"
         class="epic-img absolute inset-0 w-full h-full object-cover"
         loading="{% if loop.first %}eager{% else %}lazy{% endif %}"
       />
