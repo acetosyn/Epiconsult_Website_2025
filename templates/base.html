@@ -93,7 +93,7 @@
 <!-- ✅ Flash Messages (Global, right under ticker, aligned right) -->
 {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
-    <div class="flash-container fixed top-[60px] right-6 w-72 space-y-2">
+    <div class="flash-container fixed top-[48px] right-6 w-72 space-y-2">
       {% for category, msg in messages %}
         <div class="flash-msg 
           {% if category == 'success' %} bg-green-600 
@@ -107,22 +107,23 @@
 {% endwith %}
 
 <!-- ======================= Main Navigation ======================= -->
-<nav class="bg-white shadow-lg sticky top-[48px] z-50">
+<nav class="bg-white shadow-lg sticky top-[36px] z-50">
   <div class="container mx-auto px-4">
-    <div class="flex justify-between items-center py-4">
+    <div class="flex justify-between items-center py-2">
+
 
       <!-- ✅ Logo + Brand (closer alignment + tagline below logo) -->
       <a href="{{ url_for('main.home') }}" class="flex items-center logo-block">
         <img src="{{ url_for('static', filename='images/logo.jpeg') }}"
              alt="Epiconsult Logo"
-             class="h-12 w-auto object-contain mr-2">
+             class="h-10 w-auto object-contain mr-2">
 
         <div class="leading-tight logo-text">
           <div class="flex items-baseline flex-wrap gap-x-1">
             <h1 class="font-bold text-2xl md:text-3xl text-red-600">Epiconsult</h1>
             <span class="text-sm md:text-base font-semibold text-[#002F5E]">Clinic & Diagnostics</span>
           </div>
-          <p class="text-gray-600 italic text-xs md:text-sm mt-0.5 ml-0.5">...a reference point in diagnostics</p>
+          <p class="text-gray-600 italic text-xs mt-0 ml-0.5 leading-tight">...a reference point in diagnostics</p>
         </div>
       </a>
 
