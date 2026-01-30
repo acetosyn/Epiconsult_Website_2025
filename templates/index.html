@@ -16,7 +16,7 @@
     {% for l in letters %}
     <div class="epic-slide absolute inset-0 {% if loop.first %}is-active{% else %}is-next{% endif %}">
       <img
-        src="{{ url_for('static', filename='images/menu/' ~ l ~ '.JPG') }}"
+        src="{{ url_for('static', filename='images/menu/' ~ l ~ '.jpg') }}"
         alt="Epiconsult slide {{ l }}"
         class="epic-img absolute inset-0 w-full h-full object-cover"
         loading="{% if loop.first %}eager{% else %}lazy{% endif %}"
