@@ -213,3 +213,10 @@
   opacity: 0 !important;
   transform: translateY(-18px) !important;
 }
+
+
+@media (max-width: 1366px) {
+  .epic-title {
+    line-height: 1.15;
+  }
+}
