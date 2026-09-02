@@ -4,167 +4,671 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
 {% endblock %}
 
+
 {% block content %}
 
-<!-- Hero Section -->
-<section class="bg-navy text-white py-20 text-center">
-  <div class="container mx-auto px-6">
-    <h1 class="text-4xl md:text-5xl font-bold mb-4">About <span class="text-red-600">Epiconsult Diagnostics</span></h1>
-    <p class="text-lg text-gray-200 max-w-2xl mx-auto">
-      Your Trusted Diagnostic Partner — combining cutting-edge technology with compassionate care to deliver accurate and timely results.
-    </p>
-  </div>
-</section>
+<main class="about-page">
 
 
-<!-- About Us -->
-<section class="py-20 bg-gray-50">
-  <div class="container mx-auto px-6 lg:px-12 grid md:grid-cols-2 gap-12 items-center">
-    
-    <div>
-      <h2 class="text-3xl font-bold text-navy mb-6">About Us</h2>
-      <p class="text-gray-700 leading-relaxed mb-6">
-        At Epiconsult Diagnostics, our mission is simple: to empower healthcare decisions with precision and compassion. 
-        We provide patients and clinicians with the most accurate diagnostic insights for better treatment outcomes.
-      </p>
-      <ul class="space-y-3 text-gray-700">
-        <li>✔️ Accredited Laboratory Services</li>
-        <li>✔️ Advanced Diagnostic Technology</li>
-        <li>✔️ Patient-Centered Approach</li>
-      </ul>
-    </div>
+<!-- =========================================================
+     HERO
+========================================================== -->
+<section class="about-hero">
 
-    <div class="rounded-2xl overflow-hidden shadow-lg">
-      <img src="{{ url_for('static', filename='images/7.jpg') }}" alt="Epiconsult Facility" class="w-full h-80 object-cover">
-    </div>
-  </div>
-</section>
+    <div class="about-hero-background" aria-hidden="true"></div>
+    <div class="about-hero-wordmark" aria-hidden="true">EPICONSULT</div>
 
+    <div class="container mx-auto px-6 lg:px-12">
 
-<!-- Our Team -->
-<section class="py-20 bg-white">
-  <div class="container mx-auto px-6">
-    <h2 class="text-3xl font-bold text-center text-navy mb-12">Our Dedicated <span class="text-red-600">Team</span></h2>
+        <div class="about-hero-layout">
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-      {% for img in [3,4,5,6] %}
-      <div class="rounded-xl overflow-hidden shadow-lg hover:scale-105 transition">
-        <img src="{{ url_for('static', filename='images/' ~ img ~ '.jpg') }}" alt="Team Member" class="w-full h-64 object-cover">
-      </div>
-      {% endfor %}
-    </div>
+            <div class="about-hero-copy" data-about-reveal="left">
 
-    <div class="text-center mt-12">
-      <h3 class="text-2xl font-semibold text-navy">50+ Experts</h3>
-      <p class="text-gray-600">Dedicated board-certified specialists and professionals.</p>
-    </div>
-  </div>
-</section>
+                <span class="about-eyebrow"><i class="fa fa-heartbeat" aria-hidden="true"></i> Epiconsult Clinic & Diagnostics Centre</span>
+
+                <h1>About Epiconsult</h1>
+
+                <p class="about-hero-tagline">Comprehensive Healthcare and Diagnostics for the Whole Family</p>
+
+                <p class="about-hero-description">Delivering compassionate clinical care, accurate diagnostics, preventive health services and wellness solutions through experienced healthcare professionals and modern medical technology.</p>
+
+                <div class="about-hero-facts">
+                    <div><strong>Integrated Care</strong><span>Clinical & diagnostic services</span></div>
+                    <div><strong>Patient Focused</strong><span>Care built around people</span></div>
+                    <div><strong>Modern Diagnostics</strong><span>Technology supporting accuracy</span></div>
+                </div>
+
+                <div class="about-hero-actions">
+                    <a href="#about-story" class="about-btn about-btn-primary">Discover Who We Are <i class="fa fa-arrow-down" aria-hidden="true"></i></a>
+                    <a href="#about-services" class="about-btn about-btn-link">Explore Our Services <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+
+            </div>
 
 
-<!-- Stats -->
-<section class="py-20 bg-gray-50">
-  <div class="container mx-auto px-6 grid md:grid-cols-4 gap-8 text-center">
-    <div class="bg-white p-8 rounded-xl shadow">
-      <h3 class="text-4xl font-bold text-red-600">50+</h3>
-      <p class="text-gray-700 mt-2">Experts</p>
-    </div>
-    <div class="bg-white p-8 rounded-xl shadow">
-      <h3 class="text-4xl font-bold text-red-600">150,000+</h3>
-      <p class="text-gray-700 mt-2">Tests Conducted</p>
-    </div>
-    <div class="bg-white p-8 rounded-xl shadow">
-      <h3 class="text-4xl font-bold text-red-600">24/7</h3>
-      <p class="text-gray-700 mt-2">Support</p>
-    </div>
-    <div class="bg-white p-8 rounded-xl shadow">
-      <h3 class="text-4xl font-bold text-red-600">100%</h3>
-      <p class="text-gray-700 mt-2">Patient-Centered</p>
-    </div>
-  </div>
-</section>
+            <div class="about-hero-visual" data-about-reveal="right">
 
+                <div class="about-hero-image-shell">
 
-<!-- Facilities -->
-<section class="py-20 bg-white">
-  <div class="container mx-auto px-6">
-    <h2 class="text-3xl font-bold text-center text-navy mb-12">State-of-the-Art <span class="text-red-600">Facilities</span></h2>
+                    <div class="about-hero-image-wrap">
+                        <img src="{{ url_for('static', filename='images/7.jpg') }}" alt="Epiconsult Clinic and Diagnostics Centre" loading="eager">
 
-    <div class="grid md:grid-cols-2 gap-8">
-      <div class="rounded-xl overflow-hidden shadow-lg hover:scale-105 transition">
-        <img src="{{ url_for('static', filename='images/1.jpg') }}" alt="Facility 1" class="w-full h-80 object-cover">
-      </div>
-      <div class="rounded-xl overflow-hidden shadow-lg hover:scale-105 transition">
-        <img src="{{ url_for('static', filename='images/2.jpg') }}" alt="Facility 2" class="w-full h-80 object-cover">
-      </div>
-    </div>
-  </div>
-</section>
+                        <div class="about-hero-location">
+                            <i class="fa fa-map-marker-alt" aria-hidden="true"></i>
+                            <div><small>Located in</small><strong>Wuse Zone 3, Abuja</strong></div>
+                        </div>
+                    </div>
 
+                    <div class="about-hero-service-rail" aria-hidden="true">
+                        <span>Clinical Care</span>
+                        <span>Diagnostics</span>
+                        <span>Wellness</span>
+                    </div>
 
-<!-- Why Choose Us -->
-<section class="py-20 bg-gray-50">
-  <div class="container mx-auto px-6 text-center">
-    <h2 class="text-3xl font-bold text-navy mb-12">Why <span class="text-red-600">Choose Us</span></h2>
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-      <div class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition">
-        <h3 class="text-xl font-bold text-navy mb-3">Qualified Professionals</h3>
-        <p class="text-gray-600">Board-certified specialists committed to your care.</p>
-      </div>
-      <div class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition">
-        <h3 class="text-xl font-bold text-navy mb-3">Excellent Services</h3>
-        <p class="text-gray-600">From routine checks to advanced diagnostics.</p>
-      </div>
-      <div class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition">
-        <h3 class="text-xl font-bold text-navy mb-3">Quality Results</h3>
-        <p class="text-gray-600">Reliable, precise, and timely diagnostic reports.</p>
-      </div>
-      <div class="bg-white p-8 rounded-xl shadow hover:shadow-lg transition">
-        <h3 class="text-xl font-bold text-navy mb-3">24/7 Support</h3>
-        <p class="text-gray-600">Always available when you need us most.</p>
-      </div>
-    </div>
-  </div>
-</section>
+                </div>
 
+            </div>
 
-<!-- Video Section -->
-<section class="py-20 bg-white">
-  <div class="container mx-auto px-6 text-center">
-    <h2 class="text-3xl font-bold text-navy mb-8">
-      Our <span class="text-red-600">Facility</span> in Motion
-    </h2>
-    <p class="text-gray-600 mb-12">
-      Experience our environment through short video highlights of Epiconsult facilities.
-    </p>
-
-    <div class="video-slider" aria-label="Epiconsult video carousel" oncontextmenu="return false;">
-      <div class="slider-viewport rounded-xl shadow-lg overflow-hidden">
-        <div class="slider-track">
-          {% for i in range(1,6) %}
-          <div class="slide h-64">
-            <!-- Transparent overlay to discourage saving -->
-            <div class="no-save" aria-hidden="true"></div>
-            <video
-              class="slide-video"
-              muted
-              playsinline
-              loop
-              preload="none"
-              disablepictureinpicture
-              controlsList="nodownload"
-              data-src="{{ url_for('static', filename='videos/epiconsult' ~ i ~ '.mp4') }}"
-            ></video>
-          </div>
-          {% endfor %}
         </div>
-      </div>
 
-      <!-- Optional dots (auto-managed) -->
-      <div class="slider-dots" role="tablist" aria-label="Video slide indicators"></div>
     </div>
-  </div>
+
 </section>
+
+
+
+<!-- =========================================================
+     ABOUT US
+========================================================== -->
+<section class="about-section about-story" id="about-story">
+
+    <div class="container mx-auto px-6 lg:px-12">
+
+        <div class="about-story-word" aria-hidden="true">WHO WE ARE</div>
+
+        <div class="about-story-layout">
+
+            <div class="about-story-intro" data-about-reveal="left">
+
+                <span class="about-section-label">Who We Are</span>
+
+                <h2>Patient-centred healthcare, <span>delivered with precision and compassion.</span></h2>
+
+                <div class="about-story-glance">
+                    <span><strong>Abuja</strong> Wuse Zone 3</span>
+                    <span><strong>Integrated</strong> Clinical & Diagnostic Care</span>
+                    <span><strong>Focused</strong> On Better Outcomes</span>
+                </div>
+
+            </div>
+
+
+            <div class="about-story-copy" data-about-reveal="right">
+
+                <p class="about-story-lead">Epiconsult Clinic & Diagnostics Centre is a patient-centred healthcare facility committed to providing quality, affordable and accessible medical care.</p>
+
+                <p>From our facility in Wuse Zone 3, Abuja, we combine experienced healthcare professionals with modern diagnostic technology to provide dependable consultations, investigations, preventive care and wellness support under one roof.</p>
+
+                <div class="about-story-quote">
+                    <i class="fa fa-quote-left" aria-hidden="true"></i>
+                    <p>Quality healthcare begins with listening, understanding and providing care patients can depend on.</p>
+                </div>
+
+                <p>Our approach begins with listening to our patients and providing timely, reliable and compassionate care that supports informed health decisions.</p>
+
+            </div>
+
+        </div>
+
+
+        <div class="about-story-highlights" data-about-reveal="up">
+
+            <div>
+                <span class="about-story-highlight-icon"><i class="fa fa-user-md" aria-hidden="true"></i></span>
+                <span><small>Expertise</small>Experienced Healthcare Professionals</span>
+            </div>
+
+            <div>
+                <span class="about-story-highlight-icon"><i class="fa fa-microscope" aria-hidden="true"></i></span>
+                <span><small>Technology</small>Modern Diagnostic Technology</span>
+            </div>
+
+            <div>
+                <span class="about-story-highlight-icon"><i class="fa fa-heart" aria-hidden="true"></i></span>
+                <span><small>Care</small>Compassionate Patient Care</span>
+            </div>
+
+            <div>
+                <span class="about-story-highlight-icon"><i class="fa fa-check-circle" aria-hidden="true"></i></span>
+                <span><small>Reliability</small>Reliable Clinical Services</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+    <!-- =========================================================
+         MISSION & VISION
+    ========================================================== -->
+    <section class="about-section about-purpose">
+
+        <div class="container mx-auto px-6 lg:px-12">
+
+            <div class="about-section-heading about-section-heading-center" data-about-reveal="up">
+
+                <span class="about-section-label">Our Direction</span>
+
+                <h2>Mission & Vision</h2>
+
+                <p>
+                    The purpose guiding how we care for patients today and the healthcare institution we are building for the future.
+                </p>
+
+            </div>
+
+
+            <div class="about-purpose-layout">
+
+
+                <article class="about-purpose-item about-purpose-mission" data-about-reveal="left">
+
+                    <div class="about-purpose-title">
+
+                        <span class="about-purpose-icon">
+                            <i class="fa fa-bullseye" aria-hidden="true"></i>
+                        </span>
+
+                        <div>
+                            <small>Our Mission</small>
+                            <h3>Accessible. Accurate. Compassionate.</h3>
+                        </div>
+
+                    </div>
+
+                    <p>
+                        To provide accessible, accurate, compassionate, and technology-driven healthcare services that improve the health and wellbeing of every patient we serve.
+                    </p>
+
+                </article>
+
+
+                <article class="about-purpose-item about-purpose-vision" data-about-reveal="right">
+
+                    <div class="about-purpose-title">
+
+                        <span class="about-purpose-icon">
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+                        </span>
+
+                        <div>
+                            <small>Our Vision</small>
+                            <h3>Leadership in integrated healthcare.</h3>
+                        </div>
+
+                    </div>
+
+                    <p>
+                        To be a leading integrated clinic and diagnostics centre in Nigeria, recognised for excellence in patient care, innovation, and trusted diagnostic services.
+                    </p>
+
+                </article>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+<!-- =========================================================
+     CORE VALUES
+========================================================== -->
+<section class="about-section about-values">
+
+    <div class="container mx-auto px-6 lg:px-12">
+
+        <div class="about-section-heading about-section-heading-split" data-about-reveal="up">
+
+            <div>
+                <span class="about-section-label">What Defines Us</span>
+                <h2>Our Core Values</h2>
+            </div>
+
+            <p>Five principles shape the way we care, work, innovate and serve every patient who comes through our doors.</p>
+
+        </div>
+
+
+        <div class="about-values-list">
+
+            <article class="about-value" data-about-reveal="up">
+                <span class="about-value-number">01</span>
+                <span class="about-value-icon"><i class="fa fa-medal" aria-hidden="true"></i></span>
+
+                <div>
+                    <h3>Excellence</h3>
+                    <p>Delivering high-quality healthcare and dependable diagnostic services.</p>
+                </div>
+            </article>
+
+
+            <article class="about-value" data-about-reveal="up">
+                <span class="about-value-number">02</span>
+                <span class="about-value-icon"><i class="fa fa-hand-holding-heart" aria-hidden="true"></i></span>
+
+                <div>
+                    <h3>Compassion</h3>
+                    <p>Treating every patient with empathy, dignity and respect.</p>
+                </div>
+            </article>
+
+
+            <article class="about-value" data-about-reveal="up">
+                <span class="about-value-number">03</span>
+                <span class="about-value-icon"><i class="fa fa-shield-alt" aria-hidden="true"></i></span>
+
+                <div>
+                    <h3>Integrity</h3>
+                    <p>Providing honest, ethical and transparent care at every stage.</p>
+                </div>
+            </article>
+
+
+            <article class="about-value" data-about-reveal="up">
+                <span class="about-value-number">04</span>
+                <span class="about-value-icon"><i class="fa fa-microscope" aria-hidden="true"></i></span>
+
+                <div>
+                    <h3>Innovation</h3>
+                    <p>Using modern medical technology and better processes to improve healthcare outcomes.</p>
+                </div>
+            </article>
+
+
+            <article class="about-value" data-about-reveal="up">
+                <span class="about-value-number">05</span>
+                <span class="about-value-icon"><i class="fa fa-user-md" aria-hidden="true"></i></span>
+
+                <div>
+                    <h3>Professionalism</h3>
+                    <p>Maintaining strong clinical, ethical and customer service standards.</p>
+                </div>
+            </article>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+    <!-- =========================================================
+         SERVICES
+    ========================================================== -->
+    <section class="about-section about-services" id="about-services">
+
+        <div class="container mx-auto px-6 lg:px-12">
+
+
+            <div class="about-section-heading about-section-heading-split" data-about-reveal="up">
+
+                <div>
+                    <span class="about-section-label">What We Offer</span>
+                    <h2>Integrated Healthcare Services</h2>
+                </div>
+
+                <p>
+                    Clinical care, diagnostics, specialised investigations and preventive healthcare services in one coordinated facility.
+                </p>
+
+            </div>
+
+
+            <div class="about-services-layout">
+
+
+                <!-- LEFT COLUMN -->
+                <div class="about-services-column">
+
+
+                    <article class="about-service-row" data-about-reveal="up">
+
+                        <span class="about-service-icon">
+                            <i class="fa fa-user-md" aria-hidden="true"></i>
+                        </span>
+
+                        <div>
+                            <h3>Medical Consultations</h3>
+                            <p>General outpatient and specialist medical consultations.</p>
+                        </div>
+
+                    </article>
+
+
+                    <article class="about-service-row" data-about-reveal="up">
+
+                        <span class="about-service-icon">
+                            <i class="fa fa-microscope" aria-hidden="true"></i>
+                        </span>
+
+                        <div>
+                            <h3>Medical Laboratory</h3>
+                            <p>Automated diagnostic testing and laboratory investigations.</p>
+                        </div>
+
+                    </article>
+
+
+                    <article class="about-service-row" data-about-reveal="up">
+
+                        <span class="about-service-icon">
+                            <i class="fa fa-x-ray" aria-hidden="true"></i>
+                        </span>
+
+                        <div>
+                            <h3>Diagnostic Imaging</h3>
+                            <p>Ultrasound and diagnostic imaging services.</p>
+                        </div>
+
+                    </article>
+
+
+                    <article class="about-service-row" data-about-reveal="up">
+
+                        <span class="about-service-icon">
+                            <i class="fa fa-heartbeat" aria-hidden="true"></i>
+                        </span>
+
+                        <div>
+                            <h3>ECG & Cardiovascular</h3>
+                            <p>Cardiovascular assessment and monitoring investigations.</p>
+                        </div>
+
+                    </article>
+
+
+                    <article class="about-service-row" data-about-reveal="up">
+
+                        <span class="about-service-icon">
+                            <i class="fa fa-tint" aria-hidden="true"></i>
+                        </span>
+
+                        <div>
+                            <h3>Blood Banking</h3>
+                            <p>Blood banking services supporting patient care.</p>
+                        </div>
+
+                    </article>
+
+
+                </div>
+
+
+                <!-- RIGHT COLUMN -->
+                <div class="about-services-column">
+
+
+                    <article class="about-service-row" data-about-reveal="up">
+
+                        <span class="about-service-icon">
+                            <i class="fa fa-dna" aria-hidden="true"></i>
+                        </span>
+
+                        <div>
+                            <h3>PCR & Molecular Diagnostics</h3>
+                            <p>Modern molecular testing for advanced investigations.</p>
+                        </div>
+
+                    </article>
+
+
+                    <article class="about-service-row" data-about-reveal="up">
+
+                        <span class="about-service-icon">
+                            <i class="fa fa-ribbon" aria-hidden="true"></i>
+                        </span>
+
+                        <div>
+                            <h3>Sickle Cell Clinic</h3>
+                            <p>Specialised care and support for sickle cell conditions.</p>
+                        </div>
+
+                    </article>
+
+
+                    <article class="about-service-row" data-about-reveal="up">
+
+                        <span class="about-service-icon">
+                            <i class="fa fa-shield-virus" aria-hidden="true"></i>
+                        </span>
+
+                        <div>
+                            <h3>Hepatitis Care</h3>
+                            <p>Screening and management services for hepatitis.</p>
+                        </div>
+
+                    </article>
+
+
+                    <article class="about-service-row" data-about-reveal="up">
+
+                        <span class="about-service-icon">
+                            <i class="fa fa-building" aria-hidden="true"></i>
+                        </span>
+
+                        <div>
+                            <h3>Medical Screening</h3>
+                            <p>Corporate and individual medical screening programmes.</p>
+                        </div>
+
+                    </article>
+
+
+                    <article class="about-service-row" data-about-reveal="up">
+
+                        <span class="about-service-icon">
+                            <i class="fa fa-hand-holding-heart" aria-hidden="true"></i>
+                        </span>
+
+                        <div>
+                            <h3>Preventive & Wellness Care</h3>
+                            <p>Preventive services supporting healthier living and early intervention.</p>
+                        </div>
+
+                    </article>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =========================================================
+         ORGANOGRAM
+    ========================================================== -->
+    <section class="about-section about-organisation">
+
+        <div class="container mx-auto px-6 lg:px-12">
+
+
+            <div class="about-section-heading about-section-heading-center" data-about-reveal="up">
+
+                <span class="about-section-label">Leadership & Governance</span>
+
+                <h2>Our Organisational Structure</h2>
+
+                <p>
+                    A clear leadership structure supports effective clinical governance, diagnostic services and day-to-day operations across Epiconsult.
+                </p>
+
+            </div>
+
+
+            <!-- FULL WIDTH ORGANOGRAM IMAGE -->
+            <div class="about-organogram" data-about-reveal="up">
+
+                <img src="{{ url_for('static', filename='images/organogram.png') }}"
+                     alt="Epiconsult Clinic and Diagnostics Centre Organisational Structure"
+                     loading="lazy">
+
+            </div>
+
+
+            <!-- SHORT SUMMARY BELOW IMAGE -->
+            <div class="about-org-summary" data-about-reveal="up">
+
+
+                <div class="about-org-summary-item">
+
+                    <span>01</span>
+
+                    <div>
+                        <small>Executive Leadership</small>
+                        <strong>Chairman / Chief Executive Officer</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="about-org-summary-item">
+
+                    <span>02</span>
+
+                    <div>
+                        <small>Clinical Governance</small>
+                        <strong>Chief Medical Director</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="about-org-summary-item">
+
+                    <span>03</span>
+
+                    <div>
+                        <small>Operational Leadership</small>
+                        <strong>Head of Operations</strong>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+   <!-- =========================================================
+     TRUST / WHO WE SERVE / COMMITMENT
+========================================================== -->
+<section class="about-section about-trust-light">
+
+    <div class="container mx-auto px-6 lg:px-12">
+
+        <div class="about-trust-light-head" data-about-reveal="up">
+            <div>
+                <span class="about-section-label">Why Choose Epiconsult</span>
+                <h2>Healthcare you can approach with confidence.</h2>
+            </div>
+
+            <p>We combine clinical expertise, dependable diagnostics and patient-centred care to provide a healthcare experience built on trust.</p>
+        </div>
+
+        <div class="about-trust-light-grid">
+
+            <article class="about-trust-light-item" data-about-reveal="up">
+                <span class="about-trust-light-number">01</span>
+                <span class="about-trust-light-icon about-trust-icon-blue"><i class="fa fa-user-md" aria-hidden="true"></i></span>
+                <div><h3>Experienced Professionals</h3><p>Multidisciplinary healthcare professionals committed to quality patient care.</p></div>
+            </article>
+
+            <article class="about-trust-light-item" data-about-reveal="up">
+                <span class="about-trust-light-number">02</span>
+                <span class="about-trust-light-icon about-trust-icon-red"><i class="fa fa-microscope" aria-hidden="true"></i></span>
+                <div><h3>Reliable Diagnostics</h3><p>Advanced diagnostic technology supporting dependable and timely results.</p></div>
+            </article>
+
+            <article class="about-trust-light-item" data-about-reveal="up">
+                <span class="about-trust-light-number">03</span>
+                <span class="about-trust-light-icon about-trust-icon-red"><i class="fa fa-heart" aria-hidden="true"></i></span>
+                <div><h3>Patient-Centred Care</h3><p>Compassionate healthcare delivered with dignity, empathy and respect.</p></div>
+            </article>
+
+            <article class="about-trust-light-item" data-about-reveal="up">
+                <span class="about-trust-light-number">04</span>
+                <span class="about-trust-light-icon about-trust-icon-blue"><i class="fa fa-wallet" aria-hidden="true"></i></span>
+                <div><h3>Accessible Healthcare</h3><p>Quality healthcare services designed to remain affordable and accessible.</p></div>
+            </article>
+
+            <article class="about-trust-light-item about-trust-light-item-wide" data-about-reveal="up">
+                <span class="about-trust-light-number">05</span>
+                <span class="about-trust-light-icon about-trust-icon-red"><i class="fa fa-clock" aria-hidden="true"></i></span>
+                <div><h3>Timely Service</h3><p>Efficient investigations, reporting and follow-up care that keeps patients informed.</p></div>
+            </article>
+
+        </div>
+
+
+        <div class="about-trust-audience-light" data-about-reveal="up">
+
+            <div class="about-trust-audience-title">
+                <span>Who We Serve</span>
+                <h3>Healthcare for every stage of life.</h3>
+                <p>Supporting patients, families, organisations and partner healthcare facilities.</p>
+            </div>
+
+            <div class="about-trust-audience-grid">
+
+                <div><i class="fa fa-users" aria-hidden="true"></i><span>Individuals & Families</span></div>
+
+                <div><i class="fa fa-child" aria-hidden="true"></i><span>Children, Adults & Elderly Patients</span></div>
+
+                <div><i class="fa fa-building" aria-hidden="true"></i><span>Corporate Organisations</span></div>
+
+                <div><i class="fa fa-id-card" aria-hidden="true"></i><span>NHIA Beneficiaries</span></div>
+
+                <div><i class="fa fa-hospital" aria-hidden="true"></i><span>Hospitals & Clinics</span></div>
+
+            </div>
+
+        </div>
+
+
+        <div class="about-trust-commitment-light" data-about-reveal="up">
+
+            <div class="about-trust-commitment-icon">
+                <i class="fa fa-heartbeat" aria-hidden="true"></i>
+            </div>
+
+            <div>
+                <span>Our Commitment</span>
+                <h3>Your health deserves care you can trust.</h3>
+            </div>
+
+            <p>Every consultation, investigation and interaction at Epiconsult is guided by our commitment to accurate, compassionate and dependable healthcare.</p>
+
+        </div>
+
+    </div>
+
+</section>
+</main>
+
 
 <script src="{{ url_for('static', filename='js/about.js') }}"></script>
 
