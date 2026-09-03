@@ -22,6 +22,7 @@
 
         <div class="about-hero-layout">
 
+            <!-- HERO COPY -->
             <div class="about-hero-copy" data-about-reveal="left">
 
                 <span class="about-eyebrow"><i class="fa fa-heartbeat" aria-hidden="true"></i> Epiconsult Clinic & Diagnostics Centre</span>
@@ -33,37 +34,110 @@
                 <p class="about-hero-description">Delivering compassionate clinical care, accurate diagnostics, preventive health services and wellness solutions through experienced healthcare professionals and modern medical technology.</p>
 
                 <div class="about-hero-facts">
+
                     <div><strong>Integrated Care</strong><span>Clinical & diagnostic services</span></div>
+
                     <div><strong>Patient Focused</strong><span>Care built around people</span></div>
+
                     <div><strong>Modern Diagnostics</strong><span>Technology supporting accuracy</span></div>
+
                 </div>
 
                 <div class="about-hero-actions">
+
                     <a href="#about-story" class="about-btn about-btn-primary">Discover Who We Are <i class="fa fa-arrow-down" aria-hidden="true"></i></a>
+
                     <a href="#about-services" class="about-btn about-btn-link">Explore Our Services <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+
                 </div>
 
             </div>
 
 
+            <!-- HERO MEDIA -->
             <div class="about-hero-visual" data-about-reveal="right">
 
-                <div class="about-hero-image-shell">
+                <div class="about-hero-media-shell">
 
+                    <!-- MAIN FACILITY IMAGE -->
                     <div class="about-hero-image-wrap">
+
                         <img src="{{ url_for('static', filename='images/7.jpg') }}" alt="Epiconsult Clinic and Diagnostics Centre" loading="eager">
 
+                        <div class="about-hero-image-overlay" aria-hidden="true"></div>
+
                         <div class="about-hero-location">
+
                             <i class="fa fa-map-marker-alt" aria-hidden="true"></i>
-                            <div><small>Located in</small><strong>Wuse Zone 3, Abuja</strong></div>
+
+                            <div>
+                                <small>Located in</small>
+                                <strong>Wuse Zone 3, Abuja</strong>
+                            </div>
+
                         </div>
+
                     </div>
 
+
+                    <!-- FACILITY VIDEO -->
+                    <div class="about-hero-video-card">
+
+                        <div class="about-hero-video-head">
+
+                            <div>
+                                <span class="about-hero-live-dot"></span>
+                                <small>Inside Epiconsult</small>
+                            </div>
+
+                            <span class="about-hero-video-label">Facility Tour</span>
+
+                        </div>
+
+                        <div class="about-hero-video-wrap">
+
+                            <video class="about-hero-video"
+                                   autoplay
+                                   muted
+                                   loop
+                                   playsinline
+                                   preload="metadata"
+                                   poster="{{ url_for('static', filename='images/7.jpg') }}"
+                                   disablepictureinpicture
+                                   controlsList="nodownload noplaybackrate">
+
+                                <source src="{{ url_for('static', filename='videos/ep1.mp4') }}" type="video/mp4">
+
+                                Your browser does not support HTML5 video.
+
+                            </video>
+
+                            <div class="about-hero-video-shade" aria-hidden="true"></div>
+
+                            <div class="about-hero-video-caption">
+
+                                <i class="fa fa-play" aria-hidden="true"></i>
+
+                                <span>
+                                    <small>Take a Look Inside</small>
+                                    <strong>Our Facility</strong>
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SERVICE RAIL -->
                     <div class="about-hero-service-rail" aria-hidden="true">
                         <span>Clinical Care</span>
                         <span>Diagnostics</span>
                         <span>Wellness</span>
                     </div>
+
+                    <span class="about-hero-media-accent" aria-hidden="true"></span>
 
                 </div>
 
@@ -74,7 +148,6 @@
     </div>
 
 </section>
-
 
 
 <!-- =========================================================
