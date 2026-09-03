@@ -1821,3 +1821,67 @@
     .about-story-glance strong { min-width:68px; }
 
 }
+
+
+
+/* ==========================================================
+   CORE VALUES — KEEP ALL 5 ON ONE ROW
+========================================================== */
+
+.about-values-list {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: stretch;
+}
+
+.about-value {
+    min-width: 0;
+}
+
+.about-value:nth-child(5) {
+    grid-column: auto !important;
+    max-width: none !important;
+}
+
+
+/* Slightly tighten spacing so all five fit comfortably */
+
+.about-value {
+    padding-left: 18px;
+    padding-right: 18px;
+}
+
+.about-value h3 {
+    font-size: 1rem;
+}
+
+.about-value p {
+    font-size: .86rem;
+    line-height: 1.55;
+}
+
+
+/* ==========================================================
+   TABLET
+========================================================== */
+
+@media (max-width: 1199.98px) {
+
+    .about-values-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+}
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (max-width: 767.98px) {
+
+    .about-values-list {
+        grid-template-columns: 1fr;
+    }
+
+}
